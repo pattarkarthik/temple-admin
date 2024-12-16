@@ -31,7 +31,7 @@ const navigation = [
   },
   {
     title: "Yelam Products",
-    href: "/yelam-products",
+    href: "/yelam-prod",
     icon: "bi bi-columns",
   },
   {
@@ -49,7 +49,6 @@ const Sidebar = () => {
 
   return (
     <div>
-      <div className="d-flex align-items-center"></div>
       <div
         className="profilebg"
         style={{ background: `url(${probg}) no-repeat` }}

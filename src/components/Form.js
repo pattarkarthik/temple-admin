@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import Grid from "@mui/material/Grid2";
+import React, { useEffect, useState } from "react";
+import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardActions from "@mui/material/CardActions";
@@ -33,15 +33,15 @@ const StyledCardHeader = styled(CardHeader)(({ theme }) => ({
   padding: theme.spacing(2), // Padding inside the header
   position: "relative", // Set position to relative for overlapping
   top: "-20px", // Move the header upwards to overlap the card content
-  zIndex: 10, // Ensure the header stays on top
+  zIndex: 10,
+  right: 0, // Ensure the header stays on top
+}));
+const StyledCardActions = styled(CardActions)(({ theme }) => ({
+  display: "flex",
+  justifyContent: "space-between",
 }));
 
-const Form = ({ fields, onSubmit, title }) => {
-  const initialValues = fields.reduce((acc, field) => {
-    acc[field.name] = "";
-    return acc;
-  }, {});
-
+function Form({ fields, onSubmit, title, initialValues = {}, maxHeight }) {
   const [formValues, setFormValues] = useState(initialValues);
 
   const handleChange = (e) => {
@@ -58,8 +58,10 @@ const Form = ({ fields, onSubmit, title }) => {
   return (
     <Grid container justifyContent="center" spacing={1}>
       <Grid item md={12}>
-        <StyledCard className={classes.padding}>
-          {/* Applying the custom styled CardHeader */}
+        <StyledCard
+          className={classes.padding}
+          sx={{ ...(maxHeight && { maxHeight }), overflow: "auto" }}
+        >
           <StyledCardHeader title={title} />
           <form onSubmit={handleSubmit}>
             <CardContent>
@@ -82,21 +84,29 @@ const Form = ({ fields, onSubmit, title }) => {
                 ))}
               </Grid>
             </CardContent>
-            <CardActions>
+            <StyledCardActions>
               <Button
                 variant="contained"
                 color="primary"
                 type="submit"
                 className={classes.button}
               >
-                REGISTER
+                Submit
               </Button>
-            </CardActions>
+              <Button
+                variant="contained"
+                color="secondary"
+                // onClick={handleClose} // Handle cancel to close modal
+                className={classes.button}
+              >
+                Cancel
+              </Button>
+            </StyledCardActions>
           </form>
         </StyledCard>
       </Grid>
     </Grid>
   );
-};
+}
 
 export default Form;

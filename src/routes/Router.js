@@ -4,15 +4,12 @@ import { lazy } from "react";
 const FullLayout = lazy(() => import("../layouts/FullLayout.js"));
 
 /***** Pages ****/
-
-const Alerts = lazy(() => import("../views/ui/Alerts"));
-const Badges = lazy(() => import("../views/ui/Badges"));
-const Buttons = lazy(() => import("../views/ui/Buttons"));
-const Cards = lazy(() => import("../views/ui/Cards"));
-const Grid = lazy(() => import("../views/ui/Grid"));
-const Tables = lazy(() => import("../views/ui/Tables"));
-const Forms = lazy(() => import("../views/ui/NewMember.js"));
-const Breadcrumbs = lazy(() => import("../views/ui/Breadcrumbs"));
+const AllMembers = lazy(() => import("../pages/AllMembers.js"));
+const NewMember = lazy(() => import("../pages/NewMember.js"));
+const YelamEntry = lazy(() => import("../pages/YelamEntry.js"));
+const YelamList = lazy(() => import("../pages/YelamList.js"));
+const YelamProduct = lazy(() => import("../pages/YelamProduct.js"));
+const YelamProductList = lazy(() => import("../pages/YelamProductList.js"));
 
 /*****Routes******/
 
@@ -21,14 +18,12 @@ const ThemeRoutes = [
     path: "/",
     element: <FullLayout />,
     children: [
-      { path: "/new-member", exact: true, element: <Forms /> },
-      { path: "/badges", exact: true, element: <Badges /> },
-      { path: "/buttons", exact: true, element: <Buttons /> },
-      { path: "/cards", exact: true, element: <Cards /> },
-      { path: "/grid", exact: true, element: <Grid /> },
-      { path: "/table", exact: true, element: <Tables /> },
-      { path: "/forms", exact: true, element: <Forms /> },
-      { path: "/breadcrumbs", exact: true, element: <Breadcrumbs /> },
+      { path: "/new-member", exact: true, element: <NewMember /> },
+      { path: "/all-members", exact: true, element: <AllMembers /> },
+      { path: "/yelam-entry", exact: true, element: <YelamEntry /> },
+      { path: "/yelam-list", exact: true, element: <YelamList /> },
+      { path: "/yelam-prod", exact: true, element: <YelamProduct /> },
+      { path: "/yelam-prod-list", exact: true, element: <YelamProductList /> },
     ],
   },
 ];
