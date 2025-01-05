@@ -30,7 +30,7 @@ export default function FormModal({ open, handleClose, rowData, fields }) {
     >
       <Box sx={style}>
         <Form
-          title="Edit Row"
+          title="Edit This Entry"
           fields={fields}
           onSubmit={handleFormSubmit}
           initialValues={rowData} // Pass updated formValues

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import RadioButton from "../components/RadioButton";
 import Form from "../components/Form";
 
-function YelamEntry() {
+function ProductReceivedForm() {
  
 
   // const fields = [
@@ -114,7 +114,7 @@ function YelamEntry() {
           <Form
             fields={getFields()}
             onSubmit={handleFormSubmit}
-            title={`Yelam Entry - ${selectedForm === "form1" ? "Inhouse(Pulli)" : "External(Guest)"}`}
+            title={`ProductReceivedForm - ${selectedForm === "form1" ? "Inhouse(Pulli)" : "External(Guest)"}`}
           />
         )}
       </div>
@@ -123,4 +123,4 @@ function YelamEntry() {
 }
 
 
-export default YelamEntry;
+export default ProductReceivedForm;
