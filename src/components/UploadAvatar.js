@@ -1,9 +1,17 @@
 import React, { useState } from "react";
-import { Avatar, IconButton, Button, Typography, Snackbar, Alert } from "@mui/material";
+import {
+  Avatar,
+  IconButton,
+  Button,
+  Typography,
+  Snackbar,
+  Alert,
+} from "@mui/material";
+
 
 function UploadAvatar({ avatar, setAvatar }) {
-  const [avatarError, setAvatarError] = useState(""); // To store the error message
-  const [openAlert, setOpenAlert] = useState(false); // To control the Snackbar visibility
+  const [avatarError, setAvatarError] = useState(""); // Initialize with an empty string
+  const [openAlert, setOpenAlert] = useState(false); // Control Snackbar visibility
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
@@ -17,7 +25,7 @@ function UploadAvatar({ avatar, setAvatar }) {
         };
         reader.readAsDataURL(file);
       } else {
-        setAvatarError("File size must be 1MB or smaller.");
+        setAvatarError("File size must be 1MB or smaller."); // Set error message
         setOpenAlert(true); // Show error alert
       }
     }
@@ -28,14 +36,22 @@ function UploadAvatar({ avatar, setAvatar }) {
   };
 
   return (
-    <div style={{ textAlign: "center", display: "flex", flexDirection: "column", alignItems: "center" }}>
-      {/* Avatar Display */}
+    <div
+      style={{
+        textAlign: "center",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+      }}
+    >
+    
       <IconButton component="label" sx={{ width: 60, height: 60 }}>
         <Avatar
-          src={avatar || "/images/example.jpg"} // Default image if no avatar is uploaded
+          src={avatar || "/images/example.jpg"} // Default avatar if none is provided
           sx={{
-            width: 60,
-            height: 60,
+            width: 80, // Adjust size
+            height: 80, // Adjust size
+            border: "2px solid #ccc",
           }}
         />
         <input
@@ -46,7 +62,7 @@ function UploadAvatar({ avatar, setAvatar }) {
         />
       </IconButton>
 
-      {/* Small Upload Button under the Avatar */}
+     
       <Button
         variant="contained"
         color="primary"
@@ -54,11 +70,11 @@ function UploadAvatar({ avatar, setAvatar }) {
         sx={{
           backgroundColor: "rgba(38, 198, 218)",
           "&:hover": {
-            backgroundColor: "rgba(38, 198, 218, 0.8)", // Hover effect
+            backgroundColor: "rgba(38, 198, 218, 0.8)",
           },
-          padding: "3px 8px", // Smaller padding to make the button compact
-          fontSize: "10px", // Smaller font size to make the button text compact
-          marginTop: "8px", // Small margin between avatar and button
+          marginTop: "20px",
+          padding: "6px 16px",
+          fontSize: "12px",
         }}
       >
         Upload Photo
@@ -70,7 +86,7 @@ function UploadAvatar({ avatar, setAvatar }) {
         />
       </Button>
 
-      {/* Snackbar for Error Message */}
+      {/* Snackbar for Error Message  */}
       <Snackbar
         open={openAlert}
         autoHideDuration={6000} // Auto hide the alert after 6 seconds

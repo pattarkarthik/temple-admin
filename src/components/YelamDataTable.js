@@ -27,48 +27,15 @@ const StyledTopSection = styled("div")(({ theme }) => ({
 }));
 
 const fields = [
-  { label: "Family Name", name: "familyName", required: true },
-  { label: "Name", name: "name", required: true },
-  { label: "Spouse Name", name: "spouseName", required: false },
-  // {
-  //   label: "Photo 1",
-  //   name: "photo1",
-  //   required: false,
-  //   type: "file",
-  // },
-  // {
-  //   label: "Photo 2",
-  //   name: "photo2",
-  //   required: false,
-  //   type: "file",
-  // },
-
-  // Communication Address fields
-  { label: "Address Line 1", name: "addressLine1", required: true },
-  { label: "Address Line 2", name: "addressLine2", required: false },
-  { label: "City", name: "city", required: true },
-  { label: "State", name: "state", required: true },
-  { label: "Pin Code", name: "pinCode", required: true },
-
-  // Mobile Numbers
-  { label: "Mobile 1", name: "mobile1", required: true, type: "tel" },
-  {
-    label: "Mobile 2 (Spouse)",
-    name: "mobile2Spouse",
-    required: false,
-    type: "tel",
-  },
-
-  // WhatsApp Numbers
-  { label: "WhatsApp No 1", name: "whatsapp1", required: false, type: "tel" },
-  { label: "WhatsApp No 2", name: "whatsapp2", required: false, type: "tel" },
-
-  // Email IDs
-  { label: "Email ID 1", name: "email1", required: true, type: "email" },
-  { label: "Email ID 2", name: "email2", required: false, type: "email" },
-
-  // Primary Key (Pulli ID)
+  { label: "Yelam Poral/Product", name: "YelamPoral", required: true },
+  { label: "Value", name: "value", required: true },
   { label: "Pulli ID (Primary Key)", name: "pulliID", required: true },
+  { label: "Name", name: "name", required: true },
+  { label: "Native", name: "Native", required: true },
+  { label: "WhatsApp No 1", name: "whatsapp1", required: false, type: "tel" },
+  { label: "Manual Book Sr no", name: "BookNo", required: true },
+  { label: "State", name: "state", required: true },
+  { label: "Remark", name: "Remark", required: true },
 
   // Native and Karai
   {
@@ -90,31 +57,7 @@ const fields = [
       { value: "Nerkuppai", label: "Nerkuppai" },
     ],
   },
-  {
-    label: "Karai",
-    name: "karai",
-    required: true,
-    type: "dropdown", // Specify that this is a dropdown field
-    options: [
-      { value: "Panaivaikum Karai", label: "Panaivaikum Karai" },
-      { value: "Samiyadi karai", label: "Samiyadi karai" },
-      { value: "Poosari karai", label: "Poosari karai" },
-    ],
-  },
 
-  // Custom Columns
-  {
-    label: "Custom Column 1 - Year",
-    name: "customColumn1Year",
-    required: false,
-  },
-  {
-    label: "Custom Column 1 - Allowed Number",
-    name: "customColumn1Number",
-    required: false,
-    type: "number",
-  },
-  { label: "Custom Column 1", name: "customColumn1", required: false },
 ];
 
 function DataTable({ title, columns, data }) {
@@ -184,7 +127,14 @@ function DataTable({ title, columns, data }) {
   );
 
   return (
-    <Paper style={{ height: "800px", width: "100%" }}>
+    <Paper
+  style={{
+    height: "1000px", // Full height of the container
+    width: "100%",
+    display: "Inline-Block",
+    flexDirection: "column",
+  }}
+>
       <StyledTopSection>
         <Typography variant="h6">{title}</Typography>
         <TextField
@@ -197,39 +147,61 @@ function DataTable({ title, columns, data }) {
         />
       </StyledTopSection>
 
+
       <TableVirtuoso
-        data={filteredRows}
-        components={{
-          Scroller: React.forwardRef((props, ref) => (
-            <TableContainer component={Paper} {...props} ref={ref} />
-          )),
-          Table: (props) => (
-            <Table
-              {...props}
-              sx={{
-                borderCollapse: "separate",
-                tableLayout: "auto",
-              }}
-            />
-          ),
-          TableHead: React.forwardRef((props, ref) => (
-            <TableHead {...props} ref={ref} />
-          )),
-          TableRow,
-          TableBody: React.forwardRef((props, ref) => (
-            <TableBody {...props} ref={ref} />
-          )),
+  data={filteredRows}
+  components={{
+    Scroller: React.forwardRef((props, ref) => (
+      <div
+        {...props}
+        ref={ref}
+        style={{
+          overflowY: "auto",
+          overflowX: "auto", // Ensure both horizontal and vertical scrolling
+          height: "calc(100% - 20px)", // Leave space for the horizontal scrollbar
+          position: "relative",
         }}
-        fixedHeaderContent={fixedHeaderContent}
-        itemContent={rowContent}
+      >
+        {/* Wrapper to enforce table width for horizontal scrolling */}
+        <div
+          style={{
+            minWidth: "1200px", // Adjust this width to match your table's total column width
+          }}
+        >
+          {props.children}
+        </div>
+      </div>
+    )),
+    Table: (props) => (
+      <Table
+        {...props}
+        sx={{
+            borderCollapse: "separate",
+            tableLayout: "auto", // Let the table adjust column widths automatically
+          }}
       />
+    ),
+    TableHead: React.forwardRef((props, ref) => (
+      <TableHead {...props} ref={ref} />
+    )),
+    TableRow,
+    TableBody: React.forwardRef((props, ref) => (
+      <TableBody {...props} ref={ref} />
+    )),
+  }}
+  fixedHeaderContent={fixedHeaderContent}
+  itemContent={rowContent}
+/>
+
+
+
 
       <FormModal
         open={open}
         handleClose={handleClose}
         rowData={selectedRow}
-        fields={fields} // edit for customized fields
-      /> 
+        fields={fields}
+      />
       
     </Paper>
   );

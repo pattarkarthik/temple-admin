@@ -12,7 +12,7 @@ const AllMembers = lazy(() => import("../pages/AllMembers.js"));
 const NewMember = lazy(() => import("../pages/NewMember.js"));
 const YelamEntry = lazy(() => import("../pages/YelamEntry.js"));
 const YelamList = lazy(() => import("../pages/YelamList.js"));
-const YelamProduct = lazy(() => import("../pages/YelamProduct.js"));
+const YelamProductCatalog = lazy(() => import("../pages/YelamProductCatalog.js"));
 const YelamProductList = lazy(() => import("../pages/YelamProductList.js"));
 const ProductReceivedForm = lazy(() => import("../pages/ProductReceivedForm.js"));
 const ProductReceivedList = lazy(() => import("../pages/ProductReceivedList.js"));
@@ -28,7 +28,7 @@ const ThemeRoutes = [
       { path: "/all-members", exact: true, element: <AllMembers /> },
       { path: "/yelam-entry", exact: true, element: <YelamEntry /> },
       { path: "/yelam-list", exact: true, element: <YelamList /> },
-      { path: "/yelam-prod", exact: true, element: <YelamProduct /> },
+      { path: "/yelam-prod-Cat", exact: true, element: <YelamProductCatalog /> },
       { path: "/yelam-prod-list", exact: true, element: <YelamProductList /> },
       { path: "/Product-Received-Form", exact: true, element: <ProductReceivedForm /> },
       { path: "/Product-Received-List", exact: true, element: <ProductReceivedList /> },

@@ -9,10 +9,12 @@ const style = {
   left: "50%",
   transform: "translate(-50%, -50%)",
   width: 1000,
+  maxHeight: "80vh", // Set maximum height relative to the viewport
   bgcolor: "background.paper",
   border: "2px solid #000",
   boxShadow: 24,
   p: 4,
+  overflowY: "auto", // Enable vertical scrolling
 };
 
 export default function FormModal({ open, handleClose, rowData, fields }) {
@@ -35,6 +37,7 @@ export default function FormModal({ open, handleClose, rowData, fields }) {
           onSubmit={handleFormSubmit}
           initialValues={rowData} // Pass updated formValues
           maxHeight={500}
+          purpose="AllMembers.js"
         />
       </Box>
     </Modal>

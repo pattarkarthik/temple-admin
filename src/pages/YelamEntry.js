@@ -68,11 +68,14 @@ function YelamEntry() {
 
   // Form fields for different forms
   const fieldsForForm1 = [
+    { label: "Yelam Poral/Product", name: "Product", required: true },
+    { label: "Value", name: "value", required: true },
     { label: "Pulli ID (Primary Key)", name: "pulliID", required: true },
-    { label: "Native", name: "native", required: true },
-    { label: "Karai", name: "karai", required: true },
+    { label: "Name", name: "name", required: true },
     { label: "WhatsApp No 1", name: "whatsapp1", required: false, type: "tel" },
-    { label: "Email", name: "email", required: true, type: "email" },
+    { label: "Native", name: "native", required: true },
+    { label: "Manual Book Sr.no", name: "Manual Book Sr.no", required: true },
+    { label: "Remark", name: "Remark", required: true },
   ];
   const fieldsForForm2 = [
     
