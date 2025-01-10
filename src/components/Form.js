@@ -11,7 +11,7 @@ import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import InputLabel from "@mui/material/InputLabel";
 import FormControl from "@mui/material/FormControl";
-import UploadAvatar from "./UploadAvatar"; 
+import UploadAvatar from "./UploadAvatar";
 
 const PREFIX = "DynamicForm";
 
@@ -41,7 +41,7 @@ const StyledCardActions = styled(CardActions)(({ theme }) => ({
   justifyContent: "space-between",
 }));
 
-function Form({ fields = [], onSubmit, title, initialValues = {},purpose  }) {
+function Form({ fields = [], onSubmit, title, initialValues = {}, purpose }) {
   const [formValues, setFormValues] = useState(initialValues);
   const [avatar, setAvatar] = useState(null); // Add state for the avatar
 
@@ -73,7 +73,8 @@ function Form({ fields = [], onSubmit, title, initialValues = {},purpose  }) {
             <CardContent>
               <Grid container spacing={3} alignItems="flex-start">
                 {/* Conditionally render UploadAvatar */}
-                {(purpose === "NewMember.js" || purpose === "AllMembers.js") && (
+                {(purpose === "NewMember.js" && purpose !== "YelamDataTable" &&
+                  purpose === "AllMembers.js") && (
                   <Grid
                     item
                     xs={12}
@@ -114,7 +115,16 @@ function Form({ fields = [], onSubmit, title, initialValues = {},purpose  }) {
                             label={field.label}
                           >
                             {field.options.map((option, idx) => (
-                              <MenuItem key={idx} value={option.value}>
+                              <MenuItem
+                                key={idx}
+                                value={option.value}
+                                sx={{
+                                  "&:hover": {
+                                    backgroundColor: "rgba(21, 168, 236, 0.2)", 
+                                    border: "1px solid #005f73", 
+                                  },
+                                }}
+                              >
                                 {option.label}
                               </MenuItem>
                             ))}

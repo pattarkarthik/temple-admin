@@ -2,7 +2,7 @@ export const data = [
     {
       YelamId: 1,
       Action: "Send Whatsapp",
-      PaidStatus: "Payment Pending",
+      PaymentStatus: "Payment Pending",
       PulliId: "NY-Karai001",
       YelamPorul:"Remote",
       Value:"Rs 150",
@@ -21,7 +21,7 @@ export const data = [
     {
         YelamId: 1,
         Action: "Send Whatsapp",
-        PaidStatus: "Payment Pending",
+        PaymentStatus: "Payment Pending",
         PulliId: "NY-Karai001",
         YelamPorul: "Remote",
         Value: "Rs 150",
@@ -39,7 +39,7 @@ export const data = [
       {
         YelamId: 2,
         Action: "Send Email",
-        PaidStatus: "Payment Completed",
+        PaymentStatus: "Payment Completed",
         PulliId: "NY-Karai002",
         YelamPorul: "Lamp",
         Value: "Rs 200",
@@ -57,7 +57,7 @@ export const data = [
       {
         YelamId: 3,
         Action: "Send SMS",
-        PaidStatus: "Payment Pending",
+        PaymentStatus: "Payment Pending",
         PulliId: "NY-Karai003",
         YelamPorul: "Pooja Basket",
         Value: "Rs 300",
@@ -75,7 +75,7 @@ export const data = [
       {
         YelamId: 4,
         Action: "Send Whatsapp",
-        PaidStatus: "Payment Completed",
+        PaymentStatus: "Payment Completed",
         PulliId: "NY-Karai004",
         YelamPorul: "Oil Tin",
         Value: "Rs 250",
@@ -93,7 +93,7 @@ export const data = [
       {
         YelamId: 5,
         Action: "Send Email",
-        PaidStatus: "Payment Completed",
+        PaymentStatus: "Payment Completed",
         PulliId: "NY-Karai005",
         YelamPorul: "Brass Pot",
         Value: "Rs 400",
@@ -111,7 +111,7 @@ export const data = [
       {
         YelamId: 6,
         Action: "Send Whatsapp",
-        PaidStatus: "Payment Pending",
+        PaymentStatus: "Payment Pending",
         PulliId: "NY-Karai006",
         YelamPorul: "Incense Stick Box",
         Value: "Rs 120",
@@ -129,7 +129,7 @@ export const data = [
       {
         YelamId: 7,
         Action: "Send SMS",
-        PaidStatus: "Payment Completed",
+        PaymentStatus: "Payment Completed",
         PulliId: "NY-Karai007",
         YelamPorul: "Temple Calendar",
         Value: "Rs 100",
@@ -147,7 +147,7 @@ export const data = [
       {
         YelamId: 8,
         Action: "Send Whatsapp",
-        PaidStatus: "Payment Pending",
+        PaymentStatus: "Payment Pending",
         PulliId: "NY-Karai008",
         YelamPorul: "Prayer Mat",
         Value: "Rs 500",
@@ -165,7 +165,7 @@ export const data = [
       {
         YelamId: 9,
         Action: "Send Email",
-        PaidStatus: "Payment Completed",
+        PaymentStatus: "Payment Completed",
         PulliId: "NY-Karai009",
         YelamPorul: "Copper Kalash",
         Value: "Rs 600",
@@ -183,7 +183,7 @@ export const data = [
       {
         YelamId: 10,
         Action: "Send SMS",
-        PaidStatus: "Payment Pending",
+        PaymentStatus: "Payment Pending",
         PulliId: "NY-Karai010",
         YelamPorul: "Flower Garland",
         Value: "Rs 80",
@@ -204,7 +204,7 @@ export const data = [
     // { label: "Edit", dataKey: "edit" }, // New column for the Edit button
     { label: "Yelam Id", dataKey: "YelamId" },
     { label: "Action", dataKey: "Action" },
-    { label: "Paid Status", dataKey: "PaidStatus" },
+    { label: "Payment Status", dataKey: "PaymentStatus" },
     { label: "Pulli Id", dataKey: "PulliId" },
     { label: "Yelam Porul/Product", dataKey: "YelamPorul" },
     { label: "Value", dataKey: "Value" },

@@ -73,18 +73,72 @@ function YelamEntry() {
     { label: "Pulli ID (Primary Key)", name: "pulliID", required: true },
     { label: "Name", name: "name", required: true },
     { label: "WhatsApp No 1", name: "whatsapp1", required: false, type: "tel" },
-    { label: "Native", name: "native", required: true },
+    {
+      label: "Native",
+      name: "Native",
+      required: true,
+      type: "dropdown",
+      options: [
+        { value: "valayapatti", label: "valayapatti" },
+        { value: "Kallal", label: "Kallal" },
+        { value: "Kandanur", label: "Kandanur" },
+        { value: "Karaikudi", label: "Karaikudi" },
+        { value: "Melaisivapuri", label: "Melaisivapuri" },
+      ],
+    },
     { label: "Manual Book Sr.no", name: "Manual Book Sr.no", required: true },
     { label: "Remark", name: "Remark", required: true },
   ];
   const fieldsForForm2 = [
-    
+    { label: "Yelam Poral/Product", name: "Product", required: true },
+    { label: "Value", name: "value", required: true },
+    { label: "Pulli ID (Primary Key)", name: "pulliID", required: true },
+
     { label: "Family Name", name: "familyName", required: true },
     { label: "Name", name: "name", required: true },
     { label: "Spouse Name", name: "spouseName", required: false },
+
     { label: "Address Line 1", name: "addressLine1", required: true },
     { label: "City", name: "city", required: true },
     { label: "Mobile 1", name: "mobile1", required: true, type: "tel" },
+    { label: "WhatsApp No 1", name: "whatsapp1", required: false, type: "tel" },
+
+    
+
+    {
+      label: "Native",
+      name: "Native",
+      required: true,
+      type: "dropdown",
+      options: [
+        { value: "valayapatti", label: "valayapatti" },
+        { value: "Kallal", label: "Kallal" },
+        { value: "Kandanur", label: "Kandanur" },
+        { value: "Karaikudi", label: "Karaikudi" },
+        { value: "Melaisivapuri", label: "Melaisivapuri" },
+      ],
+    },
+
+    { label: "Manual Book Sr.no", name: "Manual Book Sr.no", required: true },
+    { label: "Remark", name: "Remark", required: true },
+
+    { label: "Guest Name", name: "guestname", required: true },
+    { label: "Guest WhatsApp Number", name: "GuestWhatsappNumber", required: true, type: "tel" },
+    {
+      label: "Guest Native",
+      name: "GuestNative",
+      required: true,
+      type: "dropdown",
+      options: [
+        { value: "valayapatti", label: "valayapatti" },
+        { value: "Kallal", label: "Kallal" },
+        { value: "Kandanur", label: "Kandanur" },
+        { value: "Karaikudi", label: "Karaikudi" },
+        { value: "Melaisivapuri", label: "Melaisivapuri" },
+      ],
+    },
+    { label: "Reference / Relationship ", name: "Reference", required: false },
+
   ];
   
 

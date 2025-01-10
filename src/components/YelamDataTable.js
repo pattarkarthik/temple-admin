@@ -57,9 +57,15 @@ const fields = [
       { value: "Nerkuppai", label: "Nerkuppai" },
     ],
   },
-
 ];
 
+const updatedFields = [
+  { label: "Yelam Id", name: "yelamid", required: true },
+  { label: "Name", name: "name", required: true },
+  { label: "Yelam Porul", name: "YelamPorul", required: true },
+  { label: "Receipt No", name: "ReceiptNo", required: true },
+  { label: "Amount", name: "Amount", required: true },
+];
 function DataTable({ title, columns, data }) {
   const [searchTerm, setSearchTerm] = useState("");
   const [open, setOpen] = React.useState(false);
@@ -70,6 +76,11 @@ function DataTable({ title, columns, data }) {
     setSearchTerm(e.target.value);
   };
 
+  const handlePaymentStatusClick = (row) => {
+    setSelectedRow(row);
+    setOpen(true);
+  };
+
   const filteredRows = data.filter((row) => {
     return columns.some((column) =>
       String(row[column.dataKey])
@@ -77,10 +88,11 @@ function DataTable({ title, columns, data }) {
         .includes(searchTerm.toLowerCase())
     );
   });
-  const handleEditClick = (row) => {
-    setSelectedRow(row);
-    setOpen(true);
-  };
+
+  // const handleEditClick = (row) => {
+  //   setSelectedRow(row);
+  //   setOpen(true);
+  // };
 
   const fixedHeaderContent = () => (
     <TableRow>
@@ -105,12 +117,18 @@ function DataTable({ title, columns, data }) {
   const rowContent = (_index, row) => (
     <React.Fragment>
       {columns.map((column) => {
-        if (column.label === "Edit") {
+        if (column.label === "Payment Status") {
           return (
-            <TableCell key={column.dataKey}>
-              <IconButton onClick={() => handleEditClick(row)}>
-                <EditIcon />
-              </IconButton>
+            <TableCell
+              key={column.dataKey}
+              onClick={() => handlePaymentStatusClick(row)}
+              sx={{
+                cursor: "pointer",
+                color: "blue",
+                "&:hover": { textDecoration: "underline" },
+              }}
+            >
+              {row[column.dataKey]}
             </TableCell>
           );
         }
@@ -128,13 +146,13 @@ function DataTable({ title, columns, data }) {
 
   return (
     <Paper
-  style={{
-    height: "1000px", // Full height of the container
-    width: "100%",
-    display: "Inline-Block",
-    flexDirection: "column",
-  }}
->
+      style={{
+        height: "1000px", // Full height of the container
+        width: "100%",
+        display: "Inline-Block",
+        flexDirection: "column",
+      }}
+    >
       <StyledTopSection>
         <Typography variant="h6">{title}</Typography>
         <TextField
@@ -146,63 +164,73 @@ function DataTable({ title, columns, data }) {
           sx={{ width: "250px" }}
         />
       </StyledTopSection>
-
+      <TextField
+        label="Search"
+        variant="outlined"
+        fullWidth
+        sx={{
+          marginBottom: 2,
+          "& .MuiOutlinedInput-root": {
+            borderRadius: "8px",
+            "&:hover fieldset": {
+              borderColor: "rgba(38, 198, 218)",
+            },
+          },
+        }}
+        onChange={(e) => setSearchTerm(e.target.value)}
+      />
 
       <TableVirtuoso
-  data={filteredRows}
-  components={{
-    Scroller: React.forwardRef((props, ref) => (
-      <div
-        {...props}
-        ref={ref}
-        style={{
-          overflowY: "auto",
-          overflowX: "auto", // Ensure both horizontal and vertical scrolling
-          height: "calc(100% - 20px)", // Leave space for the horizontal scrollbar
-          position: "relative",
+        data={filteredRows}
+        components={{
+          Scroller: React.forwardRef((props, ref) => (
+            <div
+              {...props}
+              ref={ref}
+              style={{
+                overflowY: "auto",
+                overflowX: "auto", // Ensure both horizontal and vertical scrolling
+                height: "calc(100% - 20px)", // Leave space for the horizontal scrollbar
+                position: "relative",
+              }}
+            >
+              <div
+                style={{
+                  minWidth: "1200px",
+                }}
+              >
+                {props.children}
+              </div>
+            </div>
+          )),
+          Table: (props) => (
+            <Table
+              {...props}
+              sx={{
+                borderCollapse: "separate",
+                tableLayout: "auto", // Let the table adjust column widths automatically
+              }}
+            />
+          ),
+          TableHead: React.forwardRef((props, ref) => (
+            <TableHead {...props} ref={ref} />
+          )),
+          TableRow,
+          TableBody: React.forwardRef((props, ref) => (
+            <TableBody {...props} ref={ref} />
+          )),
         }}
-      >
-        {/* Wrapper to enforce table width for horizontal scrolling */}
-        <div
-          style={{
-            minWidth: "1200px", // Adjust this width to match your table's total column width
-          }}
-        >
-          {props.children}
-        </div>
-      </div>
-    )),
-    Table: (props) => (
-      <Table
-        {...props}
-        sx={{
-            borderCollapse: "separate",
-            tableLayout: "auto", // Let the table adjust column widths automatically
-          }}
+        fixedHeaderContent={fixedHeaderContent}
+        itemContent={rowContent}
       />
-    ),
-    TableHead: React.forwardRef((props, ref) => (
-      <TableHead {...props} ref={ref} />
-    )),
-    TableRow,
-    TableBody: React.forwardRef((props, ref) => (
-      <TableBody {...props} ref={ref} />
-    )),
-  }}
-  fixedHeaderContent={fixedHeaderContent}
-  itemContent={rowContent}
-/>
-
-
-
 
       <FormModal
         open={open}
         handleClose={handleClose}
         rowData={selectedRow}
-        fields={fields}
+        fields={updatedFields}
+        purpose="YelamDataTable" // to not render upload avatar component
       />
-      
     </Paper>
   );
 }
