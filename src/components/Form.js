@@ -73,8 +73,8 @@ function Form({ fields = [], onSubmit, title, initialValues = {}, purpose }) {
           <CardContent>
             <Grid container spacing={3} alignItems="flex-start">
               {/* Conditionally render UploadAvatar */}
-              {(purpose === "NewMember.js" && purpose !== "YelamDataTable" &&
-                purpose === "AllMembers.js") && (
+              {(purpose === "NewMember.js" || purpose === "AllMembers.js") && purpose !== "YelamDataTable.js"
+ && (
                 <Grid
                   item
                   xs={12}

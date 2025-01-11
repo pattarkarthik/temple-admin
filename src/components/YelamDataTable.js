@@ -225,11 +225,12 @@ function DataTable({ title, columns, data }) {
       />
 
       <FormModal
+        purpose="YelamDataTable.js"
         open={open}
         handleClose={handleClose}
         rowData={selectedRow}
         fields={updatedFields}
-        purpose="YelamDataTable" // to not render upload avatar component
+         // to not render upload avatar component
       />
     </Paper>
   );
