@@ -68,20 +68,87 @@ function ProductReceivedForm() {
 
   // Form fields for different forms
   const fieldsForForm1 = [
-    { label: "Pulli ID (Primary Key)", name: "pulliID", required: true },
-    { label: "Native", name: "native", required: true },
-    { label: "Karai", name: "karai", required: true },
-    { label: "WhatsApp No 1", name: "whatsapp1", required: false, type: "tel" },
-    { label: "Email", name: "email", required: true, type: "email" },
+    { label: "Yelam Porul", name: "YelamPorul", required: true },
+    { label: "Received Value", name: "Receivedvalue", required: true },
+    { label: "Pulli ID", name: "pulliID", required: true },
+    { label: "Name", name: "name", required: true },
+    { label: "WhatsApp No 1", name: "whatsapp1", required: true, type: "tel" },
+
+    {
+      label: "Native",
+      name: "Native",
+      required: true,
+      type: "dropdown", // Specify that this is a dropdown field
+      options: [
+        { value: "valayapatti", label: "valayapatti" },
+        { value: "Kallal", label: "Kallal" },
+        { value: "Kandanur", label: "Kandanur" },
+        { value: "Karaikudi", label: "Karaikudi" },
+        { value: "Melaisivapuri", label: "Melaisivapuri" },
+        { value: "Ponnamaravathi", label: "Ponnamaravathi" },
+        { value: "Venthampatti", label: "Venthampatti" },
+        { value: "Mahivalambatti", label: "Mahivalambatti" },
+        { value: "A.thekkur", label: "A.thekkur" },
+        { value: "Rangiem", label: "Rangiem" },
+        { value: "Nerkuppai", label: "Nerkuppai" },
+      ],
+    },
+    { label: "Product Receiving Number", name: "karai", required: true },
+    { label: "Remark", name: "remark", required: false, },
+
   ];
   const fieldsForForm2 = [
     
-    { label: "Family Name", name: "familyName", required: true },
+    { label: "Yelam Porul", name: "YelamPorul", required: true },
+    { label: "Received Value", name: "Receivedvalue", required: true },
+    { label: "Pulli ID", name: "pulliID", required: true },
     { label: "Name", name: "name", required: true },
-    { label: "Spouse Name", name: "spouseName", required: false },
-    { label: "Address Line 1", name: "addressLine1", required: true },
-    { label: "City", name: "city", required: true },
-    { label: "Mobile 1", name: "mobile1", required: true, type: "tel" },
+    { label: "WhatsApp No 1", name: "whatsapp1", required: true, type: "tel" },
+
+    {
+      label: "Native",
+      name: "Native",
+      required: true,
+      type: "dropdown", // Specify that this is a dropdown field
+      options: [
+        { value: "valayapatti", label: "valayapatti" },
+        { value: "Kallal", label: "Kallal" },
+        { value: "Kandanur", label: "Kandanur" },
+        { value: "Karaikudi", label: "Karaikudi" },
+        { value: "Melaisivapuri", label: "Melaisivapuri" },
+        { value: "Ponnamaravathi", label: "Ponnamaravathi" },
+        { value: "Venthampatti", label: "Venthampatti" },
+        { value: "Mahivalambatti", label: "Mahivalambatti" },
+        { value: "A.thekkur", label: "A.thekkur" },
+        { value: "Rangiem", label: "Rangiem" },
+        { value: "Nerkuppai", label: "Nerkuppai" },
+      ],
+    },
+    { label: "Product Receiving Number", name: "karai", required: true },
+    { label: "Remark", name: "remark", required: false, },
+    { label: "Name(Guest)", name: "nameguest", required: true, },
+    { label: "Whatsup Number(Guest)", name: "WhatsupNumberGuest", required: true, },
+    {
+      label: "Native of Guest",
+      name: "NativeGuest",
+      required: true,
+      type: "dropdown", // Specify that this is a dropdown field
+      options: [
+        { value: "valayapatti", label: "valayapatti" },
+        { value: "Kallal", label: "Kallal" },
+        { value: "Kandanur", label: "Kandanur" },
+        { value: "Karaikudi", label: "Karaikudi" },
+        { value: "Melaisivapuri", label: "Melaisivapuri" },
+        { value: "Ponnamaravathi", label: "Ponnamaravathi" },
+        { value: "Venthampatti", label: "Venthampatti" },
+        { value: "Mahivalambatti", label: "Mahivalambatti" },
+        { value: "A.thekkur", label: "A.thekkur" },
+        { value: "Rangiem", label: "Rangiem" },
+        { value: "Nerkuppai", label: "Nerkuppai" },
+      ],
+    },
+    { label: "Reference or Relationship", name: "Reference", required: true, },
+
   ];
   
 
@@ -114,7 +181,7 @@ function ProductReceivedForm() {
           <Form
             fields={getFields()}
             onSubmit={handleFormSubmit}
-            title={`ProductReceivedForm - ${selectedForm === "form1" ? "Inhouse(Pulli)" : "External(Guest)"}`}
+            title={`Product Received Form - ${selectedForm === "form1" ? "Inhouse(Pulli)" : "External(Guest)"}`}
           />
         )}
       </div>

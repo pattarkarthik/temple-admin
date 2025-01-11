@@ -16,7 +16,7 @@ function NewMember() {
 
     // Address & City
 
-    { label: "Address Line 1", name: "addressLine1", required: true },
+    { label: "Address Line 1", name: "addressLine1", required: true,type:"text area" },
     { label: "Address Line 2", name: "addressLine2", required: true },
     { label: "City", name: "city", required: true },
     { label: "State", name: "state", required: true },

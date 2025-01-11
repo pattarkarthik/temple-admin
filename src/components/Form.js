@@ -65,100 +65,103 @@ function Form({ fields = [], onSubmit, title, initialValues = {}, purpose }) {
   };
 
   return (
-    <Grid container justifyContent="center" spacing={2}>
-      <Grid item xs={12} md={10}>
-        <StyledCard className={classes.padding}>
-          <StyledCardHeader title={title} />
-          <form onSubmit={handleSubmit}>
-            <CardContent>
-              <Grid container spacing={3} alignItems="flex-start">
-                {/* Conditionally render UploadAvatar */}
-                {(purpose === "NewMember.js" && purpose !== "YelamDataTable" &&
-                  purpose === "AllMembers.js") && (
+    <Grid container justifyContent="center" spacing={2} >
+    <Grid item xs={12} md={10}>
+      <StyledCard className={classes.padding}>
+        <StyledCardHeader title={title} />
+        <form onSubmit={handleSubmit}>
+          <CardContent>
+            <Grid container spacing={3} alignItems="flex-start">
+              {/* Conditionally render UploadAvatar */}
+              {(purpose === "NewMember.js" && purpose !== "YelamDataTable" &&
+                purpose === "AllMembers.js") && (
+                <Grid
+                  item
+                  xs={12}
+                  sm={3}
+                  md={3}
+                  sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    justifyContent: "flex-start",
+                  }}
+                >
+                  <UploadAvatar avatar={avatar} setAvatar={setAvatar} />
+                </Grid>
+              )}
+
+              {/* Form fields */}
+              <Grid container item xs={12} sm={15} md={15} spacing={1}>
+                {fields.map((field, index) => (
                   <Grid
                     item
                     xs={12}
-                    sm={3}
-                    md={3}
+                    sm={6}
+                    key={index}
                     sx={{
-                      display: "flex",
-                      flexDirection: "column",
-                      alignItems: "center",
-                      justifyContent: "flex-start",
+                      "&:last-child": {
+                        gridColumn:
+                          fields.length % 2 === 0 ? "span 1" : "span 2", // Adjust the last field to span full width if odd
+                      },
                     }}
                   >
-                    <UploadAvatar avatar={avatar} setAvatar={setAvatar} />
-                  </Grid>
-                )}
-
-                {/* Form fields */}
-                <Grid container item xs={12} sm={15} md={15} spacing={1}>
-                  {fields.map((field, index) => (
-                    <Grid
-                      item
-                      xs={12}
-                      sm={6}
-                      key={index}
-                      sx={{
-                        "&:last-child": {
-                          gridColumn:
-                            fields.length % 2 === 0 ? "span 1" : "span 2", // Adjust the last field to span full width if odd
-                        },
-                      }}
-                    >
-                      {field.type === "dropdown" ? (
-                        <FormControl fullWidth variant="outlined">
-                          <InputLabel>{field.label}</InputLabel>
-                          <Select
-                            value={formValues[field.name] || ""}
-                            onChange={handleDropdownChange(field.name)}
-                            label={field.label}
-                          >
-                            {field.options.map((option, idx) => (
-                              <MenuItem
-                                key={idx}
-                                value={option.value}
-                                sx={{
-                                  "&:hover": {
-                                    backgroundColor: "rgba(21, 168, 236, 0.2)", 
-                                    border: "1px solid #005f73", 
-                                  },
-                                }}
-                              >
-                                {option.label}
-                              </MenuItem>
-                            ))}
-                          </Select>
-                        </FormControl>
-                      ) : (
-                        <TextField
-                          required={field.required}
-                          label={field.label}
-                          variant="outlined"
-                          fullWidth
-                          name={field.name}
-                          type={field.type || "text"}
+                    {field.type === "dropdown" ? (
+                      <FormControl fullWidth variant="outlined">
+                        <InputLabel>{field.label}</InputLabel>
+                        <Select
                           value={formValues[field.name] || ""}
-                          onChange={handleChange}
-                        />
-                      )}
-                    </Grid>
-                  ))}
-                </Grid>
+                          onChange={handleDropdownChange(field.name)}
+                          label={field.label}
+                        >
+                          {field.options.map((option, idx) => (
+                            <MenuItem
+                              key={idx}
+                              value={option.value}
+                              sx={{
+                                "&:hover": {
+                                  backgroundColor: "rgba(21, 168, 236, 0.2)", 
+                                  border: "1px solid #005f73", 
+                                },
+                              }}
+                            >
+                              {option.label}
+                            </MenuItem>
+                          ))}
+                        </Select>
+                      </FormControl>
+                    ) : (
+                      <TextField
+                        required={field.required}
+                        label={field.label}
+                        variant="outlined"
+                        fullWidth
+                        name={field.name}
+                        type={field.type || "text"}
+                        value={formValues[field.name] || ""}
+                        onChange={handleChange}
+                        multiline={field.name === "address"} // Enable multiline for address field
+                        rows={field.name === "address" ? 4 : 1} // Show more rows for address
+                      />
+                    )}
+                  </Grid>
+                ))}
               </Grid>
-            </CardContent>
-            <StyledCardActions>
-              <Button variant="contained" color="secondary">
-                Cancel
-              </Button>
-              <Button variant="contained" color="primary" type="submit">
-                Submit
-              </Button>
-            </StyledCardActions>
-          </form>
-        </StyledCard>
-      </Grid>
+            </Grid>
+          </CardContent>
+          <StyledCardActions>
+            <Button variant="contained" color="secondary">
+              Cancel
+            </Button>
+            <Button variant="contained" color="primary" type="submit">
+              Submit
+            </Button>
+          </StyledCardActions>
+        </form>
+      </StyledCard>
     </Grid>
+  </Grid>
+
   );
 }
 

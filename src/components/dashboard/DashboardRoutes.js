@@ -7,7 +7,7 @@ import AllMembers from "../../pages/AllMembers";
 import YelamEntry from "../../pages/YelamEntry";
 import YelamList from "../../pages/YelamList";
 import YelamProduct from "../../pages/YelamProduct";
-import YelamProductList from "../../pages/YelamProductList";
+// import YelamProductList from "../../pages/YelamProductList";
 
 const DashboardOverview = () => (
   <Box sx={{ padding: 3 }}>
@@ -75,10 +75,10 @@ const DashboardRoutes = ({ isLoggedIn }) => {
           path="/yelam-prod"
           element={<ProtectedRoute component={YelamProduct} />}
         />
-        <Route
+        {/* <Route
           path="/yelam-prod-list"
           element={<ProtectedRoute component={YelamProductList} />}
-        />
+        /> */}
         <Route
           path="/Product-Received-Form"
           element={<ProtectedRoute component={ProductReceivedForm} />}
