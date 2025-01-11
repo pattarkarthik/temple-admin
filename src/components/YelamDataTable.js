@@ -27,48 +27,15 @@ const StyledTopSection = styled("div")(({ theme }) => ({
 }));
 
 const fields = [
-  { label: "Family Name", name: "familyName", required: true },
-  { label: "Name", name: "name", required: true },
-  { label: "Spouse Name", name: "spouseName", required: false },
-  // {
-  //   label: "Photo 1",
-  //   name: "photo1",
-  //   required: false,
-  //   type: "file",
-  // },
-  // {
-  //   label: "Photo 2",
-  //   name: "photo2",
-  //   required: false,
-  //   type: "file",
-  // },
-
-  // Communication Address fields
-  { label: "Address Line 1", name: "addressLine1", required: true },
-  { label: "Address Line 2", name: "addressLine2", required: false },
-  { label: "City", name: "city", required: true },
-  { label: "State", name: "state", required: true },
-  { label: "Pin Code", name: "pinCode", required: true },
-
-  // Mobile Numbers
-  { label: "Mobile 1", name: "mobile1", required: true, type: "tel" },
-  {
-    label: "Mobile 2 (Spouse)",
-    name: "mobile2Spouse",
-    required: false,
-    type: "tel",
-  },
-
-  // WhatsApp Numbers
-  { label: "WhatsApp No 1", name: "whatsapp1", required: false, type: "tel" },
-  { label: "WhatsApp No 2", name: "whatsapp2", required: false, type: "tel" },
-
-  // Email IDs
-  { label: "Email ID 1", name: "email1", required: true, type: "email" },
-  { label: "Email ID 2", name: "email2", required: false, type: "email" },
-
-  // Primary Key (Pulli ID)
+  { label: "Yelam Poral/Product", name: "YelamPoral", required: true },
+  { label: "Value", name: "value", required: true },
   { label: "Pulli ID (Primary Key)", name: "pulliID", required: true },
+  { label: "Name", name: "name", required: true },
+  { label: "Native", name: "Native", required: true },
+  { label: "WhatsApp No 1", name: "whatsapp1", required: false, type: "tel" },
+  { label: "Manual Book Sr no", name: "BookNo", required: true },
+  { label: "State", name: "state", required: true },
+  { label: "Remark", name: "Remark", required: true },
 
   // Native and Karai
   {
@@ -90,78 +57,15 @@ const fields = [
       { value: "Nerkuppai", label: "Nerkuppai" },
     ],
   },
-  {
-    label: "Karai",
-    name: "karai",
-    required: true,
-    type: "dropdown", // Specify that this is a dropdown field
-    options: [
-      { value: "Panaivaikum Karai", label: "Panaivaikum Karai" },
-      { value: "Samiyadi karai", label: "Samiyadi karai" },
-      { value: "Poosari karai", label: "Poosari karai" },
-    ],
-  },
-
-  // Custom Columns
-  {
-    label: "Token Number",
-    name: "TokenNumber",
-    required: false,
-    type: "number",
-  },
-  {
-    label: "Token Year",
-    name: "TokenYear",
-    required: false,
-    type: "dropdown", // Specify that this is a dropdown field
-    options:[
-      { value: "2005", label: "2005" },
-      { value: "2006", label: "2006" },
-      { value: "2007", label: "2007" },
-      { value: "2008", label: "2008" },
-      { value: "2009", label: "2009" },
-      { value: "2010", label: "2010" },
-      { value: "2011", label: "2011" },
-      { value: "2012", label: "2012" },
-      { value: "2013", label: "2013" },
-      { value: "2014", label: "2014" },
-      { value: "2015", label: "2015" },
-      { value: "2016", label: "2016" },
-      { value: "2017", label: "2017" },
-      { value: "2018", label: "2018" },
-      { value: "2019", label: "2019" },
-      { value: "2020", label: "2020" },
-      { value: "2021", label: "2021" },
-      { value: "2022", label: "2022" },
-      { value: "2023", label: "2023" },
-      { value: "2024", label: "2024" },
-      { value: "2025", label: "2025" },
-      { value: "2026", label: "2026" },
-      { value: "2027", label: "2027" },
-      { value: "2028", label: "2028" },
-      { value: "2029", label: "2029" },
-      { value: "2030", label: "2030" },
-      { value: "2031", label: "2031" },
-      { value: "2032", label: "2032" },
-      { value: "2033", label: "2033" },
-      { value: "2034", label: "2034" },
-      { value: "2035", label: "2035" },
-      { value: "2036", label: "2036" },
-      { value: "2037", label: "2037" },
-      { value: "2038", label: "2038" },
-      { value: "2039", label: "2039" },
-      { value: "2040", label: "2040" },
-      { value: "2041", label: "2041" },
-      { value: "2042", label: "2042" },
-      { value: "2043", label: "2043" },
-      { value: "2044", label: "2044" },
-      { value: "2045", label: "2045" }
-    ],
-  },
-  
-  { label: "Custom Column 1", name: "customColumn1", required: false },
 ];
 
+const updatedFields = [
+  { label: "Yelam Id", name: "yelamid", required: true },
+  { label: "Name", name: "name", required: true },
+  { label: "Yelam Porul", name: "YelamPorul", required: true },
+  { label: "Receipt No", name: "ReceiptNo", required: true },
+  { label: "Amount", name: "Amount", required: true },
+];
 function DataTable({ title, columns, data }) {
   const [searchTerm, setSearchTerm] = useState("");
   const [open, setOpen] = React.useState(false);
@@ -172,6 +76,11 @@ function DataTable({ title, columns, data }) {
     setSearchTerm(e.target.value);
   };
 
+  const handlePaymentStatusClick = (row) => {
+    setSelectedRow(row);
+    setOpen(true);
+  };
+
   const filteredRows = data.filter((row) => {
     return columns.some((column) =>
       String(row[column.dataKey])
@@ -179,10 +88,11 @@ function DataTable({ title, columns, data }) {
         .includes(searchTerm.toLowerCase())
     );
   });
-  const handleEditClick = (row) => {
-    setSelectedRow(row);
-    setOpen(true);
-  };
+
+  // const handleEditClick = (row) => {
+  //   setSelectedRow(row);
+  //   setOpen(true);
+  // };
 
   const fixedHeaderContent = () => (
     <TableRow>
@@ -207,12 +117,18 @@ function DataTable({ title, columns, data }) {
   const rowContent = (_index, row) => (
     <React.Fragment>
       {columns.map((column) => {
-        if (column.label === "Edit") {
+        if (column.label === "Payment Status") {
           return (
-            <TableCell key={column.dataKey}>
-              <IconButton onClick={() => handleEditClick(row)}>
-                <EditIcon />
-              </IconButton>
+            <TableCell
+              key={column.dataKey}
+              onClick={() => handlePaymentStatusClick(row)}
+              sx={{
+                cursor: "pointer",
+                color: "blue",
+                "&:hover": { textDecoration: "underline" },
+              }}
+            >
+              {row[column.dataKey]}
             </TableCell>
           );
         }
@@ -229,7 +145,14 @@ function DataTable({ title, columns, data }) {
   );
 
   return (
-    <Paper style={{ height: "800px", width: "100%" }}>
+    <Paper
+      style={{
+        height: "1000px", // Full height of the container
+        width: "100%",
+        display: "Inline-Block",
+        flexDirection: "column",
+      }}
+    >
       <StyledTopSection>
         <Typography variant="h6">{title}</Typography>
         <TextField
@@ -241,19 +164,51 @@ function DataTable({ title, columns, data }) {
           sx={{ width: "250px" }}
         />
       </StyledTopSection>
+      <TextField
+        label="Search"
+        variant="outlined"
+        fullWidth
+        sx={{
+          marginBottom: 2,
+          "& .MuiOutlinedInput-root": {
+            borderRadius: "8px",
+            "&:hover fieldset": {
+              borderColor: "rgba(38, 198, 218)",
+            },
+          },
+        }}
+        onChange={(e) => setSearchTerm(e.target.value)}
+      />
 
       <TableVirtuoso
         data={filteredRows}
         components={{
           Scroller: React.forwardRef((props, ref) => (
-            <TableContainer component={Paper} {...props} ref={ref} />
+            <div
+              {...props}
+              ref={ref}
+              style={{
+                overflowY: "auto",
+                overflowX: "auto", // Ensure both horizontal and vertical scrolling
+                height: "calc(100% - 20px)", // Leave space for the horizontal scrollbar
+                position: "relative",
+              }}
+            >
+              <div
+                style={{
+                  minWidth: "1200px",
+                }}
+              >
+                {props.children}
+              </div>
+            </div>
           )),
           Table: (props) => (
             <Table
               {...props}
               sx={{
                 borderCollapse: "separate",
-                tableLayout: "auto",
+                tableLayout: "auto", // Let the table adjust column widths automatically
               }}
             />
           ),
@@ -273,9 +228,9 @@ function DataTable({ title, columns, data }) {
         open={open}
         handleClose={handleClose}
         rowData={selectedRow}
-        fields={fields} // edit for customized fields
-      /> 
-      
+        fields={updatedFields}
+        purpose="YelamDataTable" // to not render upload avatar component
+      />
     </Paper>
   );
 }

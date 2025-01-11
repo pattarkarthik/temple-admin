@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import RadioButton from "../components/RadioButton";
 import Form from "../components/Form";
 
-function YelamEntry() {
+function ProductReceivedForm() {
  
 
   // const fields = [
@@ -68,76 +68,86 @@ function YelamEntry() {
 
   // Form fields for different forms
   const fieldsForForm1 = [
-    { label: "Yelam Poral/Product", name: "Product", required: true },
-    { label: "Value", name: "value", required: true },
-    { label: "Pulli ID (Primary Key)", name: "pulliID", required: true },
+    { label: "Yelam Porul", name: "YelamPorul", required: true },
+    { label: "Received Value", name: "Receivedvalue", required: true },
+    { label: "Pulli ID", name: "pulliID", required: true },
     { label: "Name", name: "name", required: true },
-    { label: "WhatsApp No 1", name: "whatsapp1", required: false, type: "tel" },
+    { label: "WhatsApp No 1", name: "whatsapp1", required: true, type: "tel" },
+
     {
       label: "Native",
       name: "Native",
       required: true,
-      type: "dropdown",
+      type: "dropdown", // Specify that this is a dropdown field
       options: [
         { value: "valayapatti", label: "valayapatti" },
         { value: "Kallal", label: "Kallal" },
         { value: "Kandanur", label: "Kandanur" },
         { value: "Karaikudi", label: "Karaikudi" },
         { value: "Melaisivapuri", label: "Melaisivapuri" },
+        { value: "Ponnamaravathi", label: "Ponnamaravathi" },
+        { value: "Venthampatti", label: "Venthampatti" },
+        { value: "Mahivalambatti", label: "Mahivalambatti" },
+        { value: "A.thekkur", label: "A.thekkur" },
+        { value: "Rangiem", label: "Rangiem" },
+        { value: "Nerkuppai", label: "Nerkuppai" },
       ],
     },
-    { label: "Manual Book Sr.no", name: "Manual Book Sr.no", required: true },
-    { label: "Remark", name: "Remark", required: true },
+    { label: "Product Receiving Number", name: "karai", required: true },
+    { label: "Remark", name: "remark", required: false, },
+
   ];
   const fieldsForForm2 = [
-    { label: "Yelam Poral/Product", name: "Product", required: true },
-    { label: "Value", name: "value", required: true },
-    { label: "Pulli ID (Primary Key)", name: "pulliID", required: true },
-
-    { label: "Family Name", name: "familyName", required: true },
-    { label: "Name", name: "name", required: true },
-    { label: "Spouse Name", name: "spouseName", required: false },
-
-    { label: "Address Line 1", name: "addressLine1", required: true },
-    { label: "City", name: "city", required: true },
-    { label: "Mobile 1", name: "mobile1", required: true, type: "tel" },
-    { label: "WhatsApp No 1", name: "whatsapp1", required: false, type: "tel" },
-
     
+    { label: "Yelam Porul", name: "YelamPorul", required: true },
+    { label: "Received Value", name: "Receivedvalue", required: true },
+    { label: "Pulli ID", name: "pulliID", required: true },
+    { label: "Name", name: "name", required: true },
+    { label: "WhatsApp No 1", name: "whatsapp1", required: true, type: "tel" },
 
     {
       label: "Native",
       name: "Native",
       required: true,
-      type: "dropdown",
+      type: "dropdown", // Specify that this is a dropdown field
       options: [
         { value: "valayapatti", label: "valayapatti" },
         { value: "Kallal", label: "Kallal" },
         { value: "Kandanur", label: "Kandanur" },
         { value: "Karaikudi", label: "Karaikudi" },
         { value: "Melaisivapuri", label: "Melaisivapuri" },
+        { value: "Ponnamaravathi", label: "Ponnamaravathi" },
+        { value: "Venthampatti", label: "Venthampatti" },
+        { value: "Mahivalambatti", label: "Mahivalambatti" },
+        { value: "A.thekkur", label: "A.thekkur" },
+        { value: "Rangiem", label: "Rangiem" },
+        { value: "Nerkuppai", label: "Nerkuppai" },
       ],
     },
-
-    { label: "Manual Book Sr.no", name: "Manual Book Sr.no", required: true },
-    { label: "Remark", name: "Remark", required: true },
-
-    { label: "Guest Name", name: "guestname", required: true },
-    { label: "Guest WhatsApp Number", name: "GuestWhatsappNumber", required: true, type: "tel" },
+    { label: "Product Receiving Number", name: "karai", required: true },
+    { label: "Remark", name: "remark", required: false, },
+    { label: "Name(Guest)", name: "nameguest", required: true, },
+    { label: "Whatsup Number(Guest)", name: "WhatsupNumberGuest", required: true, },
     {
-      label: "Guest Native",
-      name: "GuestNative",
+      label: "Native of Guest",
+      name: "NativeGuest",
       required: true,
-      type: "dropdown",
+      type: "dropdown", // Specify that this is a dropdown field
       options: [
         { value: "valayapatti", label: "valayapatti" },
         { value: "Kallal", label: "Kallal" },
         { value: "Kandanur", label: "Kandanur" },
         { value: "Karaikudi", label: "Karaikudi" },
         { value: "Melaisivapuri", label: "Melaisivapuri" },
+        { value: "Ponnamaravathi", label: "Ponnamaravathi" },
+        { value: "Venthampatti", label: "Venthampatti" },
+        { value: "Mahivalambatti", label: "Mahivalambatti" },
+        { value: "A.thekkur", label: "A.thekkur" },
+        { value: "Rangiem", label: "Rangiem" },
+        { value: "Nerkuppai", label: "Nerkuppai" },
       ],
     },
-    { label: "Reference / Relationship ", name: "Reference", required: false },
+    { label: "Reference or Relationship", name: "Reference", required: true, },
 
   ];
   
@@ -171,7 +181,7 @@ function YelamEntry() {
           <Form
             fields={getFields()}
             onSubmit={handleFormSubmit}
-            title={`Yelam Entry - ${selectedForm === "form1" ? "Inhouse(Pulli)" : "External(Guest)"}`}
+            title={`Product Received Form - ${selectedForm === "form1" ? "Inhouse(Pulli)" : "External(Guest)"}`}
           />
         )}
       </div>
@@ -180,4 +190,4 @@ function YelamEntry() {
 }
 
 
-export default YelamEntry;
+export default ProductReceivedForm;
