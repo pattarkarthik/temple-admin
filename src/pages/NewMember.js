@@ -7,16 +7,18 @@ function NewMember() {
   const [avatar, setAvatar] = useState(null);
 
   const fields = [
-
     // Pulli Id and Names
     { label: "Pulli ID (Primary Key)", name: "pulliID", required: true },
     { label: "Family Name", name: "familyName", required: true },
     { label: "Name", name: "name", required: true },
     { label: "Spouse Name", name: "spouseName", required: false },
 
-    // Address & City
-
-    { label: "Address Line 1", name: "addressLine1", required: true,type:"text area" },
+    {
+      label: "Address Line 1",
+      name: "addressLine1",
+      required: true,
+      type: "text area",
+    },
     { label: "Address Line 2", name: "addressLine2", required: true },
     { label: "City", name: "city", required: true },
     { label: "State", name: "state", required: true },
@@ -24,11 +26,25 @@ function NewMember() {
 
     //Mobile Numbers and Whatsapp Numbers
     { label: "Mobile Number 1", name: "mobile1", required: true, type: "tel" },
-    {label: "Mobile Number 2(Spouse)", name: "mobile2(spouse)", required: true, type: "tel" },
-    {label: "Whatsapp Number 1", name: "Whatsapp1", required: true, type: "tel" },
-    {label: "Whatsapp Number 2", name: "Whatsapp2", required: true, type: "tel" },
+    {
+      label: "Mobile Number 2(Spouse)",
+      name: "mobile2(spouse)",
+      required: true,
+      type: "tel",
+    },
+    {
+      label: "Whatsapp Number 1",
+      name: "Whatsapp1",
+      required: true,
+      type: "tel",
+    },
+    {
+      label: "Whatsapp Number 2",
+      name: "Whatsapp2",
+      required: true,
+      type: "tel",
+    },
     { label: "Email ID 1", name: "email1", required: true, type: "email" },
-
 
     //Native and Karai
     {
@@ -62,29 +78,12 @@ function NewMember() {
   };
 
   return (
-    <div>
-      <Grid container justifyContent="center" spacing={3}>
-        <Grid item xs={12}>
-          <Box
-            sx={{
-              position: "absolute",
-              top: "1rem", // Adjust as needed
-              right: "1rem", // Adjust as needed
-              zIndex: 1, // Ensure it stays on top
-            }}
-          ></Box>
-
-          {/* Form Section */}
-          <Form
-            purpose="NewMember.js"
-            fields={fields}
-            onSubmit={handleFormSubmit}
-            title="Add New Member"
-          />
-        
-        </Grid>
-      </Grid>
-    </div>
+    <Form
+      purpose="NewMember.js"
+      fields={fields}
+      onSubmit={handleFormSubmit}
+      title="Add New Member"
+    />
   );
 }
 

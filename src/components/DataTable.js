@@ -114,7 +114,7 @@ const fields = [
     name: "TokenYear",
     required: false,
     type: "dropdown", // Specify that this is a dropdown field
-    options:[
+    options: [
       { value: "2005", label: "2005" },
       { value: "2006", label: "2006" },
       { value: "2007", label: "2007" },
@@ -155,10 +155,10 @@ const fields = [
       { value: "2042", label: "2042" },
       { value: "2043", label: "2043" },
       { value: "2044", label: "2044" },
-      { value: "2045", label: "2045" }
+      { value: "2045", label: "2045" },
     ],
   },
-  
+
   { label: "Custom Column 1", name: "customColumn1", required: false },
 ];
 
@@ -229,19 +229,15 @@ function DataTable({ title, columns, data }) {
   );
 
   return (
-    <Paper style={{ height: "800px", width: "100%" }}>
-      <StyledTopSection>
-        <Typography variant="h6">{title}</Typography>
-        <TextField
-          label="Search"
-          variant="outlined"
-          size="small"
-          value={searchTerm}
-          onChange={handleSearchChange}
-          sx={{ width: "250px" }}
-        />
-      </StyledTopSection>
-
+    <Paper
+      elevation={3}
+      sx={{
+        padding: "30px",
+        width: "95%",
+        display: "flex",
+        flexDirection: "column",
+      }}
+    >
       <TableVirtuoso
         data={filteredRows}
         components={{
@@ -268,15 +264,27 @@ function DataTable({ title, columns, data }) {
         fixedHeaderContent={fixedHeaderContent}
         itemContent={rowContent}
       />
-
-      <FormModal
-        open={open}
-        handleClose={handleClose}
-        rowData={selectedRow}
-        fields={fields} // edit for customized fields
-      /> 
-      
     </Paper>
+    // <Paper style={{ height: "800px", width: "100%" }}>
+    //   <StyledTopSection>
+    //     <Typography variant="h6">{title}</Typography>
+    //     <TextField
+    //       label="Search"
+    //       variant="outlined"
+    //       size="small"
+    //       value={searchTerm}
+    //       onChange={handleSearchChange}
+    //       sx={{ width: "250px" }}
+    //     />
+    //   </StyledTopSection>
+
+    //   <FormModal
+    //     open={open}
+    //     handleClose={handleClose}
+    //     rowData={selectedRow}
+    //     fields={fields} // edit for customized fields
+    //   />
+    // </Paper>
   );
 }
 

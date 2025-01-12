@@ -10,12 +10,6 @@ import Loader from "./components/loader/Loader";
 const rootElement = document.getElementById("root");
 const root = createRoot(rootElement);
 
-root.render(
-  <Suspense fallback={<Loader />}>
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
-  </Suspense>
-);
+root.render(<App />);
 
 reportWebVitals();
