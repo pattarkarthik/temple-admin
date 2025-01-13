@@ -71,7 +71,6 @@ const AllMembers = () => {
         maxWidth: "75%",
         minHeight: "750px",
         maxHeight: "750px",
-
         marginBottom: "50px",
       }}
     >

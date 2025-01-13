@@ -7,7 +7,6 @@ function NewMember() {
   const [avatar, setAvatar] = useState(null);
 
   const fields = [
-    // Pulli Id and Names
     { label: "Pulli ID (Primary Key)", name: "pulliID", required: true },
     { label: "Family Name", name: "familyName", required: true },
     { label: "Name", name: "name", required: true },
@@ -84,7 +83,6 @@ function NewMember() {
         marginTop: "5%",
         marginLeft: "3%",
         marginRight: "5%",
-
         padding: "10px",
       }}
     >
