@@ -78,12 +78,23 @@ function NewMember() {
   };
 
   return (
-    <Form
-      purpose="NewMember.js"
-      fields={fields}
-      onSubmit={handleFormSubmit}
-      title="Add New Member"
-    />
+    <Paper
+      sx={{
+        display: "flex",
+        marginTop: "5%",
+        marginLeft: "3%",
+        marginRight: "5%",
+
+        padding: "10px",
+      }}
+    >
+      <Form
+        purpose="NewMember.js"
+        fields={fields}
+        onSubmit={handleFormSubmit}
+        title="Add New Member"
+      />
+    </Paper>
   );
 }
 
