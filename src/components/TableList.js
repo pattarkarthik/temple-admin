@@ -13,6 +13,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
+import api from "../api";
 
 const fields = [
   { label: "Family Name", name: "familyName", required: true },
@@ -43,11 +44,14 @@ export default function TableList({ openEdit }) {
   const [rows, setRows] = useState(data);
   const [filteredRows, setFilteredRows] = useState(data);
 
-  const deleteUser = (id) => {
-    if (window.confirm("Are you sure you want to delete this item?")) {
-      const updatedRows = rows.filter((row) => row.id !== id);
-      setRows(updatedRows);
-      setFilteredRows(updatedRows);
+  const deleteUser = async (id) => {
+    try {
+      const res = await api.delete(`/api/members/${id}/`);
+      if (res.status === 204) {
+        alert("Member Deleted successfully");
+      }
+    } catch (error) {
+    } finally {
     }
   };
 
@@ -113,7 +117,7 @@ export default function TableList({ openEdit }) {
                         color: "blue",
                         cursor: "pointer",
                       }}
-                      onClick={() => openEdit(row)}
+                      onClick={() => openEdit(row.id)}
                     />
                     <DeleteIcon
                       style={{

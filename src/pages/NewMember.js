@@ -1,30 +1,28 @@
 import React, { useState } from "react";
 import Form from "../components/Form";
-import { Grid, Box, Paper } from "@mui/material";
-import UploadAvatar from "../components/UploadAvatar";
+import { Grid, Box, Paper, Alert } from "@mui/material";
+import api from "../api";
+import { Navigate } from "react-router-dom";
 
 function NewMember() {
-  const [avatar, setAvatar] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const fields = [
-    { label: "Pulli ID (Primary Key)", name: "pulliID", required: true },
-    { label: "Family Name", name: "familyName", required: true },
+    { label: "Pulli ID (Primary Key)", name: "pulli_id", required: true },
+    { label: "Family Name", name: "family_name", required: true },
     { label: "Name", name: "name", required: true },
-    { label: "Spouse Name", name: "spouseName", required: false },
-
+    { label: "Spouse Name", name: "spouse_name", required: false },
     {
       label: "Address Line 1",
-      name: "addressLine1",
+      name: "address_line_1",
       required: true,
       type: "text area",
     },
     { label: "Address Line 2", name: "addressLine2", required: true },
     { label: "City", name: "city", required: true },
     { label: "State", name: "state", required: true },
-    { label: "Pin Code", name: "pinCode", required: true },
-
-    //Mobile Numbers and Whatsapp Numbers
-    { label: "Mobile Number 1", name: "mobile1", required: true, type: "tel" },
+    { label: "Pin Code", name: "pin_code", required: true },
+    { label: "Mobile Number 1", name: "mobile_1", required: true, type: "tel" },
     {
       label: "Mobile Number 2(Spouse)",
       name: "mobile2(spouse)",
@@ -43,12 +41,10 @@ function NewMember() {
       required: true,
       type: "tel",
     },
-    { label: "Email ID 1", name: "email1", required: true, type: "email" },
-
-    //Native and Karai
+    { label: "Email ID 1", name: "email_id_1", required: true, type: "email" },
     {
       label: "Native",
-      name: "Native",
+      name: "native",
       required: true,
       type: "dropdown",
       options: [
@@ -72,27 +68,36 @@ function NewMember() {
     },
   ];
 
-  const handleFormSubmit = (values) => {
-    console.log("Form submitted:", values);
+  const handleFormSubmit = async (formData) => {
+    try {
+      const res = await api.post("/api/members/", formData);
+      if (res.status === 201) {
+        alert("Member added successfully");
+        Navigate("/new-member");
+      }
+    } catch (error) {
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
-    <Paper
-      sx={{
-        display: "flex",
-        marginTop: "5%",
-        marginLeft: "3%",
-        marginRight: "5%",
-        padding: "10px",
-      }}
-    >
-      <Form
-        purpose="NewMember.js"
-        fields={fields}
-        onSubmit={handleFormSubmit}
-        title="Add New Member"
-      />
-    </Paper>
+    <>
+      <Paper
+        sx={{
+          display: "flex",
+          marginTop: "5%",
+          marginLeft: "3%",
+          marginRight: "5%",
+          padding: "10px",
+        }}
+      >
+        <Form
+          fields={fields}
+          onSubmit={(formData) => handleFormSubmit(formData)}
+        />
+      </Paper>
+    </>
   );
 }
 

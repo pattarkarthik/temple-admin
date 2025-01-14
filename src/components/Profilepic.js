@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Button, Avatar, Box, Typography } from "@mui/material";
 
-export default function Profilepic() {
+export default function Profilepic({ onFileChange }) {
   const [profilePicture, setProfilePicture] = useState(null);
   const [preview, setPreview] = useState(null);
 
@@ -16,12 +16,16 @@ export default function Profilepic() {
         setPreview(reader.result);
       };
       reader.readAsDataURL(file);
+
+      // Pass the file to the parent component
+      if (onFileChange) onFileChange(file);
     }
   };
 
   const handleRemovePicture = () => {
     setProfilePicture(null);
     setPreview(null);
+    if (onFileChange) onFileChange(null); // Notify parent that the file was removed
   };
 
   return (
