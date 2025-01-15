@@ -6,6 +6,7 @@ import {
   Grid,
   InputLabel,
   MenuItem,
+  Paper,
   Select,
   TextField,
 } from "@mui/material";
@@ -53,29 +54,70 @@ function Form({ fields = [], onSubmit, initialValues = {} }) {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <Grid
-        container
-        sx={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "flex-end",
-        }}
-      >
-        <Grid item xs={12} md={4} style={{ textAlign: "center" }}>
-          <Profilepic onFileChange={handleFileChange} />
+    <Paper
+      sx={{
+        padding: "10px",
+      }}
+    >
+      <form onSubmit={handleSubmit}>
+        <Grid
+          container
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "flex-end",
+          }}
+        >
+          <Grid item xs={12} md={4} style={{ textAlign: "center" }}>
+            <Profilepic onFileChange={handleFileChange} />
+          </Grid>
+
+          <Grid item xs={12} md={6}>
+            {fields.slice(0, 4).map((field, index) => (
+              <Grid key={index} item xs={12} style={{ marginBottom: "5px" }}>
+                {field.type === "dropdown" ? (
+                  <FormControl fullWidth variant="outlined">
+                    <InputLabel>{field.label}</InputLabel>
+                    <Select
+                      value={formValues[field.name] || ""}
+                      onChange={handleDropdownChange(field.name)}
+                      name={field.name}
+                      label={field.label}
+                    >
+                      {field.options.map((option, idx) => (
+                        <MenuItem key={idx} value={option.value}>
+                          {option.label}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+                ) : (
+                  <TextField
+                    required={field.required}
+                    label={field.label}
+                    variant="outlined"
+                    fullWidth
+                    name={field.name}
+                    type={field.type || "text"}
+                    value={formValues[field.name] || ""}
+                    onChange={handleChange}
+                  />
+                )}
+              </Grid>
+            ))}
+          </Grid>
         </Grid>
 
-        <Grid item xs={12} md={6}>
-          {fields.slice(0, 4).map((field, index) => (
-            <Grid key={index} item xs={12} style={{ marginBottom: "5px" }}>
+        {/* Remaining Input Fields */}
+        <Grid container spacing={1} style={{ marginTop: "20px" }}>
+          {fields.slice(4).map((field, index) => (
+            <Grid key={index} item xs={12} sm={6}>
               {field.type === "dropdown" ? (
                 <FormControl fullWidth variant="outlined">
                   <InputLabel>{field.label}</InputLabel>
                   <Select
                     value={formValues[field.name] || ""}
                     onChange={handleDropdownChange(field.name)}
-                    name={field.name}
                     label={field.label}
                   >
                     {field.options.map((option, idx) => (
@@ -100,57 +142,22 @@ function Form({ fields = [], onSubmit, initialValues = {} }) {
             </Grid>
           ))}
         </Grid>
-      </Grid>
-
-      {/* Remaining Input Fields */}
-      <Grid container spacing={1} style={{ marginTop: "20px" }}>
-        {fields.slice(4).map((field, index) => (
-          <Grid key={index} item xs={12} sm={6}>
-            {field.type === "dropdown" ? (
-              <FormControl fullWidth variant="outlined">
-                <InputLabel>{field.label}</InputLabel>
-                <Select
-                  value={formValues[field.name] || ""}
-                  onChange={handleDropdownChange(field.name)}
-                  label={field.label}
-                >
-                  {field.options.map((option, idx) => (
-                    <MenuItem key={idx} value={option.value}>
-                      {option.label}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-            ) : (
-              <TextField
-                required={field.required}
-                label={field.label}
-                variant="outlined"
-                fullWidth
-                name={field.name}
-                type={field.type || "text"}
-                value={formValues[field.name] || ""}
-                onChange={handleChange}
-              />
-            )}
-          </Grid>
-        ))}
-      </Grid>
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "space-between",
-          marginTop: "30px",
-        }}
-      >
-        <Button variant="contained" color="secondary">
-          Cancel
-        </Button>
-        <Button variant="contained" color="primary" type="submit">
-          Submit
-        </Button>
-      </Box>
-    </form>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            marginTop: "30px",
+          }}
+        >
+          <Button variant="contained" color="secondary">
+            Cancel
+          </Button>
+          <Button variant="contained" color="primary" type="submit">
+            Submit
+          </Button>
+        </Box>
+      </form>
+    </Paper>
   );
 }
 

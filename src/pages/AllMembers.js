@@ -1,5 +1,12 @@
 import { useState } from "react";
-import { Box, FormControl, InputLabel, MenuItem, Select } from "@mui/material";
+import {
+  Box,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Paper,
+  Select,
+} from "@mui/material";
 import TableList from "../components/TableList.js";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
@@ -21,9 +28,7 @@ const AllMembers = () => {
       const res = await api.get(`/api/members/${id}/`);
       setCurrentRow(res.data); // Set API data to currentRow state
       setOriginalRow(res.data); // Store the original data for comparison
-    } catch (error) {
-      // Handle error
-    }
+    } catch (error) {}
     setOpenEditModal(true);
   };
 
@@ -79,21 +84,16 @@ const AllMembers = () => {
   };
 
   return (
-    <Box sx={{ maxWidth: "75%", minHeight: "750px", maxHeight: "750px" }}>
-      <Box
-        sx={{
-          display: "flex",
-          marginTop: "5%",
-          marginLeft: "3%",
-          maxWidth: "75%",
-          minHeight: "750px",
-          maxHeight: "750px",
-          marginBottom: "50px",
-        }}
-      >
-        <TableList openEdit={openEdit} />
-      </Box>
-
+    <Box
+      sx={{
+        display: "flex",
+        marginTop: "5%",
+        marginLeft: "3%",
+        marginRight: "3%",
+        padding: "10px",
+      }}
+    >
+      <TableList openEdit={openEdit} />
       <Dialog open={openEditModal} onClose={handleCloseModal}>
         <Box sx={{ width: "600px" }}>
           <DialogTitle>Edit Member</DialogTitle>
@@ -142,6 +142,11 @@ const AllMembers = () => {
         </Box>
       </Dialog>
     </Box>
+
+    // <Box sx={{ maxWidth: "75%", minHeight: "750px", maxHeight: "750px" }}>
+    //   <TableList openEdit={openEdit} />
+
+    // </Box>
   );
 };
 

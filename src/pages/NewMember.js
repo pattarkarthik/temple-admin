@@ -1,6 +1,6 @@
 import React from "react";
 import Form from "../components/Form";
-import { Paper } from "@mui/material";
+import { Box, Paper } from "@mui/material";
 import api from "../api";
 import { Navigate } from "react-router-dom";
 import { formFields } from "../assets/Data";
@@ -19,22 +19,20 @@ function NewMember() {
   };
 
   return (
-    <>
-      <Paper
-        sx={{
-          display: "flex",
-          marginTop: "5%",
-          marginLeft: "3%",
-          marginRight: "5%",
-          padding: "10px",
-        }}
-      >
-        <Form
-          fields={formFields}
-          onSubmit={(formData) => handleFormSubmit(formData)}
-        />
-      </Paper>
-    </>
+    <Box
+      sx={{
+        display: "flex",
+        marginTop: "5%",
+        marginLeft: "3%",
+        marginRight: "5%",
+        padding: "10px",
+      }}
+    >
+      <Form
+        fields={formFields}
+        onSubmit={(formData) => handleFormSubmit(formData)}
+      />
+    </Box>
   );
 }
 

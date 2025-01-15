@@ -67,14 +67,15 @@ export default function TableList({ openEdit }) {
     <Paper
       elevation={3}
       sx={{
-        padding: "30px",
-        width: "100%",
-        maxHeight: "100%",
-        minHeight: "100%",
-        overflow: "hidden", // Prevent contents from overflowing
+        display: "flex",
+        flexDirection: "column",
+        padding: "10px",
+        maxWidth: "1200px",
+        flexGrow: 2,
+        overflow: "auto",
       }}
     >
-      <Box height={10} />
+      {/* <Box height={50} /> */}
 
       <Autocomplete
         disablePortal
@@ -88,7 +89,12 @@ export default function TableList({ openEdit }) {
         )}
       />
       <Box height={10} />
-      <TableContainer sx={{ overflowY: "auto", maxHeight: "650px" }}>
+      <TableContainer
+        sx={{
+          overflowY: "auto",
+          maxHeight: "650px",
+        }}
+      >
         <Table stickyHeader aria-label="sticky table">
           <TableHead>
             <TableRow>
@@ -106,7 +112,7 @@ export default function TableList({ openEdit }) {
               ))}
             </TableRow>
           </TableHead>
-          <TableBody sx={{ maxHeight: "100px", overflowY: "auto" }}>
+          <TableBody sx={{ maxHeight: "100px" }}>
             {filteredRows.map((row) => (
               <TableRow hover role="checkbox" tabIndex={-1} key={row.id}>
                 <TableCell align="left">
