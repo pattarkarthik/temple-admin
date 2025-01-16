@@ -102,7 +102,7 @@ export default function Sidenav() {
               <ListItemButton
                 onClick={() => handleNavigation(page.url)}
                 sx={{
-                  minHeight: 68,
+                 
                   justifyContent: open ? "initial" : "center",
                   px: 2.5,
                 }}
@@ -139,7 +139,8 @@ export default function Sidenav() {
         >
           <ListItemButton
             sx={{
-              minHeight: 48,
+              // minHeight: 48,
+              
               justifyContent: open ? "initial" : "center",
               px: 2.5,
             }}
@@ -149,14 +150,14 @@ export default function Sidenav() {
                 minWidth: 0,
                 mr: open ? 3 : "auto",
                 justifyContent: "center",
-                color: "#f08001",
+                color: "white",
               }}
             ></LogoutIcon>
             <ListItemText
               primary={"Logout"}
               sx={{
                 opacity: open ? 1 : 0,
-                color: "#f08001",
+                color: "white",
               }}
             />
           </ListItemButton>

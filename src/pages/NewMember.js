@@ -1,6 +1,6 @@
 import React from "react";
 import Form from "../components/Form";
-import { Box, Paper } from "@mui/material";
+import { Box, Paper, Typography } from "@mui/material";
 import api from "../api";
 import { Navigate } from "react-router-dom";
 import { formFields } from "../assets/Data";
@@ -22,10 +22,15 @@ function NewMember() {
     <Box
       sx={{
         display: "flex",
-
         padding: "10px",
+        flexDirection:"column",
+       
       }}
     >
+      <Typography  sx={{
+      marginBottom:"10px"
+       
+      }}>ADD NEW MEMBER</Typography>
       <Form
         fields={formFields}
         onSubmit={(formData) => handleFormSubmit(formData)}

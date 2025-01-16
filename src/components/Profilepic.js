@@ -54,7 +54,7 @@ export default function Profilepic({ onFileChange }) {
         onChange={handleFileChange}
       />
       <label htmlFor="upload-button">
-        <Button variant="contained" component="span">
+        <Button variant="contained"  component="span" sx={{backgroundColor:"#f08001",  color:"white", boxShadow:"none", }}>
           {profilePicture ? "Change Picture" : "Upload Picture"}
         </Button>
       </label>

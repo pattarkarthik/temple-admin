@@ -12,6 +12,7 @@ import {
 } from "@mui/material";
 import Profilepic from "./Profilepic";
 
+
 function Form({ fields = [], onSubmit, initialValues = {} }) {
   const [formValues, setFormValues] = useState(initialValues);
   const [profilePic, setProfilePic] = useState(null); // To hold the photo file
@@ -76,23 +77,28 @@ function Form({ fields = [], onSubmit, initialValues = {} }) {
             {fields.slice(0, 4).map((field, index) => (
               <Grid key={index} item xs={12} style={{ marginBottom: "5px" }}>
                 {field.type === "dropdown" ? (
-                  <FormControl fullWidth variant="outlined">
-                    <InputLabel>{field.label}</InputLabel>
+                  
+
+                    <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
+                    <InputLabel id="demo-select-small-label">{field.label}</InputLabel>
                     <Select
+                      labelId="demo-select-small-label"
+                      id="demo-select-small"
                       value={formValues[field.name] || ""}
-                      onChange={handleDropdownChange(field.name)}
-                      name={field.name}
-                      label={field.label}
+                          onChange={handleDropdownChange(field.name)}
+                          name={field.name}
+                          label={field.label}
                     >
-                      {field.options.map((option, idx) => (
-                        <MenuItem key={idx} value={option.value}>
-                          {option.label}
-                        </MenuItem>
-                      ))}
+                    {field.options.map((option, idx) => (
+                                            <MenuItem key={idx} value={option.value}>
+                                              {option.label} hh
+                                            </MenuItem>
+                                          ))}
                     </Select>
-                  </FormControl>
+                    </FormControl>
                 ) : (
                   <TextField
+                  size="small"
                     required={field.required}
                     label={field.label}
                     variant="outlined"
@@ -101,6 +107,7 @@ function Form({ fields = [], onSubmit, initialValues = {} }) {
                     type={field.type || "text"}
                     value={formValues[field.name] || ""}
                     onChange={handleChange}
+                  
                   />
                 )}
               </Grid>
@@ -111,9 +118,9 @@ function Form({ fields = [], onSubmit, initialValues = {} }) {
         {/* Remaining Input Fields */}
         <Grid container spacing={1} style={{ marginTop: "20px" }}>
           {fields.slice(4).map((field, index) => (
-            <Grid key={index} item xs={12} sm={6}>
+            <Grid key={index} item xs={12} sm={6}  >
               {field.type === "dropdown" ? (
-                <FormControl fullWidth variant="outlined">
+                <FormControl fullWidth variant="outlined" size="small">
                   <InputLabel>{field.label}</InputLabel>
                   <Select
                     value={formValues[field.name] || ""}
@@ -129,6 +136,7 @@ function Form({ fields = [], onSubmit, initialValues = {} }) {
                 </FormControl>
               ) : (
                 <TextField
+                  size="small"
                   required={field.required}
                   label={field.label}
                   variant="outlined"
@@ -149,11 +157,11 @@ function Form({ fields = [], onSubmit, initialValues = {} }) {
             marginTop: "30px",
           }}
         >
-          <Button variant="contained" color="secondary">
+          <Button variant="contained" sx={{backgroundColor:"white", border:"1px solid #f08001", color:"#f08001", boxShadow:"none"}}>
             Cancel
           </Button>
-          <Button variant="contained" color="primary" type="submit">
-            Submit
+          <Button variant="contained" sx={{backgroundColor:"#f08001",  color:"white", boxShadow:"none"}} type="submit">
+            Add Member
           </Button>
         </Box>
       </form>
