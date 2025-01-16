@@ -75,8 +75,6 @@ export default function TableList({ openEdit }) {
         overflow: "auto",
       }}
     >
-      {/* <Box height={50} /> */}
-
       <Autocomplete
         disablePortal
         id="combo-box-demo"

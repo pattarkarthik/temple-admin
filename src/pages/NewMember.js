@@ -22,9 +22,7 @@ function NewMember() {
     <Box
       sx={{
         display: "flex",
-        marginTop: "5%",
-        marginLeft: "3%",
-        marginRight: "5%",
+
         padding: "10px",
       }}
     >

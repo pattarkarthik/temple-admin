@@ -16,7 +16,7 @@ import Login from "./pages/Login";
 // Layout for Protected Routes
 function ProtectedLayout() {
   return (
-    <Box sx={{ display: "flex" }}>
+    <Box sx={{ display: "flex", backgroundColor: "#f6f6f7" }}>
       <Sidenav />
       <Box sx={{ flex: 1, padding: 2 }}>
         <Routes>

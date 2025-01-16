@@ -199,14 +199,14 @@ function YelamEntry() {
   };
 
   return (
-    <Paper
+    <Box
       sx={{
         display: "flex",
+        flexDirection: "column",
         marginTop: "5%",
         marginLeft: "3%",
         marginRight: "5%",
         padding: "10px",
-        flexDirection: "column",
       }}
     >
       <Box>
@@ -219,7 +219,7 @@ function YelamEntry() {
         onSubmit={handleFormSubmit}
         title="Add New Member"
       />
-    </Paper>
+    </Box>
   );
 }
 

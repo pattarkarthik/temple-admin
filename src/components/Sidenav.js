@@ -1,21 +1,16 @@
 import React from "react";
-import { styled, useTheme } from "@mui/material/styles";
+import { styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import MuiDrawer from "@mui/material/Drawer";
-import MuiAppBar from "@mui/material/AppBar";
-import Toolbar from "@mui/material/Toolbar";
 import List from "@mui/material/List";
 import CssBaseline from "@mui/material/CssBaseline";
 import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
-import IconButton from "@mui/material/IconButton";
-import MenuIcon from "@mui/icons-material/Menu";
-import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import AddIcon from "@mui/icons-material/Add";
 import ListIcon from "@mui/icons-material/List";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
@@ -24,63 +19,18 @@ import Inventory2Icon from "@mui/icons-material/Inventory2";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import BallotIcon from "@mui/icons-material/Ballot";
 import AnalyticsIcon from "@mui/icons-material/Analytics";
+import LogoutIcon from "@mui/icons-material/Logout";
 
-const drawerWidth = 300;
+const drawerWidth = 280;
 
-const openedMixin = (theme) => ({
-  width: drawerWidth,
-  transition: theme.transitions.create("width", {
-    easing: theme.transitions.easing.sharp,
-    duration: theme.transitions.duration.enteringScreen,
-  }),
-  overflowX: "hidden",
-});
-
-const closedMixin = (theme) => ({
-  transition: theme.transitions.create("width", {
-    easing: theme.transitions.easing.sharp,
-    duration: theme.transitions.duration.leavingScreen,
-  }),
-  overflowX: "hidden",
-  width: `calc(${theme.spacing(7)} + 1px)`,
-  [theme.breakpoints.up("sm")]: {
-    width: `calc(${theme.spacing(8)} + 1px)`,
-  },
-});
-
-const AppBar = styled(MuiAppBar, {
-  shouldForwardProp: (prop) => prop !== "open",
-})(({ theme, open }) => ({
-  zIndex: theme.zIndex.drawer + 1,
-  transition: theme.transitions.create(["width", "margin"], {
-    easing: theme.transitions.easing.sharp,
-    duration: theme.transitions.duration.leavingScreen,
-  }),
-  ...(open && {
-    marginLeft: drawerWidth,
-    width: `calc(100% - ${drawerWidth}px)`,
-    transition: theme.transitions.create(["width", "margin"], {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-  }),
-}));
-
-const Drawer = styled(MuiDrawer, {
-  shouldForwardProp: (prop) => prop !== "open",
-})(({ theme, open }) => ({
+const Drawer = styled(MuiDrawer)(({ theme }) => ({
   width: drawerWidth,
   flexShrink: 0,
   whiteSpace: "nowrap",
-  boxSizing: "border-box",
-  ...(open && {
-    ...openedMixin(theme),
-    "& .MuiDrawer-paper": openedMixin(theme),
-  }),
-  ...(!open && {
-    ...closedMixin(theme),
-    "& .MuiDrawer-paper": closedMixin(theme),
-  }),
+  "& .MuiDrawer-paper": {
+    width: drawerWidth,
+    backgroundColor: "#464547",
+  },
 }));
 
 const DrawerHeader = styled("div")(({ theme }) => ({
@@ -115,60 +65,44 @@ const pages = [
 ];
 
 export default function Sidenav() {
-  const theme = useTheme();
   const [open, setOpen] = React.useState(true);
   const navigate = useNavigate();
+  const location = useLocation(); // Get current route
 
   const handleNavigation = (url) => {
     navigate(url);
   };
 
   return (
-    <Box sx={{ display: "flex" }}>
+    <Box sx={{ display: "flex", height: "100vh" }}>
       <CssBaseline />
-      <AppBar position="fixed" open={open}>
-        <Toolbar sx={{ backgroundColor: "" }}>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            onClick={() => setOpen(!open)}
-            edge="start"
-            sx={{
-              marginRight: 5,
-              ...(open && { display: "none" }),
-            }}
-          >
-            <MenuIcon />
-          </IconButton>
-          <Typography variant="h6" noWrap component="div">
-            Mini variant drawer
-          </Typography>
-        </Toolbar>
-      </AppBar>
-      <Drawer
-        variant="permanent"
-        open={open}
-        sx={{
-          "& .MuiDrawer-paper": {
-            // backgroundColor: "#3f51b5", // Change to your desired color
-          },
-        }}
-      >
+      <Drawer variant="permanent">
         <DrawerHeader>
-          <Typography>Temple Admin</Typography>
-
-          <IconButton onClick={() => setOpen(!open)}>
-            <ChevronLeftIcon />
-          </IconButton>
+          <Typography sx={{ color: "white" }}>Temple Admin</Typography>
         </DrawerHeader>
         <Divider />
-        <List>
+        <List
+          sx={{
+            flexGrow: 1,
+            display: "flex",
+            flexDirection: "column",
+            overflowY: "auto",
+          }}
+        >
           {pages.map((page) => (
-            <ListItem key={page.name} disablePadding sx={{ display: "block" }}>
+            <ListItem
+              key={page.name}
+              disablePadding
+              sx={{
+                display: "block",
+                backgroundColor:
+                  location.pathname === page.url ? "#393939" : "inherit", // Highlight selected item
+              }}
+            >
               <ListItemButton
                 onClick={() => handleNavigation(page.url)}
                 sx={{
-                  minHeight: 48,
+                  minHeight: 68,
                   justifyContent: open ? "initial" : "center",
                   px: 2.5,
                 }}
@@ -178,18 +112,55 @@ export default function Sidenav() {
                     minWidth: 0,
                     mr: open ? 3 : "auto",
                     justifyContent: "center",
+                    color: location.pathname === page.url ? "#f08001" : "white",
                   }}
                 >
                   {page.icon}
                 </ListItemIcon>
                 <ListItemText
                   primary={page.name}
-                  sx={{ opacity: open ? 1 : 0 }}
+                  sx={{
+                    opacity: open ? 1 : 0,
+                    color: location.pathname === page.url ? "#f08001" : "white",
+                  }}
                 />
               </ListItemButton>
             </ListItem>
           ))}
         </List>
+        <Divider />
+        <Box
+          sx={{
+            padding: "16px",
+            textAlign: "center",
+            color: "white",
+            backgroundColor: "#393939",
+          }}
+        >
+          <ListItemButton
+            sx={{
+              minHeight: 48,
+              justifyContent: open ? "initial" : "center",
+              px: 2.5,
+            }}
+          >
+            <LogoutIcon
+              sx={{
+                minWidth: 0,
+                mr: open ? 3 : "auto",
+                justifyContent: "center",
+                color: "#f08001",
+              }}
+            ></LogoutIcon>
+            <ListItemText
+              primary={"Logout"}
+              sx={{
+                opacity: open ? 1 : 0,
+                color: "#f08001",
+              }}
+            />
+          </ListItemButton>
+        </Box>
       </Drawer>
     </Box>
   );
