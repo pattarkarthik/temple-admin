@@ -20,7 +20,7 @@ import AddCircleIcon from "@mui/icons-material/AddCircle";
 import BallotIcon from "@mui/icons-material/Ballot";
 import AnalyticsIcon from "@mui/icons-material/Analytics";
 import LogoutIcon from "@mui/icons-material/Logout";
-
+import logo from "../assets/images/bg/logo.png"
 const drawerWidth = 280;
 
 const Drawer = styled(MuiDrawer)(({ theme }) => ({
@@ -78,7 +78,8 @@ export default function Sidenav() {
       <CssBaseline />
       <Drawer variant="permanent">
         <DrawerHeader>
-          <Typography sx={{ color: "white" }}>Temple Admin</Typography>
+          <img src={logo} style={{height:"100%", width:"150px", display:"flex", justifyContent:"space-around"}}/>
+       
         </DrawerHeader>
         <Divider />
         <List

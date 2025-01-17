@@ -65,12 +65,11 @@ export default function TableList({ openEdit }) {
 
   return (
     <Paper
-      elevation={3}
       sx={{
         display: "flex",
         flexDirection: "column",
         padding: "10px",
-        maxWidth: "1200px",
+        width:"100%",
         flexGrow: 2,
         overflow: "auto",
       }}
@@ -91,6 +90,7 @@ export default function TableList({ openEdit }) {
         sx={{
           overflowY: "auto",
           maxHeight: "650px",
+          width: "100%", 
         }}
       >
         <Table stickyHeader aria-label="sticky table">
@@ -118,7 +118,7 @@ export default function TableList({ openEdit }) {
                     <EditIcon
                       style={{
                         fontSize: "20px",
-                        color: "blue",
+                        color: "#f08001",
                         cursor: "pointer",
                       }}
                       onClick={() => openEdit(row.id)}
@@ -126,7 +126,7 @@ export default function TableList({ openEdit }) {
                     <DeleteIcon
                       style={{
                         fontSize: "20px",
-                        color: "darkred",
+                        color: "#f08001",
                         cursor: "pointer",
                       }}
                       onClick={() => deleteUser(row.id)}

@@ -13,12 +13,15 @@ import { Box } from "@mui/material";
 import ProtectedRoutes from "./components/ProtectedRoutes";
 import Login from "./pages/Login";
 
-// Layout for Protected Routes
+
 function ProtectedLayout() {
   return (
-    <Box sx={{ display: "flex", backgroundColor: "#f6f6f7" }}>
+    <Box sx={{ display: "flex", backgroundColor: "#f6f6f7", width:"100vw"}}>
+      <Box sx={{maxWidth:"20%"}}>
       <Sidenav />
-      <Box sx={{ flex: 1, padding: 2 }}>
+      </Box>
+    
+      <Box sx={{ flex: 1, padding: 2, maxWidth:"80%"}}>
         <Routes>
           <Route path="/" element={<DashboardOverview />} />
           <Route path="/new-member" element={<NewMember />} />

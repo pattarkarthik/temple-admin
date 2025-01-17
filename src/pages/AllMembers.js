@@ -4,8 +4,8 @@ import {
   FormControl,
   InputLabel,
   MenuItem,
-  Paper,
   Select,
+  Typography,
 } from "@mui/material";
 import TableList from "../components/TableList.js";
 import Dialog from "@mui/material/Dialog";
@@ -18,7 +18,7 @@ import Profilepic from "../components/Profilepic.js";
 import api from "../api.js";
 import { editFormFields } from "../assets/Data.js";
 
-const AllMembers = () => {
+function AllMembers  ()  {
   const [openEditModal, setOpenEditModal] = useState(false); // Modal visibility
   const [currentRow, setCurrentRow] = useState(null); // Row data for editing
   const [originalRow, setOriginalRow] = useState(null); // Original data to compare changes
@@ -54,7 +54,6 @@ const AllMembers = () => {
   };
 
   const handleSaveChanges = async () => {
-    // Log the fields that have been changed
     const changedFields = Object.keys(currentRow)
       .filter((key) => currentRow[key] !== originalRow[key])
       .reduce((acc, key) => {
@@ -63,7 +62,6 @@ const AllMembers = () => {
       }, {});
     const data = new FormData();
 
-    // Append form values to FormData
     Object.keys(changedFields).forEach((key) => {
       if (changedFields[key] !== undefined) {
         data.append(key, changedFields[key]);
@@ -87,12 +85,15 @@ const AllMembers = () => {
     <Box
       sx={{
         display: "flex",
-        marginTop: "5%",
-        marginLeft: "3%",
-        marginRight: "3%",
         padding: "10px",
+        flexDirection:"column",
+        overflow:"hidden",
+        maxWidth:"100%",
       }}
     >
+       <Typography  sx={{
+      marginBottom:"10px"
+      }}>ALL MEMBERS</Typography>
       <TableList openEdit={openEdit} />
       <Dialog open={openEditModal} onClose={handleCloseModal}>
         <Box sx={{ width: "600px" }}>
