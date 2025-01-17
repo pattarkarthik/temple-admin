@@ -17,8 +17,9 @@ import TextField from "@mui/material/TextField";
 import Profilepic from "../components/Profilepic.js";
 import api from "../api.js";
 import { editFormFields } from "../assets/Data.js";
+import CustomButton from "../components/CustomButton.js";
 
-function AllMembers  ()  {
+function AllMembers() {
   const [openEditModal, setOpenEditModal] = useState(false); // Modal visibility
   const [currentRow, setCurrentRow] = useState(null); // Row data for editing
   const [originalRow, setOriginalRow] = useState(null); // Original data to compare changes
@@ -86,17 +87,21 @@ function AllMembers  ()  {
       sx={{
         display: "flex",
         padding: "10px",
-        flexDirection:"column",
-        overflow:"hidden",
-        maxWidth:"100%",
+        flexDirection: "column",
+        overflow: "hidden",
+        maxWidth: "100%",
       }}
     >
-       <Typography  sx={{
-      marginBottom:"10px"
-      }}>ALL MEMBERS</Typography>
+      <Typography
+        sx={{
+          marginBottom: "10px",
+        }}
+      >
+        ALL MEMBERS
+      </Typography>
       <TableList openEdit={openEdit} />
       <Dialog open={openEditModal} onClose={handleCloseModal}>
-        <Box sx={{ width: "600px" }}>
+        <Box sx={{ width: "500px" }}>
           <DialogTitle>Edit Member</DialogTitle>
           <DialogContent>
             <Profilepic />
@@ -133,12 +138,19 @@ function AllMembers  ()  {
             ))}
           </DialogContent>
           <DialogActions>
-            <Button onClick={handleCloseModal} color="primary">
-              Cancel
-            </Button>
-            <Button onClick={handleSaveChanges} color="primary">
-              Save Changes
-            </Button>
+            <Box sx={{display:"flex", width:"100%", justifyContent:"space-between"}}>
+              <CustomButton
+                inverted={true}
+                label="Cancel"
+                onclick={handleCloseModal}
+              />
+              <CustomButton
+                inverted={false}
+                label="Save Changes"
+                type=""
+                onclick={handleSaveChanges}
+              />
+            </Box>
           </DialogActions>
         </Box>
       </Dialog>
@@ -149,6 +161,6 @@ function AllMembers  ()  {
 
     // </Box>
   );
-};
+}
 
 export default AllMembers;

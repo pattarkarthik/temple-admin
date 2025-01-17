@@ -24,7 +24,6 @@ function NewMember() {
         display: "flex",
         padding: "10px",
         flexDirection:"column",
-       
       }}
     >
       <Typography  sx={{

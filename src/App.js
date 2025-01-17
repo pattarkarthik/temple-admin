@@ -16,7 +16,7 @@ import Login from "./pages/Login";
 
 function ProtectedLayout() {
   return (
-    <Box sx={{ display: "flex", backgroundColor: "#f6f6f7", width:"100vw"}}>
+    <Box sx={{ display: "flex", backgroundColor: "#f6f6f7", width:"100dvw", }}>
       <Box sx={{maxWidth:"20%"}}>
       <Sidenav />
       </Box>

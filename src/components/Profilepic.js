@@ -36,7 +36,6 @@ export default function Profilepic({ onFileChange }) {
         alignItems: "center",
         gap: 2,
         mt: 4,
-        marginLeft: "50px",
       }}
     >
       <Typography variant="h6">Upload Profile Picture</Typography>

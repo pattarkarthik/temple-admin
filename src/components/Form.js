@@ -11,7 +11,7 @@ import {
   TextField,
 } from "@mui/material";
 import Profilepic from "./Profilepic";
-
+import CustomButton from "./CustomButton";
 
 function Form({ fields = [], onSubmit, initialValues = {} }) {
   const [formValues, setFormValues] = useState(initialValues);
@@ -45,13 +45,17 @@ function Form({ fields = [], onSubmit, initialValues = {} }) {
       }
     });
 
-    // Add the photo file if it exists
     if (profilePic) {
       data.append("photo", profilePic); // "photo" should match the field name in your Django model
     }
 
     // Submit the data
     onSubmit(data);
+  };
+
+  const handleCancel = () => {
+    setFormValues(initialValues); // Reset form fields to initialValues
+    setProfilePic(null); // Clear the profile picture
   };
 
   return (
@@ -77,28 +81,28 @@ function Form({ fields = [], onSubmit, initialValues = {} }) {
             {fields.slice(0, 4).map((field, index) => (
               <Grid key={index} item xs={12} style={{ marginBottom: "5px" }}>
                 {field.type === "dropdown" ? (
-                  
-
-                    <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
-                    <InputLabel id="demo-select-small-label">{field.label}</InputLabel>
+                  <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
+                    <InputLabel id="demo-select-small-label">
+                      {field.label}
+                    </InputLabel>
                     <Select
                       labelId="demo-select-small-label"
                       id="demo-select-small"
                       value={formValues[field.name] || ""}
-                          onChange={handleDropdownChange(field.name)}
-                          name={field.name}
-                          label={field.label}
+                      onChange={handleDropdownChange(field.name)}
+                      name={field.name}
+                      label={field.label}
                     >
-                    {field.options.map((option, idx) => (
-                                            <MenuItem key={idx} value={option.value}>
-                                              {option.label} hh
-                                            </MenuItem>
-                                          ))}
+                      {field.options.map((option, idx) => (
+                        <MenuItem key={idx} value={option.value}>
+                          {option.label}
+                        </MenuItem>
+                      ))}
                     </Select>
-                    </FormControl>
+                  </FormControl>
                 ) : (
                   <TextField
-                  size="small"
+                    size="small"
                     required={field.required}
                     label={field.label}
                     variant="outlined"
@@ -107,7 +111,6 @@ function Form({ fields = [], onSubmit, initialValues = {} }) {
                     type={field.type || "text"}
                     value={formValues[field.name] || ""}
                     onChange={handleChange}
-                  
                   />
                 )}
               </Grid>
@@ -118,7 +121,7 @@ function Form({ fields = [], onSubmit, initialValues = {} }) {
         {/* Remaining Input Fields */}
         <Grid container spacing={1} style={{ marginTop: "20px" }}>
           {fields.slice(4).map((field, index) => (
-            <Grid key={index} item xs={12} sm={6}  >
+            <Grid key={index} item xs={12} sm={6}>
               {field.type === "dropdown" ? (
                 <FormControl fullWidth variant="outlined" size="small">
                   <InputLabel>{field.label}</InputLabel>
@@ -157,12 +160,12 @@ function Form({ fields = [], onSubmit, initialValues = {} }) {
             marginTop: "30px",
           }}
         >
-          <Button variant="contained" sx={{backgroundColor:"white", border:"1px solid #f08001", color:"#f08001", boxShadow:"none"}}>
-            Cancel
-          </Button>
-          <Button variant="contained" sx={{backgroundColor:"#f08001",  color:"white", boxShadow:"none"}} type="submit">
-            Add Member
-          </Button>
+          <CustomButton inverted={true} label="Cancel" onclick={handleCancel} />
+          <CustomButton
+            inverted={false}
+            label="Add Member"
+            type="submit"
+          />
         </Box>
       </form>
     </Paper>
