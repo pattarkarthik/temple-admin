@@ -1,6 +1,6 @@
 import React from "react";
 import Form from "../components/Form";
-import { Box, Paper, Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import api from "../api";
 import { Navigate } from "react-router-dom";
 import { formFields } from "../assets/Data";
@@ -29,10 +29,11 @@ function NewMember() {
       <Typography  sx={{
       marginBottom:"10px"
        
-      }}>ADD NEW MEMBER</Typography>
+      }}>PULLI MEMBER REGISTRATION</Typography>
       <Form
         fields={formFields}
         onSubmit={(formData) => handleFormSubmit(formData)}
+        profilePic ={true}
       />
     </Box>
   );

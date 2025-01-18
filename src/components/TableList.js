@@ -71,7 +71,7 @@ export default function TableList({ openEdit }) {
         padding: "10px",
         width:"100%",
         flexGrow: 2,
-        // overflow: "auto",
+     
       }}
     >
       <Autocomplete
@@ -88,7 +88,6 @@ export default function TableList({ openEdit }) {
       <Box height={10} />
       <TableContainer
         sx={{
-          // overflowY: "auto",
           maxHeight: "650px",
           width: "100%", 
         }}

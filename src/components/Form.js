@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import {
   Box,
-  Button,
   FormControl,
   Grid,
   InputLabel,
@@ -12,10 +11,11 @@ import {
 } from "@mui/material";
 import Profilepic from "./Profilepic";
 import CustomButton from "./CustomButton";
+import Input from "./Input";
 
-function Form({ fields = [], onSubmit, initialValues = {} }) {
+function Form({ fields = [], onSubmit, initialValues = {}, profilePic }) {
   const [formValues, setFormValues] = useState(initialValues);
-  const [profilePic, setProfilePic] = useState(null); // To hold the photo file
+  const [uploadedProfilePic, setUploadedProfilePic] = useState(null); // To hold the photo file
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -30,7 +30,7 @@ function Form({ fields = [], onSubmit, initialValues = {} }) {
   };
 
   const handleFileChange = (file) => {
-    setProfilePic(file);
+    setUploadedProfilePic(file);
   };
 
   const handleSubmit = (e) => {
@@ -45,8 +45,8 @@ function Form({ fields = [], onSubmit, initialValues = {} }) {
       }
     });
 
-    if (profilePic) {
-      data.append("photo", profilePic); // "photo" should match the field name in your Django model
+    if (uploadedProfilePic) {
+      data.append("photo", uploadedProfilePic); // "photo" should match the field name in your Django model
     }
 
     // Submit the data
@@ -55,7 +55,7 @@ function Form({ fields = [], onSubmit, initialValues = {} }) {
 
   const handleCancel = () => {
     setFormValues(initialValues); // Reset form fields to initialValues
-    setProfilePic(null); // Clear the profile picture
+    setUploadedProfilePic(null); // Clear the profile picture
   };
 
   return (
@@ -70,27 +70,67 @@ function Form({ fields = [], onSubmit, initialValues = {} }) {
           sx={{
             display: "flex",
             justifyContent: "space-between",
-            alignItems: "flex-end",
+            alignItems: "stretch",
           }}
         >
-          <Grid item xs={12} md={4} style={{ textAlign: "center" }}>
-            <Profilepic onFileChange={handleFileChange} />
-          </Grid>
+          {/* Left Grid: Profile Picture */}
+          {profilePic && (
+            <Grid item xs={12} md={4} style={{ textAlign: "center" }}>
+              <Profilepic onFileChange={handleFileChange} />
+            </Grid>
+          )}
 
-          <Grid item xs={12} md={6}>
-            {fields.slice(0, 4).map((field, index) => (
-              <Grid key={index} item xs={12} style={{ marginBottom: "5px" }}>
+          {/* Right Grid: Adjust Field Slicing Dynamically */}
+          <Grid item xs={12} md={profilePic ? 6 : 12}>
+            {fields
+              .slice(0, profilePic ? 3: fields.length) // Show only the first 4 fields if profilePic is true; otherwise show all
+              .map((field, index) => (
+                <Grid key={index} item xs={12} style={{ marginTop: "15px", paddingLeft:"5px" }}>
+                  {field.type === "dropdown" ? (
+                    <FormControl fullWidth sx={{   }} size="small">
+                      <Box >{field.label}</Box>
+                      <Select
+                        value={formValues[field.name] || ""}
+                        onChange={handleDropdownChange(field.name)}
+                        name={field.name}
+                        label={field.label}
+                      >
+                        {field.options.map((option, idx) => (
+                          <MenuItem key={idx} value={option.value}>
+                            {option.label}
+                          </MenuItem>
+                        ))}
+                      </Select>
+                    </FormControl>
+                  ) : (
+                    <Input
+                      required={field.required}
+                      label={field.label}
+                      name={field.name}
+                      type={field.type || "text"}
+                      value={formValues[field.name] || ""}
+                      onChange={handleChange}
+                    />
+                  )}
+                </Grid>
+              ))}
+          </Grid>
+        </Grid>
+
+        {/* Remaining Input Fields */}
+        {profilePic && (
+          <Grid container spacing={1} style={{ marginTop: "0px" }}>
+            {fields.slice(3).map((field, index) => (
+              <Grid key={index} item xs={12} sm={6} >
                 {field.type === "dropdown" ? (
-                  <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
-                    <InputLabel id="demo-select-small-label">
-                      {field.label}
-                    </InputLabel>
+                  <Box>
+
+                
+                  <FormControl fullWidth variant="outlined" size="small" sx={{marginTop:"10px",}}>
+                    <Box >{field.label}</Box>
                     <Select
-                      labelId="demo-select-small-label"
-                      id="demo-select-small"
                       value={formValues[field.name] || ""}
                       onChange={handleDropdownChange(field.name)}
-                      name={field.name}
                       label={field.label}
                     >
                       {field.options.map((option, idx) => (
@@ -99,60 +139,21 @@ function Form({ fields = [], onSubmit, initialValues = {} }) {
                         </MenuItem>
                       ))}
                     </Select>
-                  </FormControl>
-                ) : (
-                  <TextField
-                    size="small"
+                  </FormControl> </Box>
+                ): (
+                  <Input
                     required={field.required}
                     label={field.label}
-                    variant="outlined"
-                    fullWidth
                     name={field.name}
                     type={field.type || "text"}
                     value={formValues[field.name] || ""}
                     onChange={handleChange}
-                  />
+                  />  
                 )}
               </Grid>
             ))}
           </Grid>
-        </Grid>
-
-        {/* Remaining Input Fields */}
-        <Grid container spacing={1} style={{ marginTop: "20px" }}>
-          {fields.slice(4).map((field, index) => (
-            <Grid key={index} item xs={12} sm={6}>
-              {field.type === "dropdown" ? (
-                <FormControl fullWidth variant="outlined" size="small">
-                  <InputLabel>{field.label}</InputLabel>
-                  <Select
-                    value={formValues[field.name] || ""}
-                    onChange={handleDropdownChange(field.name)}
-                    label={field.label}
-                  >
-                    {field.options.map((option, idx) => (
-                      <MenuItem key={idx} value={option.value}>
-                        {option.label}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-              ) : (
-                <TextField
-                  size="small"
-                  required={field.required}
-                  label={field.label}
-                  variant="outlined"
-                  fullWidth
-                  name={field.name}
-                  type={field.type || "text"}
-                  value={formValues[field.name] || ""}
-                  onChange={handleChange}
-                />
-              )}
-            </Grid>
-          ))}
-        </Grid>
+        )}
         <Box
           sx={{
             display: "flex",
@@ -160,12 +161,8 @@ function Form({ fields = [], onSubmit, initialValues = {} }) {
             marginTop: "30px",
           }}
         >
-          <CustomButton inverted={true} label="Cancel" onclick={handleCancel} />
-          <CustomButton
-            inverted={false}
-            label="Add Member"
-            type="submit"
-          />
+          <CustomButton inverted={true} label="Cancel" onClick={handleCancel} />
+          <CustomButton inverted={false} label="Add Member" type="submit" />
         </Box>
       </form>
     </Paper>

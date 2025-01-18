@@ -79,64 +79,22 @@ function YelamProductCatalog() {
   };
 
   return (
-    <Box
-      sx={{
-        display: "flex",
-        marginTop: "5%",
-        marginLeft: "3%",
-        minHeight: "750px",
-        maxHeight: "750px",
-        maxWidth: "75%",
-        marginBottom: "50px",
-      }}
-    >
-      {/* <Box sx={{ display: "flex" }}>
-        <Box>
-          <Autocomplete
-            value={newProduct}
-            onInputChange={(event, newValue) => setNewProduct(newValue)}
-            onChange={(event, newValue) => handleAddEntry(newValue)}
-            options={data.map((item) => item.Product)} // Existing product list
-            freeSolo // Allow users to type and add new products
-            renderInput={(params) => (
-              <TextField
-                {...params}
-                label="Product"
-                placeholder="Search or Add Product"
-                fullWidth // Ensure full width here
-                sx={{
-                  width: "670px", // Make the input take the full width
-                  maxWidth: "100%", // Ensure the input spans the entire container
-                }}
-                InputProps={{
-                  ...params.InputProps,
-                  style: { width: "100%" }, // Ensure dropdown is visible
-                }}
-              />
-            )}
-          />
-          <IconButton
-            color="primary"
-            onClick={() => handleAddEntry(newProduct)}
-            disabled={!newProduct.trim()}
-          >
-            <AddCircleOutlineIcon fontSize="large" />
-          </IconButton>
+     <Box
+          sx={{
+            display: "flex",
+            padding: "10px",
+            flexDirection:"column",
+          }}
+        >
+          <Typography  sx={{
+          marginBottom:"10px"
+           
+          }}>PRODUCT CATALOG</Typography>
+        <Catalog />
         </Box>
-        <Box>
-          <TextField
-            label="Category (Optional)"
-            value={category}
-            onChange={(e) => setCategory(e.target.value)}
-            fullWidth
-            sx={{ marginTop: "20px" }}
-          />
-        </Box>
-      </Box>
-
-      <TableList /> */}
-      <Catalog />
-    </Box>
+     
+      
+   
   );
 }
 

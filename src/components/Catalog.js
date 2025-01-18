@@ -11,6 +11,7 @@ import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
 import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
+import CustomButton from "./CustomButton";
 
 const fields = [
   { label: "Serial Number", name: "serialNumber", required: true },
@@ -96,16 +97,26 @@ export default function Catalog() {
 
   return (
     <Paper
-      elevation={3}
-      sx={{ padding: "30px", width: "100%", minWidth: "1200px" }}
-    >
+    sx={{
+      display: "flex",
+      flexDirection: "column",
+      padding: "10px",
+      width:"100%",
+      flexGrow: 2,
+   
+    }}
+  >
       <Box height={10} />
+      <Box sx={{display:"flex", justifyContent:"space-between"}}>
       <TextField
-        fullWidth
+        
         label="Search Product"
         onChange={(e) => handleSearchChange(e)}
         size="small"
       />
+        <CustomButton inverted={false} label="Add Product" onclick={handleModalOpen} />
+      </Box>
+   
       {suggestions.length > 0 && (
         <ul
           style={{
@@ -136,15 +147,9 @@ export default function Catalog() {
         </ul>
       )}
       <Box height={10} />
-      {filteredRows.length === 0 ? (
-        <Box textAlign="center" mt={2}>
-          <Button variant="contained" color="primary" onClick={handleModalOpen}>
-            Add Product
-          </Button>
-        </Box>
-      ) : (
+      {
         <TableContainer
-          sx={{ overflowY: "auto", maxHeight: "650px", minWidth: "1200px" }}
+          sx={{ overflowY: "auto", maxHeight: "650px", }}
         >
           <Table stickyHeader aria-label="sticky table">
             <TableHead>
@@ -165,7 +170,7 @@ export default function Catalog() {
             </TableBody>
           </Table>
         </TableContainer>
-      )}
+      }
 
       {/* Add Product Modal */}
       <Modal open={isModalOpen} onClose={handleModalClose}>
@@ -208,13 +213,8 @@ export default function Catalog() {
             ))}
           </TextField>
           <Box mt={2} textAlign="right">
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={handleAddProduct}
-            >
-              Add
-            </Button>
+          <CustomButton inverted={false} label="Add" onclick={handleAddProduct} />
+            
           </Box>
         </Paper>
       </Modal>

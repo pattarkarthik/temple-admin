@@ -1,28 +1,27 @@
 import React, { useState } from "react";
-import CardHeader from "@mui/material/CardHeader";
-import { styled } from "@mui/material/styles";
+import { Radio, RadioGroup, FormControlLabel } from "@mui/material";
 
-import { Radio, RadioGroup, FormControlLabel, Box } from "@mui/material";
-
-function RadioButton({ selectedValue, onSelectionChange, title }) {
+function RadioButton({ selectedValue = "inhouse", onSelectionChange }) {
   return (
     <RadioGroup
       value={selectedValue}
-      onChange={onSelectionChange}
+      onChange={(e) => onSelectionChange(e.target.value)}
       sx={{
         display: "flex",
         flexDirection: "row",
       }}
     >
       <FormControlLabel
-        value="form1"
+        value="inhouse"
         control={<Radio />}
-        label="Inhouse(Pulli)"
+        label="Inhouse (Pulli)"
+        componentsProps={{ typography: { fontSize: "small" } }}
       />
       <FormControlLabel
-        value="form2"
+        value="guest"
         control={<Radio />}
-        label="External(Guest)"
+        label="External (Guest)"
+        componentsProps={{ typography: { fontSize: "small" } }}
       />
     </RadioGroup>
   );
