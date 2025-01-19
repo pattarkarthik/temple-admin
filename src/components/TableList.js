@@ -71,14 +71,15 @@ export default function TableList({ openEdit }) {
         padding: "10px",
         width:"100%",
         flexGrow: 2,
-     
+        borderRadius:"0px",
+     backgroundColor:"rgb(255, 231, 218)"
       }}
     >
       <Autocomplete
         disablePortal
         id="combo-box-demo"
         options={rows}
-        sx={{ width: 300 }}
+        sx={{ width: 300, backgroundColor:"rgb(255, 231, 218)" }}
         onChange={(e, selected) => filterData(selected)}
         getOptionLabel={(option) => option.name || "Unnamed Member"}
         renderInput={(params) => (
@@ -90,18 +91,19 @@ export default function TableList({ openEdit }) {
         sx={{
           maxHeight: "650px",
           width: "100%", 
+          backgroundColor:"rgb(255, 231, 218)"
         }}
       >
         <Table stickyHeader aria-label="sticky table">
-          <TableHead>
-            <TableRow>
-              <TableCell align="left" style={{ minWidth: "100px" }}>
+          <TableHead sx={{backgroundColor:"rgb(255, 231, 218)"}}>
+            <TableRow sx={{ backgroundColor:"rgb(255, 231, 218)"}}>
+              <TableCell align="left" style={{ minWidth: "100px",backgroundColor: "rgb(255, 231, 218)"}}>
                 Action
               </TableCell>
               {fields.map((field) => (
                 <TableCell
                   align="left"
-                  style={{ minWidth: "100px" }}
+                  style={{ minWidth: "100px",backgroundColor: "rgb(255, 231, 218)" }}
                   key={field.name}
                 >
                   {field.label}

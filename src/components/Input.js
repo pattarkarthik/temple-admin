@@ -13,8 +13,8 @@ function Input({
     <Box
       sx={{
         display: "flex",
-        flexDirection: "column",
-        alignItems: "flex-start",
+        flexDirection: "row",
+        alignItems: "center;",
         marginTop: "10px", // Adjust spacing based on size
         position: "relative",
       }}
@@ -30,6 +30,7 @@ function Input({
             fontSize: "17px",
             lineHeight: "18px",
             marginBottom: "5px",
+            width:"30%"
           }}
         >
           {label} 
@@ -53,7 +54,8 @@ function Input({
           height:  "40px", // Adjust height based on size
           padding: "5px",
           boxSizing: "border-box", 
-          backgroundColor:"rgb(255, 250, 245)"
+          backgroundColor:"rgb(255, 250, 245)",
+          width:"65%"
         }}
       />
     </Box>

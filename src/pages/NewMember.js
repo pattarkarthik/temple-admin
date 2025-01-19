@@ -1,20 +1,35 @@
-import React from "react";
+import React, { useState } from "react";
 import Form from "../components/Form";
-import { Box, Typography } from "@mui/material";
+import { Box,  Typography } from "@mui/material";
 import api from "../api";
-import { Navigate } from "react-router-dom";
 import { formFields } from "../assets/Data";
+import Loader from "../components/Loader";
+import CustomAlert from "../components/CustomAlert";
+import { useNavigate } from "react-router-dom";
 
 function NewMember() {
+  const [loading, setLoading] = useState(false)
+  const [successAlert, setSuccessAlert] = useState(false);
+  const [errorAlert, setErrorAlert] = useState(false);
+  const navigate = useNavigate();
   const handleFormSubmit = async (formData) => {
+    setLoading(true)
     try {
       const res = await api.post("/api/members/", formData);
       if (res.status === 201) {
-        alert("Member added successfully");
-        Navigate("/new-member");
+        setLoading(false)
+        setSuccessAlert(true);
+        setTimeout(() => setSuccessAlert(false), 5000); 
+        navigate("/new-member");
+        return true
       }
     } catch (error) {
+      setLoading(false)
+      setErrorAlert(true);
+      setTimeout(() => setErrorAlert(false), 5000); 
+      return false
     } finally {
+    
     }
   };
 
@@ -24,6 +39,7 @@ function NewMember() {
         display: "flex",
         padding: "10px",
         flexDirection:"column",
+     
       }}
     >
       <Typography  sx={{
@@ -31,10 +47,19 @@ function NewMember() {
        
       }}>PULLI MEMBER REGISTRATION</Typography>
       <Form
+      
         fields={formFields}
         onSubmit={(formData) => handleFormSubmit(formData)}
         profilePic ={true}
       />
+     
+    {loading && <Loader />}
+     {successAlert && (
+        <CustomAlert  severity="success" message="Member added successfully!" />
+      )}
+      {errorAlert && (
+        <CustomAlert severity="error" message="There was an error adding the member." />
+      )}
     </Box>
   );
 }

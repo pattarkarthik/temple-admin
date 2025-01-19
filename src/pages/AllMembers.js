@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import {
   Box,
   FormControl,
@@ -12,31 +12,41 @@ import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
-import Button from "@mui/material/Button";
-import TextField from "@mui/material/TextField";
 import Profilepic from "../components/Profilepic.js";
 import api from "../api.js";
 import { editFormFields } from "../assets/Data.js";
 import CustomButton from "../components/CustomButton.js";
+import Loader from "../components/Loader";
+import CustomAlert from "../components/CustomAlert";
+import Input from "../components/Input.js";
 
 function AllMembers() {
-  const [openEditModal, setOpenEditModal] = useState(false); // Modal visibility
-  const [currentRow, setCurrentRow] = useState(null); // Row data for editing
+  const [openEditModal, setOpenEditModal] = useState(false); 
+  const [currentRow, setCurrentRow] = useState(null); 
   const [originalRow, setOriginalRow] = useState(null); // Original data to compare changes
+  const [loading, setLoading] = useState(false); // Loading state
+  const [successAlert, setSuccessAlert] = useState(false); // Success alert state
+  const [errorAlert, setErrorAlert] = useState(false); // Error alert state
 
   const openEdit = async (id) => {
+    setLoading(true);
     try {
       const res = await api.get(`/api/members/${id}/`);
       setCurrentRow(res.data); // Set API data to currentRow state
       setOriginalRow(res.data); // Store the original data for comparison
-    } catch (error) {}
+    } catch (error) {
+      setErrorAlert(true);
+      setTimeout(() => setErrorAlert(false), 5000); // Auto-dismiss alert
+    } finally {
+      setLoading(false);
+    }
     setOpenEditModal(true);
   };
 
   const handleCloseModal = () => {
     setOpenEditModal(false);
-    setCurrentRow(null); // Reset the current row when closing
-    setOriginalRow(null); // Reset the original row
+    setCurrentRow(null); 
+    setOriginalRow(null); 
   };
 
   const handleInputChange = (e) => {
@@ -68,13 +78,20 @@ function AllMembers() {
         data.append(key, changedFields[key]);
       }
     });
+
+    setLoading(true);
     try {
       const res = await api.patch(`/api/members/${currentRow.id}/`, data);
       if (res.status === 200) {
+        setSuccessAlert(true);
+        setTimeout(() => setSuccessAlert(false), 5000); // Auto-dismiss alert
         alert("Member updated successfully");
       }
     } catch (error) {
+      setErrorAlert(true);
+      setTimeout(() => setErrorAlert(false), 5000); // Auto-dismiss alert
     } finally {
+      setLoading(false);
     }
 
     setOpenEditModal(false);
@@ -99,7 +116,24 @@ function AllMembers() {
       >
         ALL MEMBERS
       </Typography>
+
+      {loading && <Loader />}
+
+      {/* Alerts */}
+      {successAlert && (
+        <CustomAlert severity="success" message="Member updated successfully!" />
+      )}
+      {errorAlert && (
+        <CustomAlert
+          severity="error"
+          message="There was an error updating the member."
+        />
+      )}
+
+      {/* TableList */}
       <TableList openEdit={openEdit} />
+
+      {/* Edit Dialog */}
       <Dialog open={openEditModal} onClose={handleCloseModal}>
         <Box sx={{ width: "500px" }}>
           <DialogTitle>Edit Member</DialogTitle>
@@ -123,7 +157,7 @@ function AllMembers() {
                     </Select>
                   </FormControl>
                 ) : (
-                  <TextField
+                  <Input
                     label={field.label}
                     name={field.name}
                     value={currentRow ? currentRow[field.name] || "" : ""}
@@ -138,7 +172,13 @@ function AllMembers() {
             ))}
           </DialogContent>
           <DialogActions>
-            <Box sx={{display:"flex", width:"100%", justifyContent:"space-between"}}>
+            <Box
+              sx={{
+                display: "flex",
+                width: "100%",
+                justifyContent: "space-between",
+              }}
+            >
               <CustomButton
                 inverted={true}
                 label="Cancel"
@@ -155,11 +195,6 @@ function AllMembers() {
         </Box>
       </Dialog>
     </Box>
-
-    // <Box sx={{ maxWidth: "75%", minHeight: "750px", maxHeight: "750px" }}>
-    //   <TableList openEdit={openEdit} />
-
-    // </Box>
   );
 }
 

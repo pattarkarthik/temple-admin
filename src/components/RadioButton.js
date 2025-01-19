@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { Radio, RadioGroup, FormControlLabel } from "@mui/material";
 
 function RadioButton({ selectedValue = "inhouse", onSelectionChange }) {
@@ -13,14 +13,32 @@ function RadioButton({ selectedValue = "inhouse", onSelectionChange }) {
     >
       <FormControlLabel
         value="inhouse"
-        control={<Radio />}
-        label="Inhouse (Pulli)"
+        control={
+          <Radio
+            sx={{
+              color: "#f08001", // Unselected color
+              "&.Mui-checked": {
+                color: "#f08001", // Selected color
+              },
+            }}
+          />
+        }
+        label="புல்லி உறுப்பினர்"
         componentsProps={{ typography: { fontSize: "small" } }}
       />
       <FormControlLabel
         value="guest"
-        control={<Radio />}
-        label="External (Guest)"
+        control={
+          <Radio
+            sx={{
+              color: "#f08001", // Unselected color
+              "&.Mui-checked": {
+                color: "#f08001", // Selected color
+              },
+            }}
+          />
+        }
+        label="வெளிப்புற"
         componentsProps={{ typography: { fontSize: "small" } }}
       />
     </RadioGroup>

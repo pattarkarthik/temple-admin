@@ -3,11 +3,9 @@ import {
   Box,
   FormControl,
   Grid,
-  InputLabel,
   MenuItem,
   Paper,
   Select,
-  TextField,
 } from "@mui/material";
 import Profilepic from "./Profilepic";
 import CustomButton from "./CustomButton";
@@ -33,7 +31,7 @@ function Form({ fields = [], onSubmit, initialValues = {}, profilePic }) {
     setUploadedProfilePic(file);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit =  async (e) => {
     e.preventDefault();
 
     const data = new FormData();
@@ -48,9 +46,12 @@ function Form({ fields = [], onSubmit, initialValues = {}, profilePic }) {
     if (uploadedProfilePic) {
       data.append("photo", uploadedProfilePic); // "photo" should match the field name in your Django model
     }
+    const isSuccessful = await onSubmit(data);
 
-    // Submit the data
-    onSubmit(data);
+    if (isSuccessful) {
+      setFormValues(initialValues); // Reset all fields to initial values
+      setUploadedProfilePic(null); // Clear profile picture
+    }
   };
 
   const handleCancel = () => {
@@ -62,38 +63,33 @@ function Form({ fields = [], onSubmit, initialValues = {}, profilePic }) {
     <Paper
       sx={{
         padding: "10px",
+        backgroundColor:"rgb(255, 231, 218)",
+        borderRadius:"0px"
       }}
     >
       <form onSubmit={handleSubmit}>
-        <Grid
-          container
-          sx={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "stretch",
-          }}
-        >
-          {/* Left Grid: Profile Picture */}
+        <Grid container spacing={2} direction="row">
+          {/* Profile Picture at the Top */}
           {profilePic && (
-            <Grid item xs={12} md={4} style={{ textAlign: "center" }}>
+            <Grid item xs={12} style={{ textAlign: "center" }}>
               <Profilepic onFileChange={handleFileChange} />
             </Grid>
+            
           )}
 
-          {/* Right Grid: Adjust Field Slicing Dynamically */}
-          <Grid item xs={12} md={profilePic ? 6 : 12}>
-            {fields
-              .slice(0, profilePic ? 3: fields.length) // Show only the first 4 fields if profilePic is true; otherwise show all
-              .map((field, index) => (
-                <Grid key={index} item xs={12} style={{ marginTop: "15px", paddingLeft:"5px" }}>
+          {/* Fields Below the Profile Picture */}
+          <Grid item xs={12}>
+            <Grid container spacing={2}>
+              {fields.map((field, index) => (
+                <Grid key={index} item xs={12} sm={6}>
                   {field.type === "dropdown" ? (
-                    <FormControl fullWidth sx={{   }} size="small">
-                      <Box >{field.label}</Box>
+                    <FormControl fullWidth size="small" sx={{ marginTop: "10px",  display:"flex", flexDirection:"row"}}>
+                      <Box sx={{width:"30%", fontSize:"17px"}}>{field.label}</Box>
                       <Select
+                      sx={{width:"65%", backgroundColor:"rgb(255, 250, 245)", borderRadius:"10px"}}
                         value={formValues[field.name] || ""}
                         onChange={handleDropdownChange(field.name)}
                         name={field.name}
-                        label={field.label}
                       >
                         {field.options.map((option, idx) => (
                           <MenuItem key={idx} value={option.value}>
@@ -114,54 +110,19 @@ function Form({ fields = [], onSubmit, initialValues = {}, profilePic }) {
                   )}
                 </Grid>
               ))}
+            </Grid>
           </Grid>
         </Grid>
 
-        {/* Remaining Input Fields */}
-        {profilePic && (
-          <Grid container spacing={1} style={{ marginTop: "0px" }}>
-            {fields.slice(3).map((field, index) => (
-              <Grid key={index} item xs={12} sm={6} >
-                {field.type === "dropdown" ? (
-                  <Box>
-
-                
-                  <FormControl fullWidth variant="outlined" size="small" sx={{marginTop:"10px",}}>
-                    <Box >{field.label}</Box>
-                    <Select
-                      value={formValues[field.name] || ""}
-                      onChange={handleDropdownChange(field.name)}
-                      label={field.label}
-                    >
-                      {field.options.map((option, idx) => (
-                        <MenuItem key={idx} value={option.value}>
-                          {option.label}
-                        </MenuItem>
-                      ))}
-                    </Select>
-                  </FormControl> </Box>
-                ): (
-                  <Input
-                    required={field.required}
-                    label={field.label}
-                    name={field.name}
-                    type={field.type || "text"}
-                    value={formValues[field.name] || ""}
-                    onChange={handleChange}
-                  />  
-                )}
-              </Grid>
-            ))}
-          </Grid>
-        )}
         <Box
           sx={{
             display: "flex",
-            justifyContent: "space-between",
+            justifyContent: "center",
             marginTop: "30px",
+
           }}
         >
-          <CustomButton inverted={true} label="Cancel" onClick={handleCancel} />
+          <CustomButton inverted={false} label="Cancel" onclick={handleCancel} />
           <CustomButton inverted={false} label="Add Member" type="submit" />
         </Box>
       </form>

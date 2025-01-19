@@ -13,15 +13,26 @@ import { Box } from "@mui/material";
 import ProtectedRoutes from "./components/ProtectedRoutes";
 import Login from "./pages/Login";
 
-
 function ProtectedLayout() {
   return (
-    <Box sx={{ display: "flex", backgroundColor: "#f6f6f7", width:"100dvw", }}>
-      <Box sx={{maxWidth:"20%"}}>
-      <Sidenav />
+    <Box
+      sx={{
+        display: "flex",
+        backgroundColor: "#f6f6f7",
+        width: "100dvw",
+        backgroundImage:
+          "url('https://www.sarkarishikshak.com/wp-content/uploads/2023/06/Meenakshi-Amman-Temple-Wiki.jpg')",
+        backgroundSize: "cover",
+        backgroundPosition: "center", // Center the image
+        backgroundRepeat: "no-repeat",
+        backgroundAttachment: "fixed"
+      }}
+    >
+      <Box sx={{ maxWidth: "20%", opacity: "0.9" }}>
+        <Sidenav />
       </Box>
-    
-      <Box sx={{ flex: 1, padding: 2, maxWidth:"80%"}}>
+
+      <Box sx={{ flex: 1, padding: 2, maxWidth: "80%", opacity:"0.9"}}>
         <Routes>
           <Route path="/" element={<DashboardOverview />} />
           <Route path="/new-member" element={<NewMember />} />
@@ -47,7 +58,7 @@ export default function App() {
   return (
     <BrowserRouter>
       <Routes>
-        {/* Public route for login */}
+     
         <Route path="/login" element={<Login />} />
 
         {/* Protected routes */}

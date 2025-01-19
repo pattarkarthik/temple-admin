@@ -7,7 +7,6 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
 import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
@@ -103,7 +102,8 @@ export default function Catalog() {
       padding: "10px",
       width:"100%",
       flexGrow: 2,
-   
+      borderRadius:"0px",
+      backgroundColor:"rgb(255, 231, 218)",
     }}
   >
       <Box height={10} />
@@ -149,17 +149,17 @@ export default function Catalog() {
       <Box height={10} />
       {
         <TableContainer
-          sx={{ overflowY: "auto", maxHeight: "650px", }}
+          sx={{ overflowY: "auto", maxHeight: "650px",  backgroundColor:"rgb(255, 231, 218)", }}
         >
           <Table stickyHeader aria-label="sticky table">
             <TableHead>
-              <TableRow>
+              <TableRow sx={{  backgroundColor:"rgb(255, 231, 218)",}}>
                 {fields.map((field) => (
-                  <TableCell key={field.name}>{field.label}</TableCell>
+                  <TableCell key={field.name} sx={{  backgroundColor:"rgb(255, 231, 218)",}}>{field.label}</TableCell>
                 ))}
               </TableRow>
             </TableHead>
-            <TableBody>
+            <TableBody sx={{  backgroundColor:"rgb(255, 231, 218)",}}>
               {filteredRows.map((row) => (
                 <TableRow key={row.serialNumber}>
                   {fields.map((field) => (

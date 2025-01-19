@@ -4,37 +4,37 @@ import Form from "../components/Form";
 import { Box, Paper, Typography } from "@mui/material";
 const inhouseFields = [
   // Pulli Id and Names
-  { label: "Pulli ID (Primary Key)", name: "pulliID", required: true },
-  { label: "Name", name: "name", required: true },
+  { label: "புல்லி ஐடி", name: "pulliID", required: true },
+  { label: "பெயர்", name: "name", required: true },
   {
-    label: "Whatsapp Number 1",
+    label: "வாட்ஸ்அப் எண் 1",
     name: "Whatsapp1",
     required: true,
     type: "tel",
   },
   {
-    label: "Native",
+    label: "பூர்வீகம்",
     name: "Native",
     required: true,
     type: "dropdown",
     options: [
-      { value: "valayapatti", label: "valayapatti" },
-      { value: "Kallal", label: "Kallal" },
-      { value: "Kandanur", label: "Kandanur" },
-      { value: "Karaikudi", label: "Karaikudi" },
-      { value: "Melaisivapuri", label: "Melaisivapuri" },
+      { label: "வலையபட்டி", value: "Valayapatti" },
+      { label: "கல்லல்", value: "Kallal" },
+      { label: "கண்டனூர்", value: "Kandanur" },
+      { label: "காரைக்குடி", value: "Karaikudi" },
+      { label: "மேலைசிவபுரி", value: "Melaisivapuri" },
     ],
   },
 
-  { label: "Manual Book Sr No", name: "manualBookSrNo", required: true },
+  { label: "கையேடு புத்தகம் Sr எண்", name: "manualBookSrNo", required: true },
   
-  { label: "Reamarks", name: "reamarks", required: false },
+  { label: "கருத்துக்கள்", name: "reamarks", required: false },
 
 ];
 const guestFields = [...inhouseFields,
-  { label: "Guest Name", name: "guestname", required: true },
-  { label: "Guest Whatsapp No", name: "guestWhatsappNo", required: true },
-  { label: "Guest Native", name: "guestNative", required: true },
+  { label: "விருந்தினர் பெயர்", name: "guestname", required: true },
+  { label: "விருந்தினர் வாட்ஸ்அப் எண்", name: "guestWhatsappNo", required: true },
+  { label: "விருந்தினர் பூர்வீகம்", name: "guestNative", required: true },
 
 ];
 function YelamEntry() {
