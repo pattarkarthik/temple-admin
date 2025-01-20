@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { formFields } from "../assets/Data";
+import { formProductData } from "../assets/ProductReceivedData";
 import Form from "../components/Form";
 import { Box, Typography } from "@mui/material";
 
@@ -23,7 +23,7 @@ function ProductReceivedForm() {
       >
         PRODUCT RECEVIED FORM
       </Typography>
-      <Form fields={formFields} onSubmit={handleFormSubmit} />
+      <Form fields={formProductData} onSubmit={handleFormSubmit} />
     </Box>
   );
 }

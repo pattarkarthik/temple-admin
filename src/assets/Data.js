@@ -240,6 +240,9 @@ export const data = [
     customColumn1AllowedNumber: 13,
   },
 ];
+
+
+
 export const columns = [
   { label: "Edit", dataKey: "edit" }, // New column for the Edit button
   { label: "Family Name", dataKey: "familyName" },
