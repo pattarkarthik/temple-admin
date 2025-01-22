@@ -12,15 +12,28 @@ import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
-import Profilepic from "../components/Profilepic.js";
 import api from "../api.js";
-import { editFormFields } from "../assets/Data.js";
+import { ProductData } from "../assets/ProductReceivedData.js";
 import CustomButton from "../components/CustomButton.js";
 import Loader from "../components/Loader";
 import CustomAlert from "../components/CustomAlert";
 import Input from "../components/Input.js";
+import { number } from "prop-types";
 
-function ProductReceivedList() {
+const ProductFields = [
+  // { label: "Edit", name: "edit" }, 
+  { label: "Yelam Porul", name: "yelamPorul",required:true },
+  { label: "Pulli Id", name: "pulliId",required:true },
+  { label: "Name", name: "name" },
+  { label: "Native", name: "native" },
+  { label: "Whatsup Number 1", name: "whatsupNumber1" },
+  { label: "Whatsup Number 2", name: "whatsupNumber2" },
+  { label: "Product Receiving Number", name: "productReceivingNumber" },
+  { label: "Product Value", name: "productValue" },
+  { label: "Remark", name: "remark" },
+];
+
+function ProductReceivedList( ) {
   const [openEditModal, setOpenEditModal] = useState(false);
 
   const [currentRow, setCurrentRow] = useState(null);
@@ -28,6 +41,7 @@ function ProductReceivedList() {
   const [loading, setLoading] = useState(false); // Loading state
   const [successAlert, setSuccessAlert] = useState(false); // Success alert state
   const [errorAlert, setErrorAlert] = useState(false); // Error alert state
+
 
   const openEdit = async (id) => {
     setLoading(true);
@@ -86,9 +100,15 @@ function ProductReceivedList() {
       }}
     >
       <Typography
-        sx={{
-          marginBottom: "10px",
-        }}
+       sx={{
+        marginBottom: "10px",
+        backgroundColor: "rgb(255, 231, 218)", 
+        color: "rgb(0, 0, 0)", 
+        padding: "10px", // Add padding for spacing
+        borderRadius: "4px", // Optional: Add rounded corners
+        fontWeight: "bold",
+        fontSize: "1.5rem",
+      }}
       >
         PRODUCT RECEIVED LIST
       </Typography>
@@ -110,15 +130,19 @@ function ProductReceivedList() {
       )}
 
       {/* TableList */}
-      <TableList openEdit={openEdit} />
+      <TableList
+        openEdit={null}
+        fields={ProductFields}
+        data={ProductData}
+      />
 
       {/* Edit Dialog */}
       <Dialog open={openEditModal} onClose={handleCloseModal}>
         <Box sx={{ width: "500px" }}>
-          <DialogTitle>Edit Member</DialogTitle>
+          <DialogTitle>Edit Product</DialogTitle>
           <DialogContent>
-            <Profilepic />
-            {editFormFields.map((field) => (
+            {/* <Profilepic /> */}
+            {ProductFields.map((field) => (
               <div key={field.name}>
                 {field.type === "dropdown" ? (
                   <FormControl fullWidth margin="normal">

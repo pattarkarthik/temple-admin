@@ -13,6 +13,8 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import Profilepic from "../components/Profilepic.js";
+import {newMembersData} from "../assets/Data.js";
+import { newMembersFields } from "../assets/Data.js";
 import api from "../api.js";
 import { editFormFields } from "../assets/Data.js";
 import CustomButton from "../components/CustomButton.js";
@@ -112,6 +114,12 @@ function AllMembers() {
       <Typography
         sx={{
           marginBottom: "10px",
+          backgroundColor: "rgb(255, 231, 218)", 
+          color: "rgb(0, 0, 0)", 
+          padding: "10px", // Add padding for spacing
+          borderRadius: "4px", // Optional: Add rounded corners
+          fontWeight: "bold",
+          fontSize: "1.5rem",
         }}
       >
         ALL MEMBERS
@@ -131,7 +139,8 @@ function AllMembers() {
       )}
 
       {/* TableList */}
-      <TableList openEdit={openEdit} />
+      <TableList openEdit={openEdit} data={newMembersData} fields={newMembersFields}  />
+
 
       {/* Edit Dialog */}
       <Dialog open={openEditModal} onClose={handleCloseModal}>

@@ -59,16 +59,16 @@ export default function App() {
     <BrowserRouter>
       <Routes>
      
-        {/* <Route path="/login" element={<Login />} /> */}
+        <Route path="/login" element={<Login />} /> 
 
         {/* Protected routes */}
-        {/* <Route
+         <Route
           element={
             <ProtectedRoutes>
               <ProtectedLayout />
             </ProtectedRoutes>
           }
-        > */}
+        >
           {/* Nested routes for protected pages */}
           <Route path="/new-member" element={<NewMember />} />
           <Route path="/all-members" element={<AllMembers />} />
@@ -83,7 +83,7 @@ export default function App() {
             path="/product-received-list"
             element={<ProductReceivedList />}
           />
-        {/* </Route> */}
+        </Route>
       </Routes>
     </BrowserRouter>
   );

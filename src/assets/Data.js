@@ -1,4 +1,4 @@
-export const data = [
+export const newMembersData = [
   {
     id: 1,
     familyName: "Smith",
@@ -241,8 +241,6 @@ export const data = [
   },
 ];
 
-
-
 export const columns = [
   { label: "Edit", dataKey: "edit" }, // New column for the Edit button
   { label: "Family Name", dataKey: "familyName" },
@@ -387,3 +385,131 @@ export const editFormFields = [
     ],
   },
 ];
+
+export const newMembersFields = [
+  { label: "Family Name", name: "familyName", required: true },
+  { label: "Name", name: "name", required: true },
+  { label: "Spouse Name", name: "spouseName", required: false },
+  { label: "Photo1", name: "photo1", required: false },
+  { label: "Photo2", name: "photo2", required: false },
+  { label: "Address Line 1", name: "addressLine1", required: true },
+  { label: "Address Line 2", name: "addressLine2", required: false },
+  { label: "City", name: "city", required: true },
+  { label: "State", name: "state", required: true },
+  { label: "Pin Code", name: "pinCode", required: true },
+  { label: "Mobile 1", name: "mobile1", required: true, type: "tel" },
+  {
+    label: "Mobile 2 (Spouse)",
+    name: "mobile2Spouse",
+    required: false,
+    type: "tel",
+  },
+  { label: "WhatsApp No 1", name: "whatsapp1", required: false, type: "tel" },
+  { label: "WhatsApp No 2", name: "whatsapp2", required: false, type: "tel" },
+  { label: "Email ID 1", name: "email1", required: true, type: "email" },
+  { label: "Email ID 2", name: "email2", required: false, type: "email" },
+  { label: "Pulli ID (Primary Key)", name: "pulliID", required: true },
+];
+
+export const YelamData=[
+  {
+    pulliId: "PA101",
+    name: "Ananya",
+    whatsupNumber1: 9876543210,
+    native: "Bengaluru",
+    manualBooksrNo: "MB001",
+    remark: "First-time visitor",
+    guestName: "",
+    guestNative: "",
+  },
+  {
+    pulliId: "PA102",
+    name: "Ravi",
+    whatsupNumber1: 9988776655,
+    native: "Chennai",
+    manualBooksrNo: "MB002",
+    remark: "Donor for temple renovation",
+    guestName: "Sunita",
+    guestNative: "Pune",
+  },
+  {
+    pulliId: "PA103",
+    name: "Meena",
+    whatsupNumber1: 9123456789,
+    native: "Madurai",
+    manualBooksrNo: "MB003",
+    remark: "Regular devotee",
+    guestName: "",
+    guestNative: "",
+  },
+  {
+    pulliId: "PA104",
+    name: "Arun",
+    whatsupNumber1: 9876543120,
+    native: "Mysuru",
+    manualBooksrNo: "MB004",
+    remark: "Special pooja participant",
+    guestName: "Neha",
+    guestNative: "Mumbai",
+  },
+  {
+    pulliId: "PA105",
+    name: "Lakshmi",
+    whatsupNumber1: 8765432109,
+    native: "Varanasi",
+    manualBooksrNo: "MB005",
+    remark: "Annual festival volunteer",
+    guestName: "",
+    guestNative: "",
+  },
+  {
+    pulliId: "PA106",
+    name: "Vishnu",
+    whatsupNumber1: 9933445566,
+    native: "Kochi",
+    manualBooksrNo: "MB006",
+    remark: "Festival sponsor",
+    guestName: "Gayathri",
+    guestNative: "Trichy",
+  },
+  {
+    pulliId: "PA107",
+    name: "Deepa",
+    whatsupNumber1: 9812345678,
+    native: "Ahmedabad",
+    manualBooksrNo: "MB007",
+    remark: "Devotional singer",
+    guestName: "",
+    guestNative: "",
+  },
+  {
+    pulliId: "PA108",
+    name: "Krishna",
+    whatsupNumber1: 9129876543,
+    native: "Lucknow",
+    manualBooksrNo: "MB008",
+    remark: "Regular pooja organizer",
+    guestName: "Shweta",
+    guestNative: "Coimbatore",
+  },
+  {
+    pulliId: "PA109",
+    name: "Priya",
+    whatsupNumber1: 9877654321,
+    native: "Pune",
+    manualBooksrNo: "MB009",
+    remark: "Special festival attendee",
+    guestName: "",
+    guestNative: "",
+  },
+  {
+    pulliId: "PA110",
+    name: "Gopal",
+    whatsupNumber1: 9988997766,
+    native: "Hyderabad",
+    manualBooksrNo: "MB010",
+    remark: "Temple maintenance contributor",
+    guestName: "Kavya",
+    guestNative: "Bengaluru",
+  }
+]
