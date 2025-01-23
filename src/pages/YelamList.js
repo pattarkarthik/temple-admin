@@ -13,13 +13,12 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import api from "../api.js";
-import { ProductData } from "../assets/ProductReceivedData.js";
 import CustomButton from "../components/CustomButton.js";
 import Loader from "../components/Loader";
 import CustomAlert from "../components/CustomAlert";
 import Input from "../components/Input.js";
 import { number } from "prop-types";
-import { YelamData } from "../assets/Data.js";
+import { YelamData,YelamEditFormFields } from "../assets/Data.js";
 
 const YelamFields = [
   // { label: "Edit", name: "edit" }, 
@@ -33,7 +32,7 @@ const YelamFields = [
   {label:"Guest Native",name:"guestNative"},
 ];
 
-function ProductReceivedList( ) {
+function YelamList(  ) {
   const [openEditModal, setOpenEditModal] = useState(false);
 
   const [currentRow, setCurrentRow] = useState(null);
@@ -79,6 +78,11 @@ function ProductReceivedList( ) {
     }));
   };
 
+  const openPaymentStatusModal = (row) => {
+    setCurrentRow(row); // Store the selected row data
+    setOpenEditModal(true); // Open the modal
+  };
+
   const handleSaveChanges = async () => {
     const changedFields = Object.keys(currentRow)
       .filter((key) => currentRow[key] !== originalRow[key])
@@ -105,12 +109,11 @@ function ProductReceivedList( ) {
         backgroundColor: "rgb(255, 231, 218)", 
         color: "rgb(0, 0, 0)", 
         padding: "10px", // Add padding for spacing
-        borderRadius: "4px", // Optional: Add rounded corners
         fontWeight: "bold",
         fontSize: "1.5rem",
       }}
       >
-        PRODUCT RECEIVED LIST
+        YELAM LIST
       </Typography>
 
       {loading && <Loader />}
@@ -119,30 +122,32 @@ function ProductReceivedList( ) {
       {successAlert && (
         <CustomAlert
           severity="success"
-          message="Member updated successfully!"
+          message="Payment updated successfully!"
         />
       )}
       {errorAlert && (
         <CustomAlert
           severity="error"
-          message="There was an error updating the member."
+          message="There was an error updating the payment."
         />
       )}
 
       {/* TableList */}
       <TableList
-        openEdit={null}
+        openEdit={openEdit}
         fields={YelamFields}
         data={YelamData}
+        showPaymentStatus={true} // Show "Payment Status" button
+        handlePaymentStatus={(row) => openPaymentStatusModal(row)} // Add handler
       />
 
       {/* Edit Dialog */}
       <Dialog open={openEditModal} onClose={handleCloseModal}>
         <Box sx={{ width: "500px" }}>
-          <DialogTitle>Edit Product</DialogTitle>
+          <DialogTitle>Payment Status</DialogTitle>
           <DialogContent>
             {/* <Profilepic /> */}
-            {YelamFields.map((field) => (
+            {YelamEditFormFields.map((field) => (
               <div key={field.name}>
                 {field.type === "dropdown" ? (
                   <FormControl fullWidth margin="normal">
@@ -201,4 +206,4 @@ function ProductReceivedList( ) {
   );
 }
 
-export default ProductReceivedList;
+export default YelamList;

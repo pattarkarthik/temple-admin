@@ -75,7 +75,6 @@ function ProductReceivedForm() {
         backgroundColor: "rgb(255, 231, 218)", 
         color: "rgb(0, 0, 0)", 
         padding: "10px", // Add padding for spacing
-        borderRadius: "4px", // Optional: Add rounded corners
         fontWeight: "bold",
         fontSize: "1.5rem",
       }}

@@ -13,7 +13,7 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import Profilepic from "../components/Profilepic.js";
-import {newMembersData} from "../assets/Data.js";
+import { newMembersData } from "../assets/Data.js";
 import { newMembersFields } from "../assets/Data.js";
 import api from "../api.js";
 import { editFormFields } from "../assets/Data.js";
@@ -23,8 +23,8 @@ import CustomAlert from "../components/CustomAlert";
 import Input from "../components/Input.js";
 
 function AllMembers() {
-  const [openEditModal, setOpenEditModal] = useState(false); 
-  const [currentRow, setCurrentRow] = useState(null); 
+  const [openEditModal, setOpenEditModal] = useState(false);
+  const [currentRow, setCurrentRow] = useState(null);
   const [originalRow, setOriginalRow] = useState(null); // Original data to compare changes
   const [loading, setLoading] = useState(false); // Loading state
   const [successAlert, setSuccessAlert] = useState(false); // Success alert state
@@ -47,8 +47,8 @@ function AllMembers() {
 
   const handleCloseModal = () => {
     setOpenEditModal(false);
-    setCurrentRow(null); 
-    setOriginalRow(null); 
+    setCurrentRow(null);
+    setOriginalRow(null);
   };
 
   const handleInputChange = (e) => {
@@ -114,10 +114,9 @@ function AllMembers() {
       <Typography
         sx={{
           marginBottom: "10px",
-          backgroundColor: "rgb(255, 231, 218)", 
-          color: "rgb(0, 0, 0)", 
+          backgroundColor: "rgb(255, 231, 218)",
+          color: "rgb(0, 0, 0)",
           padding: "10px", // Add padding for spacing
-          borderRadius: "4px", // Optional: Add rounded corners
           fontWeight: "bold",
           fontSize: "1.5rem",
         }}
@@ -129,7 +128,10 @@ function AllMembers() {
 
       {/* Alerts */}
       {successAlert && (
-        <CustomAlert severity="success" message="Member updated successfully!" />
+        <CustomAlert
+          severity="success"
+          message="Member updated successfully!"
+        />
       )}
       {errorAlert && (
         <CustomAlert
@@ -139,8 +141,12 @@ function AllMembers() {
       )}
 
       {/* TableList */}
-      <TableList openEdit={openEdit} data={newMembersData} fields={newMembersFields}  />
-
+      <TableList
+        openEdit={openEdit}
+        data={newMembersData}
+        fields={newMembersFields}
+        showEdit={true} // Show Edit Icon in AllMembers
+      />
 
       {/* Edit Dialog */}
       <Dialog open={openEditModal} onClose={handleCloseModal}>

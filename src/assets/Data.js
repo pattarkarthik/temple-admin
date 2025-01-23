@@ -327,6 +327,12 @@ export const formFields = [
   },
 ];
 
+export const YelamEditFormFields = [
+  {label:"Total Amount",name:"totalAmount"},
+  {label:"Pending Payment ",name:"paymentPending"},
+  {label:"Payment Status",name:"paymentStatus"},
+];
+
 export const editFormFields = [
   ...formFields,
   {
