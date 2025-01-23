@@ -59,10 +59,10 @@ export default function App() {
     <BrowserRouter>
       <Routes>
      
-        <Route path="/login" element={<Login />} />
+        <Route path="/login" element={<Login />} /> 
 
         {/* Protected routes */}
-        <Route
+         <Route
           element={
             <ProtectedRoutes>
               <ProtectedLayout />
