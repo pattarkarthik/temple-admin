@@ -2,6 +2,9 @@ import React, { useState } from "react";
 import RadioButton from "../components/RadioButton";
 import Form from "../components/Form";
 import { Box, Paper, Typography } from "@mui/material";
+
+
+
 const inhouseFields = [
   // Pulli Id and Names
   { label: "புல்லி ஐடி", name: "pulliID", required: true },
@@ -27,23 +30,24 @@ const inhouseFields = [
   },
 
   { label: "கையேடு புத்தகம் Sr எண்", name: "manualBookSrNo", required: true },
-  
-  { label: "கருத்துக்கள்", name: "reamarks", required: false },
 
+  { label: "கருத்துக்கள்", name: "remark", required: false },
 ];
-const guestFields = [...inhouseFields,
+const guestFields = [
+  ...inhouseFields,
   { label: "விருந்தினர் பெயர்", name: "guestname", required: true },
-  { label: "விருந்தினர் வாட்ஸ்அப் எண்", name: "guestWhatsappNo", required: true },
+  {
+    label: "விருந்தினர் வாட்ஸ்அப் எண்",
+    name: "guestWhatsappNo",
+    required: true,
+  },
   { label: "விருந்தினர் பூர்வீகம்", name: "guestNative", required: true },
-
 ];
 function YelamEntry() {
- 
   const [selectedValue, setSelectedValue] = useState("inhouse");
 
-
   const handleSelectionChange = (value) => {
-    console.log(value)
+    console.log(value);
     setSelectedValue(value);
   };
 
@@ -53,23 +57,35 @@ function YelamEntry() {
 
   return (
     <Box
-    sx={{
-      display: "flex",
-      padding: "10px",
-      flexDirection:"column",
-    }}
-  >
-    <Typography  sx={{
-    marginBottom:"10px"
-     
-    }}>YELAM ENTRY</Typography>
+      sx={{
+        display: "flex",
+        padding: "10px",
+        flexDirection: "column",
+      }}
+    >
+      <Typography
+        sx={{
+          marginBottom: "10px",
+          backgroundColor: "rgb(255, 231, 218)",
+          color: "rgb(0, 0, 0)",
+          padding: "10px", // Add padding for spacing
+          borderRadius: "4px", // Optional: Add rounded corners
+          fontWeight: "bold",
+          fontSize: "1.5rem",
+        }}
+      >
+        YELAM ENTRY
+      </Typography>
       <Box>
-        <RadioButton selectedValue={selectedValue} onSelectionChange={handleSelectionChange}/>
+        <RadioButton
+          selectedValue={selectedValue}
+          onSelectionChange={handleSelectionChange}
+        />
       </Box>
 
       <Form
         purpose="NewMember.js"
-        fields={selectedValue==="inhouse"? inhouseFields : guestFields}
+        fields={selectedValue === "inhouse" ? inhouseFields : guestFields}
         onSubmit={handleFormSubmit}
         title="Add New Member"
       />

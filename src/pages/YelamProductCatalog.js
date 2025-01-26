@@ -79,22 +79,28 @@ function YelamProductCatalog() {
   };
 
   return (
-     <Box
-          sx={{
-            display: "flex",
-            padding: "10px",
-            flexDirection:"column",
-          }}
-        >
-          <Typography  sx={{
-          marginBottom:"10px"
-           
-          }}>PRODUCT CATALOG</Typography>
-        <Catalog />
-        </Box>
-     
-      
-   
+    <Box
+      sx={{
+        display: "flex",
+        padding: "10px",
+        flexDirection: "column",
+      }}
+    >
+      <Typography
+        sx={{
+          marginBottom: "10px",
+          backgroundColor: "rgb(255, 231, 218)",
+          color: "rgb(0, 0, 0)",
+          padding: "10px", // Add padding for spacing
+          borderRadius: "4px", // Optional: Add rounded corners
+          fontWeight: "bold",
+          fontSize: "1.5rem",
+        }}
+      >
+        PRODUCT CATALOG
+      </Typography>
+      <Catalog />
+    </Box>
   );
 }
 

@@ -103,7 +103,7 @@ function Form({ fields = [], onSubmit, initialValues = {}, profilePic }) {
                     <FormControl fullWidth size="small" sx={{ marginTop: "10px",  display:"flex", flexDirection:"row"}}>
                       <Box sx={{width:"30%", fontSize:"17px"}}>{field.label}</Box>
                       <Select
-                      sx={{width:"65%", backgroundColor:"rgb(255, 250, 245)", borderRadius:"10px"}}
+                      sx={{width:"65%", backgroundColor:"rgb(255, 250, 245)"}}
                         value={formValues[field.name] || ""}
                         onChange={handleDropdownChange(field.name)}
                         name={field.name}

@@ -35,6 +35,7 @@ function Login() {
   return (
     <Box
     sx={{display:"flex",  
+        
       backgroundColor: "#f6f6f7",
       width: "100dvw",
       height:"100dvh",
@@ -45,7 +46,10 @@ function Login() {
       backgroundRepeat: "no-repeat",
       backgroundAttachment: "fixed"}}
     >
-    <form onSubmit={handleSubmit} className="form-container">
+    <form onSubmit={handleSubmit} className="form-container" style={{
+    border: '1px solid #ADD8E6 ', // Thin border
+    borderRadius: '5px',      // Optional rounded corners
+  }}>
       <Typography sx={{color:"white"}} variant="h4">Sign In</Typography>
       <input
         className="form-input"
@@ -66,7 +70,8 @@ function Login() {
       {loading ? (
         <CircularProgress />
       ) : (
-        <CustomButton inverted={false} label="Login" onClick={handleSubmit} type="submit"/>
+        <CustomButton inverted={false} label="Login" onClick={handleSubmit} type="submit" 
+        style={{textAlign: "center",borderRadius: "4px", alignItems: "center",margin: "0 auto", }}/>
        
       )}
     </form>

@@ -1,7 +1,79 @@
-import React from "react";
+import React, { useState } from "react";
+import {
+  Box,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  Typography,
+} from "@mui/material";
+import TableList from "../components/TableList.js";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogTitle from "@mui/material/DialogTitle";
+import api from "../util/api.js";
+import { ProductData } from "../assets/ProductReceivedData.js";
+import CustomButton from "../components/CustomButton.js";
+import Loader from "../components/Loader";
+
+const ProductFields = [
+  // { label: "Edit", name: "edit" },
+  { label: "Yelam Porul", name: "yelamPorul", required: true },
+  { label: "Pulli Id", name: "pulliId", required: true },
+  { label: "Name", name: "name" },
+  { label: "Native", name: "native" },
+  { label: "Whatsup Number 1", name: "whatsupNumber1" },
+  { label: "Whatsup Number 2", name: "whatsupNumber2" },
+  { label: "Product Receiving Number", name: "productReceivingNumber" },
+  { label: "Product Value", name: "productValue" },
+  { label: "Remark", name: "remark" },
+];
 
 function ProductReceivedList() {
-  return <div>Product Received List</div>;
+  const [openEditModal, setOpenEditModal] = useState(false);
+
+  const [currentRow, setCurrentRow] = useState(null);
+  const [originalRow, setOriginalRow] = useState(null); // Original data to compare changes
+  const [loading, setLoading] = useState(false); // Loading state
+  const [successAlert, setSuccessAlert] = useState(false); // Success alert state
+  const [errorAlert, setErrorAlert] = useState(false); // Error alert state
+
+  return (
+    <Box
+      sx={{
+        display: "flex",
+        padding: "10px",
+        flexDirection: "column",
+        overflow: "hidden",
+        maxWidth: "100%",
+      }}
+    >
+      <Typography
+        sx={{
+          marginBottom: "10px",
+          backgroundColor: "rgb(255, 231, 218)",
+          color: "rgb(0, 0, 0)",
+          padding: "10px", // Add padding for spacing
+          borderRadius: "4px", // Optional: Add rounded corners
+          fontWeight: "bold",
+          fontSize: "1.5rem",
+        }}
+      >
+        PRODUCT RECEIVED LIST
+      </Typography>
+
+      {loading && <Loader />}
+
+      {/* TableList */}
+      <TableList
+        openEdit={null}
+        showEdit={false} // No Edit Icon in ProductReceivedList
+        fields={ProductFields}
+        data={ProductData}
+      />
+    </Box>
+  );
 }
 
 export default ProductReceivedList;

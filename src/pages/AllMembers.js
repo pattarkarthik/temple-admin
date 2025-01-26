@@ -14,6 +14,8 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import Profilepic from "../components/Profilepic.js";
 import api from "../util/api.js"
+import { newMembersData } from "../assets/Data.js";
+import { newMembersFields } from "../assets/Data.js";
 import { editFormFields } from "../assets/Data.js";
 import CustomButton from "../components/CustomButton.js";
 import Loader from "../components/Loader";
@@ -44,7 +46,7 @@ function AllMembers() {
   };
 
   useEffect(() => {
-    fetchMembers();
+    // fetchMembers();
   }, []);
   const openEdit = async (id) => {
     setLoading(true);
@@ -126,10 +128,15 @@ function AllMembers() {
         overflow: "hidden",
         maxWidth: "100%",
       }}
-    >
+    > 
       <Typography
         sx={{
           marginBottom: "10px",
+          backgroundColor: "rgb(255, 231, 218)",
+          color: "rgb(0, 0, 0)",
+          padding: "10px", // Add padding for spacing
+          fontWeight: "bold",
+          fontSize: "1.5rem",
         }}
       >
         ALL MEMBERS
@@ -151,9 +158,12 @@ function AllMembers() {
         />
       )}
 
-      
-      <TableList openEdit={openEdit} data={data} />
-
+      <TableList
+        openEdit={openEdit}
+        data={newMembersData}
+        fields={newMembersFields}
+        showEdit={true} 
+      />
 
       <Dialog open={openEditModal} onClose={handleCloseModal}>
         <Box sx={{ width: "500px" }}>

@@ -14,58 +14,39 @@ import {
   FormControl,
   InputLabel,
   TextField,
+  Menu,
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
+import * as XLSX from "xlsx"; // For Excel export
+import jsPDF from "jspdf"; // For PDF export
+import autoTable from "jspdf-autotable"; // Import the plugin
+import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown"; // Import the arrow icon
+import CustomButton from "./CustomButton";
 
-const fields = [
-  { label: "Pulli ID (Primary Key)", name: "pulli_id", required: true },
-  { label: "Name", name: "name", required: true },
-  { label: "Family Name", name: "family_name", required: true },
-  { label: "Spouse Name", name: "spouse_name", required: false },
-  {
-    label: "Mobile 2 (Spouse)",
-    name: "mobile_2_spouse",
-    required: false,
-    type: "tel",
-  },
-  {
-    label: "WhatsApp No 1",
-    name: "whatsapp_no_1",
-    required: false,
-    type: "tel",
-  },
-  {
-    label: "WhatsApp No 2",
-    name: "whatsapp_no_2",
-    required: false,
-    type: "tel",
-  },
-  { label: "Address Line 1", name: "address_line_1", required: true },
-  { label: "Address Line 2", name: "address_line_2", required: false },
-  { label: "City", name: "city", required: true },
-  { label: "State", name: "state", required: true },
-  { label: "Pin Code", name: "pin_code", required: true },
-  { label: "Mobile 1", name: "mobile_1", required: true, type: "tel" },
-  { label: "Email ID 1", name: "email_id_1", required: true, type: "email" },
-  { label: "Email ID 2", name: "email_id_2", required: false, type: "email" },
-  { label: "Karai", name: "karai", required: true },
-  { label: "Native", name: "native", required: true },
-];
-
-export default function TableList({ openEdit, data }) {
+export default function TableList({
+  openEdit,
+  data,
+  fields,
+  showEdit = false,
+  showPaymentStatus = false, // Prop to toggle the "Payment Status" button
+  handlePaymentStatus, // New prop
+}) {
   const [rows, setRows] = useState([]);
   const [filteredRows, setFilteredRows] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const [anchorEl, setAnchorEl] = useState(null);
   const [filters, setFilters] = useState({
     city: "",
     karai: "",
     native: "",
   });
-
+  console.log(data)
   useEffect(() => {
     setRows(data);
     setFilteredRows(data);
-  }, [data]);
+  }, []);
+// }, [data]);
+
 
   const uniqueValues = (key) => [...new Set(data.map((row) => row[key]))];
 
@@ -73,6 +54,52 @@ export default function TableList({ openEdit, data }) {
     const updatedFilters = { ...filters, [key]: value };
     setFilters(updatedFilters);
     applyFilters(searchTerm, updatedFilters);
+  }
+  const openMenu = Boolean(anchorEl);
+  const handleMenuClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+  };
+
+  const exportToPDF = () => {
+    const doc = new jsPDF();
+
+    // Prepare headers and table data
+    const headers = [fields.map((field) => field.label)];
+    const tableData = filteredRows.map((row) =>
+      fields.map((field) => row[field.name] || "")
+    );
+
+    // Add Table using autoTable
+    autoTable(doc, {
+      head: headers,
+      body: tableData,
+      startY: 20, // Space from the top of the page
+      styles: { fontSize: 10 }, // Adjust font size if needed
+    });
+    doc.save("table_data.pdf");
+    handleMenuClose();
+  };
+
+  //defining export to excel
+
+  const exportToExcel = () => {
+    const worksheet = XLSX.utils.json_to_sheet(
+      filteredRows.map((row) => {
+        const result = {};
+        fields.forEach((field) => {
+          result[field.label] = row[field.name] || "";
+        });
+        return result;
+      })
+    );
+
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "TableData");
+    XLSX.writeFile(workbook, "table_data.xlsx");
+    handleMenuClose();
   };
 
   const handleSearch = (e) => {
@@ -98,7 +125,6 @@ export default function TableList({ openEdit, data }) {
 
     setFilteredRows(filtered);
   };
-
   return (
     <Paper
       sx={{
@@ -169,7 +195,27 @@ export default function TableList({ openEdit, data }) {
             ))}
           </Select>
         </FormControl>
+        <CustomButton inverted={false} label="Export" onclick={handleMenuClick} />
       </Box>
+
+      {/* Export Dropdown Menu */}
+      <Menu
+        anchorEl={anchorEl}
+        open={openMenu}
+        onClose={handleMenuClose}
+        sx={{
+          "& .MuiMenuItem-root": {
+            fontSize: "0.8rem", // Small font size for menu items
+          },
+          "& .MuiMenuItem-root:hover": {
+            backgroundColor: "rgb(240, 128, 1)", // Hover color
+            color: "white", // White font on hover
+          },
+        }}
+      >
+        <MenuItem onClick={exportToPDF}>Export to PDF</MenuItem>
+        <MenuItem onClick={exportToExcel}>Export to Excel</MenuItem>
+      </Menu>
 
       <TableContainer
         sx={{
@@ -179,15 +225,34 @@ export default function TableList({ openEdit, data }) {
         }}
       >
         <Table stickyHeader aria-label="sticky table">
-          <TableHead>
-            <TableRow >
-              <TableCell align="left"  sx={{
-          backgroundColor: "rgb(255, 231, 218)",
-        }}>Action</TableCell>
+          <TableHead sx={{ backgroundColor: "rgb(255, 231, 218)" }}>
+            <TableRow
+              sx={{
+                backgroundColor: "rgb(255, 231, 218)",
+              }}
+            >
+              {(showEdit || showPaymentStatus) && (
+                <TableCell
+                  align="left"
+                  style={{
+                    minWidth: "100px",
+                    backgroundColor: "rgb(255, 231, 218)",
+                    fontWeight: "bold",
+                  }}
+                >
+                  Action
+                </TableCell>
+              )}
               {fields.map((field) => (
-                <TableCell key={field.name} align="left"  sx={{
-                  backgroundColor: "rgb(255, 231, 218)",
-                }}>
+                <TableCell
+                  align="left"
+                  style={{
+                    minWidth: "100px",
+                    backgroundColor: "rgb(255, 231, 218)",
+                    fontWeight: "bold",
+                  }}
+                  key={field.name}
+                >
                   {field.label}
                 </TableCell>
               ))}
@@ -196,20 +261,39 @@ export default function TableList({ openEdit, data }) {
           <TableBody>
             {filteredRows.map((row) => (
               <TableRow hover role="checkbox" tabIndex={-1} key={row.id}>
-                <TableCell align="left"  sx={{
-          backgroundColor: "rgb(255, 231, 218)",
-        }}>
-                  <Stack spacing={2} direction="row">
-                    <EditIcon
-                      style={{
-                        fontSize: "20px",
-                        color: "#f08001",
-                        cursor: "pointer",
-                      }}
-                      onClick={() => openEdit(row.id)}
-                    />
-                  </Stack>
-                </TableCell>
+                {(showEdit || showPaymentStatus) && (
+                  <TableCell align="left">
+                    <Stack spacing={2} direction="row">
+                      {showEdit && openEdit && (
+                        <EditIcon
+                          style={{
+                            fontSize: "20px",
+                            color: "#f08001",
+                            cursor: "pointer",
+                          }}
+                          onClick={() => openEdit(row.id)}
+                        />
+                      )}
+                      {showPaymentStatus && (
+                        <button
+                          style={{
+                            fontSize: "14px",
+                            padding: "5px 10px",
+                            backgroundColor: "#f08001",
+                            color: "#fff",
+                            border: "none",
+                            borderRadius: "5px",
+                            cursor: "pointer",
+                          }}
+                          onClick={() => handlePaymentStatus(row)} // Pass the row data
+                        >
+                          Payment Status
+                        </button>
+                      )}
+                    
+                    </Stack>
+                  </TableCell>
+                )}
                 {fields.map((field) => (
                   <TableCell key={field.name} align="left">
                     {row[field.name]}
@@ -222,4 +306,5 @@ export default function TableList({ openEdit, data }) {
       </TableContainer>
     </Paper>
   );
+
 }
