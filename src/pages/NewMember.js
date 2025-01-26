@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Form from "../components/Form";
 import { Box,  Typography } from "@mui/material";
-import api from "../api";
+import api from "../util/api.js"
 import { formFields } from "../assets/Data";
 import Loader from "../components/Loader";
 import CustomAlert from "../components/CustomAlert";
@@ -47,19 +47,14 @@ function NewMember() {
        
       }}>PULLI MEMBER REGISTRATION</Typography>
       <Form
-      
         fields={formFields}
         onSubmit={(formData) => handleFormSubmit(formData)}
         profilePic ={true}
       />
      
     {loading && <Loader />}
-     {successAlert && (
-        <CustomAlert  severity="success" message="Member added successfully!" />
-      )}
-      {errorAlert && (
-        <CustomAlert severity="error" message="There was an error adding the member." />
-      )}
+        <CustomAlert  openAlert = {successAlert} message="Member added successfully!" />
+        <CustomAlert openAlert={errorAlert} message="There was an error adding the member. Please try again" />
     </Box>
   );
 }

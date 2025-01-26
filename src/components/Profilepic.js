@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Button, Avatar, Box, Typography } from "@mui/material";
 
-export default function Profilepic({ onFileChange }) {
+export default function Profilepic({ onFileChange, title }) {
   const [profilePicture, setProfilePicture] = useState(null);
   const [preview, setPreview] = useState(null);
 
@@ -38,7 +38,7 @@ export default function Profilepic({ onFileChange }) {
         mt: 4,
       }}
     >
-      <Typography variant="h6">Upload Profile Picture</Typography>
+      <Typography variant="h6">{title}</Typography>
       <Avatar
         src={preview || ""}
         sx={{ width: 100, height: 100, bgcolor: "grey.300" }}

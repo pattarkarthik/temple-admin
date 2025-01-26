@@ -1,66 +1,102 @@
-import { useState } from "react";
-import Paper from "@mui/material/Paper";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import Box from "@mui/material/Box";
-import Stack from "@mui/material/Stack";
-import { data } from "../assets/Data";
+import { useEffect, useState } from "react";
+import {
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Box,
+  Stack,
+  Select,
+  MenuItem,
+  FormControl,
+  InputLabel,
+  TextField,
+} from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
-import DeleteIcon from "@mui/icons-material/Delete";
-import TextField from "@mui/material/TextField";
-import Autocomplete from "@mui/material/Autocomplete";
-import api from "../api";
 
 const fields = [
-  { label: "Family Name", name: "familyName", required: true },
+  { label: "Pulli ID (Primary Key)", name: "pulli_id", required: true },
   { label: "Name", name: "name", required: true },
-  { label: "Spouse Name", name: "spouseName", required: false },
-  { label: "Photo1", name: "photo1", required: false },
-  { label: "Photo2", name: "photo2", required: false },
-  { label: "Address Line 1", name: "addressLine1", required: true },
-  { label: "Address Line 2", name: "addressLine2", required: false },
-  { label: "City", name: "city", required: true },
-  { label: "State", name: "state", required: true },
-  { label: "Pin Code", name: "pinCode", required: true },
-  { label: "Mobile 1", name: "mobile1", required: true, type: "tel" },
+  { label: "Family Name", name: "family_name", required: true },
+  { label: "Spouse Name", name: "spouse_name", required: false },
   {
     label: "Mobile 2 (Spouse)",
-    name: "mobile2Spouse",
+    name: "mobile_2_spouse",
     required: false,
     type: "tel",
   },
-  { label: "WhatsApp No 1", name: "whatsapp1", required: false, type: "tel" },
-  { label: "WhatsApp No 2", name: "whatsapp2", required: false, type: "tel" },
-  { label: "Email ID 1", name: "email1", required: true, type: "email" },
-  { label: "Email ID 2", name: "email2", required: false, type: "email" },
-  { label: "Pulli ID (Primary Key)", name: "pulliID", required: true },
+  {
+    label: "WhatsApp No 1",
+    name: "whatsapp_no_1",
+    required: false,
+    type: "tel",
+  },
+  {
+    label: "WhatsApp No 2",
+    name: "whatsapp_no_2",
+    required: false,
+    type: "tel",
+  },
+  { label: "Address Line 1", name: "address_line_1", required: true },
+  { label: "Address Line 2", name: "address_line_2", required: false },
+  { label: "City", name: "city", required: true },
+  { label: "State", name: "state", required: true },
+  { label: "Pin Code", name: "pin_code", required: true },
+  { label: "Mobile 1", name: "mobile_1", required: true, type: "tel" },
+  { label: "Email ID 1", name: "email_id_1", required: true, type: "email" },
+  { label: "Email ID 2", name: "email_id_2", required: false, type: "email" },
+  { label: "Karai", name: "karai", required: true },
+  { label: "Native", name: "native", required: true },
 ];
 
-export default function TableList({ openEdit }) {
-  const [rows, setRows] = useState(data);
-  const [filteredRows, setFilteredRows] = useState(data);
+export default function TableList({ openEdit, data }) {
+  const [rows, setRows] = useState([]);
+  const [filteredRows, setFilteredRows] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [filters, setFilters] = useState({
+    city: "",
+    karai: "",
+    native: "",
+  });
 
-  const deleteUser = async (id) => {
-    try {
-      const res = await api.delete(`/api/members/${id}/`);
-      if (res.status === 204) {
-        alert("Member Deleted successfully");
-      }
-    } catch (error) {
-    } finally {
-    }
+  useEffect(() => {
+    setRows(data);
+    setFilteredRows(data);
+  }, [data]);
+
+  const uniqueValues = (key) => [...new Set(data.map((row) => row[key]))];
+
+  const handleFilterChange = (key, value) => {
+    const updatedFilters = { ...filters, [key]: value };
+    setFilters(updatedFilters);
+    applyFilters(searchTerm, updatedFilters);
   };
 
-  const filterData = (selected) => {
-    if (selected) {
-      setFilteredRows(rows.filter((row) => row.id === selected.id));
-    } else {
-      setFilteredRows(rows);
-    }
+  const handleSearch = (e) => {
+    const value = e.target.value.toLowerCase();
+    setSearchTerm(value);
+    applyFilters(value, filters);
+  };
+
+  const applyFilters = (search, filters) => {
+    const { city, karai, native } = filters;
+    const filtered = rows.filter((row) => {
+      const matchesSearch =
+        !search ||
+        fields.some((field) =>
+          String(row[field.name]).toLowerCase().includes(search)
+        );
+      const matchesCity = !city || row.city === city;
+      const matchesKarai = !karai || row.karai === karai;
+      const matchesNative = !native || row.native === native;
+
+      return matchesSearch && matchesCity && matchesKarai && matchesNative;
+    });
+
+    setFilteredRows(filtered);
   };
 
   return (
@@ -69,52 +105,100 @@ export default function TableList({ openEdit }) {
         display: "flex",
         flexDirection: "column",
         padding: "10px",
-        width:"100%",
+        width: "100%",
         flexGrow: 2,
-        borderRadius:"0px",
-     backgroundColor:"rgb(255, 231, 218)"
+        borderRadius: "0px",
+        backgroundColor: "rgb(255, 231, 218)",
       }}
     >
-      <Autocomplete
-        disablePortal
-        id="combo-box-demo"
-        options={rows}
-        sx={{ width: 300, backgroundColor:"rgb(255, 231, 218)" }}
-        onChange={(e, selected) => filterData(selected)}
-        getOptionLabel={(option) => option.name || "Unnamed Member"}
-        renderInput={(params) => (
-          <TextField {...params} size="small" label="Search Member" />
-        )}
-      />
-      <Box height={10} />
+      {/* Filters */}
+      <Box sx={{ display: "flex", gap: "16px", marginBottom: "10px" }}>
+        <TextField
+          size="small"
+          label="Search Member"
+          value={searchTerm}
+          onChange={handleSearch}
+          sx={{ width: "150px" }}
+        />
+        <FormControl size="small" sx={{ minWidth: "150px" }}>
+          <InputLabel id="demo-select-small-label">City</InputLabel>
+          <Select
+            labelId="demo-select-small-label"
+            id="demo-select-small"
+            value={filters.city}
+            size="small"
+            onChange={(e) => handleFilterChange("city", e.target.value)}
+          >
+            <MenuItem value="">All</MenuItem>
+            {uniqueValues("city").map((city, idx) => (
+              <MenuItem key={idx} value={city}>
+                {city}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+        <FormControl size="small" sx={{ minWidth: "150px" }}>
+          <InputLabel id="demo-select-small-label">Karai</InputLabel>
+          <Select
+            labelId="demo-select-small-label"
+            id="demo-select-small"
+            value={filters.karai}
+            onChange={(e) => handleFilterChange("karai", e.target.value)}
+          >
+            <MenuItem value="">All</MenuItem>
+            {uniqueValues("karai").map((karai, idx) => (
+              <MenuItem key={idx} value={karai}>
+                {karai}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+        <FormControl size="small" sx={{ minWidth: "150px" }}>
+          <InputLabel id="demo-select-small-label">Native</InputLabel>
+          <Select
+            labelId="demo-select-small-label"
+            id="demo-select-small"
+            value={filters.native}
+            onChange={(e) => handleFilterChange("native", e.target.value)}
+          >
+            <MenuItem value="">All</MenuItem>
+            {uniqueValues("native").map((native, idx) => (
+              <MenuItem key={idx} value={native}>
+                {native}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+      </Box>
+
       <TableContainer
         sx={{
           maxHeight: "650px",
-          width: "100%", 
-          backgroundColor:"rgb(255, 231, 218)"
+          width: "100%",
+          backgroundColor: "rgb(255, 231, 218)",
         }}
       >
         <Table stickyHeader aria-label="sticky table">
-          <TableHead sx={{backgroundColor:"rgb(255, 231, 218)"}}>
-            <TableRow sx={{ backgroundColor:"rgb(255, 231, 218)"}}>
-              <TableCell align="left" style={{ minWidth: "100px",backgroundColor: "rgb(255, 231, 218)"}}>
-                Action
-              </TableCell>
+          <TableHead>
+            <TableRow >
+              <TableCell align="left"  sx={{
+          backgroundColor: "rgb(255, 231, 218)",
+        }}>Action</TableCell>
               {fields.map((field) => (
-                <TableCell
-                  align="left"
-                  style={{ minWidth: "100px",backgroundColor: "rgb(255, 231, 218)" }}
-                  key={field.name}
-                >
+                <TableCell key={field.name} align="left"  sx={{
+                  backgroundColor: "rgb(255, 231, 218)",
+                }}>
                   {field.label}
                 </TableCell>
               ))}
             </TableRow>
           </TableHead>
-          <TableBody sx={{ maxHeight: "100px" }}>
+          <TableBody>
             {filteredRows.map((row) => (
               <TableRow hover role="checkbox" tabIndex={-1} key={row.id}>
-                <TableCell align="left">
+                <TableCell align="left"  sx={{
+          backgroundColor: "rgb(255, 231, 218)",
+        }}>
                   <Stack spacing={2} direction="row">
                     <EditIcon
                       style={{
@@ -123,14 +207,6 @@ export default function TableList({ openEdit }) {
                         cursor: "pointer",
                       }}
                       onClick={() => openEdit(row.id)}
-                    />
-                    <DeleteIcon
-                      style={{
-                        fontSize: "20px",
-                        color: "#f08001",
-                        cursor: "pointer",
-                      }}
-                      onClick={() => deleteUser(row.id)}
                     />
                   </Stack>
                 </TableCell>

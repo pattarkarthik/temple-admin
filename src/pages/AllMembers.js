@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   FormControl,
@@ -13,7 +13,7 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import Profilepic from "../components/Profilepic.js";
-import api from "../api.js";
+import api from "../util/api.js"
 import { editFormFields } from "../assets/Data.js";
 import CustomButton from "../components/CustomButton.js";
 import Loader from "../components/Loader";
@@ -21,13 +21,31 @@ import CustomAlert from "../components/CustomAlert";
 import Input from "../components/Input.js";
 
 function AllMembers() {
-  const [openEditModal, setOpenEditModal] = useState(false); 
-  const [currentRow, setCurrentRow] = useState(null); 
+  const [openEditModal, setOpenEditModal] = useState(false);
+  const [data, setData] = useState([]);
+  const [currentRow, setCurrentRow] = useState(null);
   const [originalRow, setOriginalRow] = useState(null); // Original data to compare changes
   const [loading, setLoading] = useState(false); // Loading state
   const [successAlert, setSuccessAlert] = useState(false); // Success alert state
   const [errorAlert, setErrorAlert] = useState(false); // Error alert state
 
+  const fetchMembers = async () => {
+    try {
+      const res = await api.get(`/api/members/`);
+      setData(res.data);
+      setLoading(true);
+    } catch (error) {
+      setLoading(false);
+      setErrorAlert(true);
+      setTimeout(() => setErrorAlert(false), 5000); // Auto-dismiss alert
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchMembers();
+  }, []);
   const openEdit = async (id) => {
     setLoading(true);
     try {
@@ -45,8 +63,8 @@ function AllMembers() {
 
   const handleCloseModal = () => {
     setOpenEditModal(false);
-    setCurrentRow(null); 
-    setOriginalRow(null); 
+    setCurrentRow(null);
+    setOriginalRow(null);
   };
 
   const handleInputChange = (e) => {
@@ -121,7 +139,10 @@ function AllMembers() {
 
       {/* Alerts */}
       {successAlert && (
-        <CustomAlert severity="success" message="Member updated successfully!" />
+        <CustomAlert
+          severity="success"
+          message="Member updated successfully!"
+        />
       )}
       {errorAlert && (
         <CustomAlert
@@ -130,10 +151,10 @@ function AllMembers() {
         />
       )}
 
-      {/* TableList */}
-      <TableList openEdit={openEdit} />
+      
+      <TableList openEdit={openEdit} data={data} />
 
-      {/* Edit Dialog */}
+
       <Dialog open={openEditModal} onClose={handleCloseModal}>
         <Box sx={{ width: "500px" }}>
           <DialogTitle>Edit Member</DialogTitle>
@@ -142,9 +163,24 @@ function AllMembers() {
             {editFormFields.map((field) => (
               <div key={field.name}>
                 {field.type === "dropdown" ? (
-                  <FormControl fullWidth margin="normal">
-                    <InputLabel>{field.label}</InputLabel>
+                  <FormControl
+                    fullWidth
+                    size="small"
+                    sx={{
+                      marginTop: "10px",
+                      display: "flex",
+                      flexDirection: "row",
+                    }}
+                  >
+                    <Box sx={{ width: "30%", fontSize: "17px" }}>
+                      {field.label}
+                    </Box>
                     <Select
+                      sx={{
+                        width: "65%",
+                        backgroundColor: "rgb(255, 250, 245)",
+                        borderRadius: "10px",
+                      }}
                       value={currentRow ? currentRow[field.name] || "" : ""}
                       onChange={handleDropdownChange(field.name)}
                       label={field.label}

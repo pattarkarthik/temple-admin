@@ -13,7 +13,9 @@ import Input from "./Input";
 
 function Form({ fields = [], onSubmit, initialValues = {}, profilePic }) {
   const [formValues, setFormValues] = useState(initialValues);
-  const [uploadedProfilePic, setUploadedProfilePic] = useState(null); // To hold the photo file
+  const [uploadedHusbandProfilePic, setUploadedHusbandProfilePic] = useState(null); 
+  const [uploadedWifeProfilePic, setUploadedWifeProfilePic] = useState(null); 
+
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -27,8 +29,12 @@ function Form({ fields = [], onSubmit, initialValues = {}, profilePic }) {
     }));
   };
 
-  const handleFileChange = (file) => {
-    setUploadedProfilePic(file);
+  const handleFileChange = (file, type) => {
+    if (type === "husband") {
+      setUploadedHusbandProfilePic(file);
+    } else if (type === "wife") {
+      setUploadedWifeProfilePic(file);
+    }
   };
 
   const handleSubmit =  async (e) => {
@@ -43,20 +49,25 @@ function Form({ fields = [], onSubmit, initialValues = {}, profilePic }) {
       }
     });
 
-    if (uploadedProfilePic) {
-      data.append("photo", uploadedProfilePic); // "photo" should match the field name in your Django model
+    if (uploadedHusbandProfilePic) {
+      data.append("husband_photo", uploadedHusbandProfilePic); // "photo" should match the field name in your Django model
+    }
+    if (uploadedWifeProfilePic) {
+      data.append("wife_photo", uploadedWifeProfilePic); // "photo" should match the field name in your Django model
     }
     const isSuccessful = await onSubmit(data);
 
     if (isSuccessful) {
       setFormValues(initialValues); // Reset all fields to initial values
-      setUploadedProfilePic(null); // Clear profile picture
+      setUploadedHusbandProfilePic(null); 
+      setUploadedWifeProfilePic(null)
     }
   };
 
   const handleCancel = () => {
     setFormValues(initialValues); // Reset form fields to initialValues
-    setUploadedProfilePic(null); // Clear the profile picture
+    setUploadedHusbandProfilePic(null); 
+      setUploadedWifeProfilePic(null)
   };
 
   return (
@@ -71,9 +82,15 @@ function Form({ fields = [], onSubmit, initialValues = {}, profilePic }) {
         <Grid container spacing={2} direction="row">
           {/* Profile Picture at the Top */}
           {profilePic && (
-            <Grid item xs={12} style={{ textAlign: "center" }}>
-              <Profilepic onFileChange={handleFileChange} />
-            </Grid>
+            <Grid item xs={12} style={{ textAlign: "center",  display:"flex", justifyContent:"space-around"}}>
+              <Profilepic
+                onFileChange={(file) => handleFileChange(file, "husband")}
+                title={"Upload Husband Photo"}
+              />
+              <Profilepic
+                onFileChange={(file) => handleFileChange(file, "wife")}
+                title={"Upload Wife Photo"}
+              /> </Grid>
             
           )}
 
