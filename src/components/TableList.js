@@ -62,8 +62,6 @@ export default function TableList({
       startY: 20, // Space from the top of the page
       styles: { fontSize: 10 }, // Adjust font size if needed
     });
-
-    // Save the PDF
     doc.save("table_data.pdf");
     handleMenuClose();
   };
