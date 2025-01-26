@@ -4,7 +4,6 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { createTheme } from "@mui/material/styles";
 import { ThemeProvider } from "@mui/material/styles";
-import ErrorBoundary from "./components/ErrorBoundary";
 
 const rootElement = document.getElementById("root");
 const root = createRoot(rootElement);
@@ -35,11 +34,10 @@ const theme = createTheme({
 export default theme;
 
 root.render(
-  <ErrorBoundary>
     <ThemeProvider theme={theme}>
       <App />
     </ThemeProvider>
-  </ErrorBoundary>,
+  ,
   document.getElementById("root")
 );
 
