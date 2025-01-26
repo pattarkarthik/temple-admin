@@ -18,21 +18,22 @@ import Loader from "../components/Loader";
 import CustomAlert from "../components/CustomAlert";
 import Input from "../components/Input.js";
 import { number } from "prop-types";
-import { YelamData,YelamEditFormFields } from "../assets/Data.js";
+import { YelamData, YelamEditFormFields } from "../assets/Data.js";
+import TopHeaderTitle from "../components/TopHeaderTitle.js";
 
 const YelamFields = [
-  // { label: "Edit", name: "edit" }, 
+  { label: "Balance", name: "balance" },
   { label: "Pulli Id", name: "pulliId" },
   { label: "Name", name: "name" },
   { label: "Whatsup Number 1", name: "whatsupNumber1" },
   { label: "Native", name: "native" },
-  {label:"Manual Book Sr No", name:"manualBooksrNo"},
-  {label:"Remark",name:"remark"},
-  {label:"Guest Name",name:"guestName"},
-  {label:"Guest Native",name:"guestNative"},
+  { label: "Manual Book Sr No", name: "manualBooksrNo" },
+  { label: "Remark", name: "remark" },
+  { label: "Guest Name", name: "guestName" },
+  { label: "Guest Native", name: "guestNative" },
 ];
 
-function YelamList(  ) {
+function YelamList() {
   const [openEditModal, setOpenEditModal] = useState(false);
 
   const [currentRow, setCurrentRow] = useState(null);
@@ -40,7 +41,6 @@ function YelamList(  ) {
   const [loading, setLoading] = useState(false); // Loading state
   const [successAlert, setSuccessAlert] = useState(false); // Success alert state
   const [errorAlert, setErrorAlert] = useState(false); // Error alert state
-
 
   const openEdit = async (id) => {
     setLoading(true);
@@ -71,13 +71,6 @@ function YelamList(  ) {
     }));
   };
 
-  const handleDropdownChange = (name) => (event) => {
-    setCurrentRow((prevState) => ({
-      ...prevState,
-      [name]: event.target.value,
-    }));
-  };
-
   const openPaymentStatusModal = (row) => {
     setCurrentRow(row); // Store the selected row data
     setOpenEditModal(true); // Open the modal
@@ -103,19 +96,7 @@ function YelamList(  ) {
         maxWidth: "100%",
       }}
     >
-      <Typography
-       sx={{
-        marginBottom: "10px",
-        backgroundColor: "rgb(255, 231, 218)", 
-        color: "rgb(0, 0, 0)", 
-        padding: "10px", // Add padding for spacing
-        fontWeight: "bold",
-        fontSize: "1.5rem",
-      }}
-      >
-        YELAM LIST
-      </Typography>
-
+      <TopHeaderTitle pagename={"YELAM LIST"} />
       {loading && <Loader />}
 
       {/* Alerts */}
@@ -131,8 +112,6 @@ function YelamList(  ) {
           message="There was an error updating the payment."
         />
       )}
-
-      {/* TableList */}
       <TableList
         openEdit={openEdit}
         fields={YelamFields}
@@ -144,39 +123,21 @@ function YelamList(  ) {
       {/* Edit Dialog */}
       <Dialog open={openEditModal} onClose={handleCloseModal}>
         <Box sx={{ width: "500px" }}>
-          <DialogTitle>Payment Status</DialogTitle>
+          <DialogTitle>Edit Payment Details</DialogTitle>
           <DialogContent>
-            {/* <Profilepic /> */}
             {YelamEditFormFields.map((field) => (
-              <div key={field.name}>
-                {field.type === "dropdown" ? (
-                  <FormControl fullWidth margin="normal">
-                    <InputLabel>{field.label}</InputLabel>
-                    <Select
-                      value={currentRow ? currentRow[field.name] || "" : ""}
-                      onChange={handleDropdownChange(field.name)}
-                      label={field.label}
-                    >
-                      {field.options.map((option) => (
-                        <MenuItem key={option.value} value={option.value}>
-                          {option.label}
-                        </MenuItem>
-                      ))}
-                    </Select>
-                  </FormControl>
-                ) : (
-                  <Input
-                    label={field.label}
-                    name={field.name}
-                    value={currentRow ? currentRow[field.name] || "" : ""}
-                    onChange={handleInputChange}
-                    fullWidth
-                    margin="normal"
-                    required={field.required}
-                    type={field.type || "text"}
-                  />
-                )}
-              </div>
+              <Box key={field.name}>
+                <Input
+                  label={field.label}
+                  name={field.name}
+                  value={currentRow ? currentRow[field.name] || "" : ""}
+                  onChange={handleInputChange}
+                  fullWidth
+                  margin="normal"
+                  required={field.required}
+                  type={field.type || "text"}
+                />
+              </Box>
             ))}
           </DialogContent>
           <DialogActions>

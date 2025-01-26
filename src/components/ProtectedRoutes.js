@@ -1,6 +1,6 @@
 import { jwtDecode } from "jwt-decode";
 import api from "../util/api";
-import { REFRESH_TOKEN, ACCESS_TOKEN } from "../Constants";
+import { REFRESH_TOKEN, ACCESS_TOKEN } from "../util/constants";
 import { useState, useEffect } from "react";
 
 function ProtectedRoute({ children }) {

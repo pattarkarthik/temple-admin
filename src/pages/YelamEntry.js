@@ -1,37 +1,24 @@
 import React, { useState } from "react";
 import RadioButton from "../components/RadioButton";
 import Form from "../components/Form";
-import { Box, Paper, Typography } from "@mui/material";
-
-
+import { Box } from "@mui/material";
+import TopHeaderTitle from "../components/TopHeaderTitle";
 
 const inhouseFields = [
-  // Pulli Id and Names
-  { label: "புல்லி ஐடி", name: "pulliID", required: true },
+  { label: "புல்லி ஐடி", name: "pulli_id", required: true },
   { label: "பெயர்", name: "name", required: true },
+  { label: "தொலைபேசி", name: "mobile_1", required: true },
   {
-    label: "வாட்ஸ்அப் எண் 1",
-    name: "Whatsapp1",
+    label: "குடும்பப் பெயர்",
+    name: "family_name",
     required: true,
     type: "tel",
   },
-  {
-    label: "பூர்வீகம்",
-    name: "Native",
-    required: true,
-    type: "dropdown",
-    options: [
-      { label: "வலையபட்டி", value: "Valayapatti" },
-      { label: "கல்லல்", value: "Kallal" },
-      { label: "கண்டனூர்", value: "Kandanur" },
-      { label: "காரைக்குடி", value: "Karaikudi" },
-      { label: "மேலைசிவபுரி", value: "Melaisivapuri" },
-    ],
-  },
-
-  { label: "கையேடு புத்தகம் Sr எண்", name: "manualBookSrNo", required: true },
-
-  { label: "கருத்துக்கள்", name: "remark", required: false },
+  { label: "பொருள்", name: "product", required: true },
+  { label: "ஏல தொகை", name: "bid_amount", required: true },
+  { label: "இருப்பு தொகை", name: "balance_amount", required: true },
+  { label: "கையேடு புத்தகம் Sr எண்", name: "manual_book_srno", required: true },
+  { label: "கருத்துக்கள்", name: "remarks", required: false },
 ];
 const guestFields = [
   ...inhouseFields,
@@ -63,19 +50,7 @@ function YelamEntry() {
         flexDirection: "column",
       }}
     >
-      <Typography
-        sx={{
-          marginBottom: "10px",
-          backgroundColor: "rgb(255, 231, 218)",
-          color: "rgb(0, 0, 0)",
-          padding: "10px", // Add padding for spacing
-          borderRadius: "4px", // Optional: Add rounded corners
-          fontWeight: "bold",
-          fontSize: "1.5rem",
-        }}
-      >
-        YELAM ENTRY
-      </Typography>
+      <TopHeaderTitle pagename={"YELAM ENTRY"} />
       <Box>
         <RadioButton
           selectedValue={selectedValue}
@@ -84,7 +59,6 @@ function YelamEntry() {
       </Box>
 
       <Form
-        purpose="NewMember.js"
         fields={selectedValue === "inhouse" ? inhouseFields : guestFields}
         onSubmit={handleFormSubmit}
         title="Add New Member"

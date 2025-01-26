@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import RadioButton from "../components/RadioButton";
 import Form from "../components/Form";
 import { Box, Typography } from "@mui/material";
+import TopHeaderTitle from "../components/TopHeaderTitle";
 
 const inhouseFields = [
   // Pulli Id and Names
@@ -69,18 +70,7 @@ function ProductReceivedForm() {
         flexDirection: "column",
       }}
     >
-      <Typography
-      sx={{
-        marginBottom: "10px",
-        backgroundColor: "rgb(255, 231, 218)", 
-        color: "rgb(0, 0, 0)", 
-        padding: "10px", // Add padding for spacing
-        fontWeight: "bold",
-        fontSize: "1.5rem",
-      }}
-      >
-        PRODUCT RECEVIED FORM
-      </Typography>
+      <TopHeaderTitle pagename={" PRODUCT RECEVIED FORM"} />
       <Box>
         <RadioButton
           selectedValue={selectedValue}

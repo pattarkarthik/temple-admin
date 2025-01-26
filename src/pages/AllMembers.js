@@ -1,26 +1,28 @@
 import React, { useEffect, useState } from "react";
-import {
-  Box,
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Select,
-  Typography,
-} from "@mui/material";
+import { Box, FormControl, MenuItem, Select } from "@mui/material";
 import TableList from "../components/TableList.js";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import Profilepic from "../components/Profilepic.js";
-import api from "../util/api.js"
-import { newMembersData } from "../assets/Data.js";
-import { newMembersFields } from "../assets/Data.js";
-import { editFormFields } from "../assets/Data.js";
+import {
+  newMembersData,
+  allMembersFilter,
+  newMembersFields,
+  editFormFields,
+} from "../assets/Data.js";
 import CustomButton from "../components/CustomButton.js";
 import Loader from "../components/Loader";
 import CustomAlert from "../components/CustomAlert";
 import Input from "../components/Input.js";
+import TopHeaderTitle from "../components/TopHeaderTitle.js";
+import { get, update } from "../util/fetchUtils.js";
+import {
+  ALL_MEMBERS_GET_URL,
+  NEW_MEMBER_GET_URL,
+  NEW_MEMBER_UPDATE_URL,
+} from "../util/constants.js";
 
 function AllMembers() {
   const [openEditModal, setOpenEditModal] = useState(false);
@@ -31,9 +33,13 @@ function AllMembers() {
   const [successAlert, setSuccessAlert] = useState(false); // Success alert state
   const [errorAlert, setErrorAlert] = useState(false); // Error alert state
 
+  useEffect(() => {
+    fetchMembers();
+  }, []);
+
   const fetchMembers = async () => {
     try {
-      const res = await api.get(`/api/members/`);
+      const res = await get(ALL_MEMBERS_GET_URL());
       setData(res.data);
       setLoading(true);
     } catch (error) {
@@ -45,13 +51,11 @@ function AllMembers() {
     }
   };
 
-  useEffect(() => {
-    // fetchMembers();
-  }, []);
   const openEdit = async (id) => {
     setLoading(true);
     try {
-      const res = await api.get(`/api/members/${id}/`);
+      const res = await get(NEW_MEMBER_GET_URL(id));
+
       setCurrentRow(res.data); // Set API data to currentRow state
       setOriginalRow(res.data); // Store the original data for comparison
     } catch (error) {
@@ -101,7 +105,10 @@ function AllMembers() {
 
     setLoading(true);
     try {
-      const res = await api.patch(`/api/members/${currentRow.id}/`, data);
+      const res = await update(
+        NEW_MEMBER_UPDATE_URL(currentRow.pulli_id),
+        data
+      );
       if (res.status === 200) {
         setSuccessAlert(true);
         setTimeout(() => setSuccessAlert(false), 5000); // Auto-dismiss alert
@@ -128,19 +135,8 @@ function AllMembers() {
         overflow: "hidden",
         maxWidth: "100%",
       }}
-    > 
-      <Typography
-        sx={{
-          marginBottom: "10px",
-          backgroundColor: "rgb(255, 231, 218)",
-          color: "rgb(0, 0, 0)",
-          padding: "10px", // Add padding for spacing
-          fontWeight: "bold",
-          fontSize: "1.5rem",
-        }}
-      >
-        ALL MEMBERS
-      </Typography>
+    >
+      <TopHeaderTitle pagename={"ALL MEMBERS"} />
 
       {loading && <Loader />}
 
@@ -160,9 +156,10 @@ function AllMembers() {
 
       <TableList
         openEdit={openEdit}
-        data={newMembersData}
+        data={data}
         fields={newMembersFields}
-        showEdit={true} 
+        showEdit={true}
+        filterFields={allMembersFilter}
       />
 
       <Dialog open={openEditModal} onClose={handleCloseModal}>
@@ -189,7 +186,18 @@ function AllMembers() {
                       sx={{
                         width: "65%",
                         backgroundColor: "rgb(255, 250, 245)",
-                        borderRadius: "10px",
+                        "& .MuiOutlinedInput-notchedOutline": {
+                          borderColor: "#f08001",
+                        },
+                        "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                          borderColor: "#f08001",
+                        },
+                        "&:hover .MuiOutlinedInput-notchedOutline": {
+                          borderColor: "#f08001",
+                        },
+                        "& .MuiSvgIcon-root": {
+                          color: "#f08001",
+                        },
                       }}
                       value={currentRow ? currentRow[field.name] || "" : ""}
                       onChange={handleDropdownChange(field.name)}

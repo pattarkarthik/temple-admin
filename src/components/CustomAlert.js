@@ -1,16 +1,16 @@
-import React, {useState, useEffect} from 'react';
-import Button from '@mui/material/Button';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
+import React, { useState, useEffect } from "react";
+import Button from "@mui/material/Button";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
 
 export default function CustomAlert(props) {
-  const {message, openAlert} = props
+  const { message, openAlert } = props;
   const [open, setOpen] = useState(openAlert);
-  useEffect(()=>{
-    setOpen(openAlert)
-  },[openAlert])
+  useEffect(() => {
+    setOpen(openAlert);
+  }, [openAlert]);
   const handleClose = () => {
     setOpen(false);
   };
@@ -23,14 +23,12 @@ export default function CustomAlert(props) {
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-           {message}
+            {message}
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-         
           <Button onClick={handleClose} autoFocus>
             Okay
           </Button>

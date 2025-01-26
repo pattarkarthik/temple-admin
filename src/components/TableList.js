@@ -9,12 +9,11 @@ import {
   TableRow,
   Box,
   Stack,
-  Select,
   MenuItem,
   FormControl,
   InputLabel,
-  TextField,
   Menu,
+  Avatar,
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import * as XLSX from "xlsx"; // For Excel export
@@ -22,6 +21,8 @@ import jsPDF from "jspdf"; // For PDF export
 import autoTable from "jspdf-autotable"; // Import the plugin
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown"; // Import the arrow icon
 import CustomButton from "./CustomButton";
+import Input from "./Input";
+import CustomSelect from "./CustomSelect";
 
 export default function TableList({
   openEdit,
@@ -29,7 +30,8 @@ export default function TableList({
   fields,
   showEdit = false,
   showPaymentStatus = false, // Prop to toggle the "Payment Status" button
-  handlePaymentStatus, // New prop
+  handlePaymentStatus,
+  filterFields = [],
 }) {
   const [rows, setRows] = useState([]);
   const [filteredRows, setFilteredRows] = useState([]);
@@ -40,21 +42,25 @@ export default function TableList({
     karai: "",
     native: "",
   });
-  console.log(data)
   useEffect(() => {
     setRows(data);
     setFilteredRows(data);
-  }, []);
-// }, [data]);
+  }, [data]);
 
-
-  const uniqueValues = (key) => [...new Set(data.map((row) => row[key]))];
+  const uniqueValues = (key) => [
+    { label: "All", value: "" },
+    ...new Set(
+      data.map((row) => {
+        return { label: row[key], value: row[key] };
+      })
+    ),
+  ];
 
   const handleFilterChange = (key, value) => {
     const updatedFilters = { ...filters, [key]: value };
     setFilters(updatedFilters);
     applyFilters(searchTerm, updatedFilters);
-  }
+  };
   const openMenu = Boolean(anchorEl);
   const handleMenuClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -137,65 +143,46 @@ export default function TableList({
         backgroundColor: "rgb(255, 231, 218)",
       }}
     >
-      {/* Filters */}
-      <Box sx={{ display: "flex", gap: "16px", marginBottom: "10px" }}>
-        <TextField
-          size="small"
-          label="Search Member"
+      <Box
+        sx={{
+          display: "flex",
+          gap: "16px",
+          marginBottom: "10px",
+          alignItems: "flex-end",
+        }}
+      >
+        <Input
+          required={null}
+          label={null}
+          type={"text"}
           value={searchTerm}
           onChange={handleSearch}
-          sx={{ width: "150px" }}
+          placeholder="Search"
+          width={"100%"}
         />
-        <FormControl size="small" sx={{ minWidth: "150px" }}>
-          <InputLabel id="demo-select-small-label">City</InputLabel>
-          <Select
-            labelId="demo-select-small-label"
-            id="demo-select-small"
-            value={filters.city}
-            size="small"
-            onChange={(e) => handleFilterChange("city", e.target.value)}
-          >
-            <MenuItem value="">All</MenuItem>
-            {uniqueValues("city").map((city, idx) => (
-              <MenuItem key={idx} value={city}>
-                {city}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-        <FormControl size="small" sx={{ minWidth: "150px" }}>
-          <InputLabel id="demo-select-small-label">Karai</InputLabel>
-          <Select
-            labelId="demo-select-small-label"
-            id="demo-select-small"
-            value={filters.karai}
-            onChange={(e) => handleFilterChange("karai", e.target.value)}
-          >
-            <MenuItem value="">All</MenuItem>
-            {uniqueValues("karai").map((karai, idx) => (
-              <MenuItem key={idx} value={karai}>
-                {karai}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-        <FormControl size="small" sx={{ minWidth: "150px" }}>
-          <InputLabel id="demo-select-small-label">Native</InputLabel>
-          <Select
-            labelId="demo-select-small-label"
-            id="demo-select-small"
-            value={filters.native}
-            onChange={(e) => handleFilterChange("native", e.target.value)}
-          >
-            <MenuItem value="">All</MenuItem>
-            {uniqueValues("native").map((native, idx) => (
-              <MenuItem key={idx} value={native}>
-                {native}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-        <CustomButton inverted={false} label="Export" onclick={handleMenuClick} />
+        {filterFields &&
+          filterFields.map((filter) => (
+            <FormControl
+              key={filter.key}
+              size="small"
+              sx={{ minWidth: "150px" }}
+            >
+              <InputLabel>{filter.label}</InputLabel>
+              <CustomSelect
+                value={filters.city}
+                fields={uniqueValues(filter.key)}
+                onChange={(value) => handleFilterChange(filter.key, value)}
+                width={"100%"}
+              />
+            </FormControl>
+          ))}
+
+        <CustomButton
+          inverted={true}
+          label="Export"
+          onclick={handleMenuClick}
+          endIcon={<ArrowDropDownIcon />}
+        />
       </Box>
 
       {/* Export Dropdown Menu */}
@@ -231,10 +218,10 @@ export default function TableList({
                 backgroundColor: "rgb(255, 231, 218)",
               }}
             >
-              {(showEdit || showPaymentStatus) && (
+              {showEdit && (
                 <TableCell
                   align="left"
-                  style={{
+                  sx={{
                     minWidth: "100px",
                     backgroundColor: "rgb(255, 231, 218)",
                     fontWeight: "bold",
@@ -246,7 +233,7 @@ export default function TableList({
               {fields.map((field) => (
                 <TableCell
                   align="left"
-                  style={{
+                  sx={{
                     minWidth: "100px",
                     backgroundColor: "rgb(255, 231, 218)",
                     fontWeight: "bold",
@@ -261,7 +248,7 @@ export default function TableList({
           <TableBody>
             {filteredRows.map((row) => (
               <TableRow hover role="checkbox" tabIndex={-1} key={row.id}>
-                {(showEdit || showPaymentStatus) && (
+                {showEdit && (
                   <TableCell align="left">
                     <Stack spacing={2} direction="row">
                       {showEdit && openEdit && (
@@ -271,32 +258,37 @@ export default function TableList({
                             color: "#f08001",
                             cursor: "pointer",
                           }}
-                          onClick={() => openEdit(row.id)}
+                          onClick={() => openEdit(row.pulli_id)}
                         />
                       )}
-                      {showPaymentStatus && (
-                        <button
-                          style={{
-                            fontSize: "14px",
-                            padding: "5px 10px",
-                            backgroundColor: "#f08001",
-                            color: "#fff",
-                            border: "none",
-                            borderRadius: "5px",
-                            cursor: "pointer",
-                          }}
-                          onClick={() => handlePaymentStatus(row)} // Pass the row data
-                        >
-                          Payment Status
-                        </button>
-                      )}
-                    
                     </Stack>
                   </TableCell>
                 )}
                 {fields.map((field) => (
                   <TableCell key={field.name} align="left">
-                    {row[field.name]}
+                    {field.name === "balance" ? (
+                      <Box
+                        sx={{ display: "flex", justifyContent: "space-around" }}
+                      >
+                        {row[field.name]}
+                        {field.name === "balance" ? (
+                          <EditIcon
+                            style={{
+                              fontSize: "20px",
+                              color: "#f08001",
+                              cursor: "pointer",
+                            }}
+                            onClick={() => handlePaymentStatus(row)}
+                          />
+                        ) : (
+                          ""
+                        )}
+                      </Box>
+                    ) : field.type === "photo" ? (
+                      <Avatar alt="" src={row[field.name]} />
+                    ) : (
+                      row[field.name]
+                    )}
                   </TableCell>
                 ))}
               </TableRow>
@@ -306,5 +298,4 @@ export default function TableList({
       </TableContainer>
     </Paper>
   );
-
 }

@@ -1,11 +1,13 @@
 import React, { useState } from "react";
 import Form from "../components/Form";
-import { Box,  Typography } from "@mui/material";
-import api from "../util/api.js"
+import { Box } from "@mui/material";
 import { formFields } from "../assets/Data";
 import Loader from "../components/Loader";
 import CustomAlert from "../components/CustomAlert";
 import { useNavigate } from "react-router-dom";
+import TopHeaderTitle from "../components/TopHeaderTitle.js";
+import { create } from "../util/fetchUtils.js";
+import { NEW_MEMBER_CREATE_URL } from "../util/constants.js";
 
 function NewMember() {
   const [loading, setLoading] = useState(false);
@@ -15,7 +17,7 @@ function NewMember() {
   const handleFormSubmit = async (formData) => {
     setLoading(true);
     try {
-      const res = await api.post("/api/members/", formData);
+      const res = await create(NEW_MEMBER_CREATE_URL(), formData);
       if (res.status === 201) {
         setLoading(false);
         setSuccessAlert(true);
@@ -24,6 +26,7 @@ function NewMember() {
         return true;
       }
     } catch (error) {
+      console.log("er", error);
       setLoading(false);
       setErrorAlert(true);
       setTimeout(() => setErrorAlert(false), 5000);
@@ -40,27 +43,22 @@ function NewMember() {
         flexDirection: "column",
       }}
     >
-      <Typography
-        sx={{
-          marginBottom: "10px",
-          backgroundColor: "rgb(255, 231, 218)",
-          color: "rgb(0, 0, 0)",
-          padding: "10px", // Add padding for spacing
-          fontWeight: "bold",
-          fontSize: "1.5rem",
-        }}
-      >
-        PULLI MEMBER REGISTRATION
-      </Typography>
+      <TopHeaderTitle pagename={"PULLI MEMBER REGISTRATION"} />
       <Form
         fields={formFields}
         onSubmit={(formData) => handleFormSubmit(formData)}
         profilePic={true}
       />
-     
-    {loading && <Loader />}
-        <CustomAlert  openAlert = {successAlert} message="Member added successfully!" />
-        <CustomAlert openAlert={errorAlert} message="There was an error adding the member. Please try again" />
+
+      {loading && <Loader />}
+      <CustomAlert
+        openAlert={successAlert}
+        message="Member added successfully!"
+      />
+      <CustomAlert
+        openAlert={errorAlert}
+        message="There was an error adding the member. Please try again"
+      />
     </Box>
   );
 }

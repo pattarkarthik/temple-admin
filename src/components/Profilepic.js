@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Button, Avatar, Box, Typography } from "@mui/material";
 
-export default function Profilepic({ onFileChange, title }) {
+export default function Profilepic({ onFileChange, title, type }) {
   const [profilePicture, setProfilePicture] = useState(null);
   const [preview, setPreview] = useState(null);
 
@@ -17,15 +17,15 @@ export default function Profilepic({ onFileChange, title }) {
       };
       reader.readAsDataURL(file);
 
-      // Pass the file to the parent component
-      if (onFileChange) onFileChange(file);
+      // Pass the file and type to the parent component
+      if (onFileChange) onFileChange(file, type);
     }
   };
 
   const handleRemovePicture = () => {
     setProfilePicture(null);
     setPreview(null);
-    if (onFileChange) onFileChange(null); // Notify parent that the file was removed
+    if (onFileChange) onFileChange(null, type); // Notify parent that the file was removed
   };
 
   return (
@@ -48,12 +48,20 @@ export default function Profilepic({ onFileChange, title }) {
       <input
         accept="image/*"
         type="file"
-        id="upload-button"
+        id={type}
         style={{ display: "none" }}
         onChange={handleFileChange}
       />
-      <label htmlFor="upload-button">
-        <Button variant="contained"  component="span" sx={{backgroundColor:"#f08001",  color:"white", boxShadow:"none", }}>
+      <label htmlFor={type}>
+        <Button
+          variant="contained"
+          component="span"
+          sx={{
+            backgroundColor: "#f08001",
+            color: "white",
+            boxShadow: "none",
+          }}
+        >
           {profilePicture ? "Change Picture" : "Upload Picture"}
         </Button>
       </label>

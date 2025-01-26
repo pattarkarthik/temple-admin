@@ -3,16 +3,15 @@ import Dialog from "@mui/material/Dialog";
 import { Box, CircularProgress, Paper } from "@mui/material";
 
 export default function Loader(props) {
- 
   return (
     <React.Fragment>
       <Dialog
         open={true}
         PaperProps={{
           sx: {
-            backgroundColor: "transparent", 
-            boxShadow: "none", 
-            overflow: "hidden", 
+            backgroundColor: "transparent",
+            boxShadow: "none",
+            overflow: "hidden",
           },
         }}
       >
@@ -27,7 +26,7 @@ export default function Loader(props) {
         >
           <CircularProgress
             sx={{
-              color: "white", 
+              color: "white",
             }}
           />
         </Box>

@@ -1,13 +1,26 @@
-const fetch = async () => {
-    try {
-      const res = await api.get(`/api/members/`);
-      setData(res.data);
-      setLoading(true);
-    } catch (error) {
-      setLoading(false);
-      setErrorAlert(true);
-      setTimeout(() => setErrorAlert(false), 5000); // Auto-dismiss alert
-    } finally {
-      setLoading(false);
-    }
-  };
+import api from "./api";
+
+export const get = async (url) => {
+  try {
+    const response = await api.get(url);
+    return response;
+  } catch (error) {
+    throw error;
+  }
+};
+export const create = async (url, formData) => {
+  try {
+    const response = await api.post(url, formData);
+    return response;
+  } catch (error) {
+    throw error;
+  }
+};
+export const update = async (url, formData) => {
+  try {
+    const response = await api.patch(url, formData);
+    return response;
+  } catch (error) {
+    throw error;
+  }
+};

@@ -34,10 +34,9 @@ const theme = createTheme({
 export default theme;
 
 root.render(
-    <ThemeProvider theme={theme}>
-      <App />
-    </ThemeProvider>
-  ,
+  <ThemeProvider theme={theme}>
+    <App />
+  </ThemeProvider>,
   document.getElementById("root")
 );
 
