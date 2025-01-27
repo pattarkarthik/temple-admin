@@ -1,12 +1,5 @@
-import React, { useState } from "react";
-import {
-  Box,
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Select,
-  Typography,
-} from "@mui/material";
+import React, { useEffect, useState } from "react";
+import { Box } from "@mui/material";
 import TableList from "../components/TableList.js";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
@@ -17,30 +10,54 @@ import CustomButton from "../components/CustomButton.js";
 import Loader from "../components/Loader";
 import CustomAlert from "../components/CustomAlert";
 import Input from "../components/Input.js";
-import { number } from "prop-types";
-import { YelamData, YelamEditFormFields } from "../assets/Data.js";
 import TopHeaderTitle from "../components/TopHeaderTitle.js";
+import { get } from "../util/fetchUtils.js";
+import { YELAM_GET_ALL_URL } from "../util/constants.js";
+import { YelamEditFormFields } from "../assets/Data.js";
 
 const YelamFields = [
-  { label: "Balance", name: "balance" },
-  { label: "Pulli Id", name: "pulliId" },
-  { label: "Name", name: "name" },
-  { label: "Whatsup Number 1", name: "whatsupNumber1" },
-  { label: "Native", name: "native" },
-  { label: "Manual Book Sr No", name: "manualBooksrNo" },
-  { label: "Remark", name: "remark" },
-  { label: "Guest Name", name: "guestName" },
-  { label: "Guest Native", name: "guestNative" },
+  { label: "ID", name: "id" },
+  { label: "Pulli Id", name: "member" },
+  { label: "Name", name: "member_name" },
+  { label: "Family Name", name: "family_name" },
+  { label: "Phone Number", name: "phone_1" },
+  { label: "Bidder Type", name: "bidder_type" },
+  { label: "Guest Name", name: "guest_name" },
+  { label: "Guest Native", name: "guest_native" },
+  { label: "Guest Whatsapp", name: "guest_whatsapp" },
+  { label: "Product", name: "guestNative" },
+  { label: "Manual Book Sr No", name: "manual_book_srno" },
+  { label: "Bid Amount", name: "bid_amount" },
+  { label: "Balance Amount", name: "balance_amount" },
+  { label: "Remark", name: "remarks" },
 ];
 
 function YelamList() {
   const [openEditModal, setOpenEditModal] = useState(false);
-
+  const [data, setData] = useState([]);
   const [currentRow, setCurrentRow] = useState(null);
   const [originalRow, setOriginalRow] = useState(null); // Original data to compare changes
   const [loading, setLoading] = useState(false); // Loading state
   const [successAlert, setSuccessAlert] = useState(false); // Success alert state
   const [errorAlert, setErrorAlert] = useState(false); // Error alert state
+
+  useEffect(() => {
+    fetchYelam();
+  }, []);
+
+  const fetchYelam = async () => {
+    try {
+      const res = await get(YELAM_GET_ALL_URL());
+      setData(res.data);
+      setLoading(true);
+    } catch (error) {
+      setLoading(false);
+      setErrorAlert(true);
+      setTimeout(() => setErrorAlert(false), 5000); // Auto-dismiss alert
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const openEdit = async (id) => {
     setLoading(true);
@@ -72,11 +89,11 @@ function YelamList() {
   };
 
   const openPaymentStatusModal = (row) => {
-    setCurrentRow(row); // Store the selected row data
-    setOpenEditModal(true); // Open the modal
+    setCurrentRow(row);
+    setOpenEditModal(true);
   };
 
-  const handleSaveChanges = async () => {
+  const handleUpdatePayment = async () => {
     const changedFields = Object.keys(currentRow)
       .filter((key) => currentRow[key] !== originalRow[key])
       .reduce((acc, key) => {
@@ -115,7 +132,7 @@ function YelamList() {
       <TableList
         openEdit={openEdit}
         fields={YelamFields}
-        data={YelamData}
+        data={data}
         showPaymentStatus={true} // Show "Payment Status" button
         handlePaymentStatus={(row) => openPaymentStatusModal(row)} // Add handler
       />
@@ -155,9 +172,9 @@ function YelamList() {
               />
               <CustomButton
                 inverted={false}
-                label="Save Changes"
+                label="Update Payment"
                 type=""
-                onclick={handleSaveChanges}
+                onclick={handleUpdatePayment}
               />
             </Box>
           </DialogActions>

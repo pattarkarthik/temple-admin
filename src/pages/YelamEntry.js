@@ -127,6 +127,7 @@ function YelamEntry() {
     const combinedData = {
       ...yelamData,
       member: memberData.pulli_id,
+      bidder_type: selectedValue,
     };
     try {
       const res = await create(YELAM_CREATE_URL(), combinedData);
@@ -135,6 +136,7 @@ function YelamEntry() {
         setSuccessAlert(true);
         setTimeout(() => setSuccessAlert(false), 5000);
         navigate("/yelam-entry");
+        clearAllData();
         return true;
       }
     } catch (error) {

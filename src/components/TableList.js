@@ -266,12 +266,12 @@ export default function TableList({
                 )}
                 {fields.map((field) => (
                   <TableCell key={field.name} align="left">
-                    {field.name === "balance" ? (
+                    {field.name === "balance_amount" ? (
                       <Box
                         sx={{ display: "flex", justifyContent: "space-around" }}
                       >
                         {row[field.name]}
-                        {field.name === "balance" ? (
+                        {field.name === "balance_amount" ? (
                           <EditIcon
                             style={{
                               fontSize: "20px",
