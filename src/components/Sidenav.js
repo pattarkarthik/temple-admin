@@ -20,7 +20,6 @@ import AddCircleIcon from "@mui/icons-material/AddCircle";
 import BallotIcon from "@mui/icons-material/Ballot";
 import AnalyticsIcon from "@mui/icons-material/Analytics";
 import LogoutIcon from "@mui/icons-material/Logout";
-import logo from "../assets/images/logos/logo.png"
 const drawerWidth = 280;
 
 const Drawer = styled(MuiDrawer)(({ theme }) => ({
@@ -73,8 +72,8 @@ export default function Sidenav() {
     navigate(url);
   };
   const handleLogout = () => {
-    localStorage.removeItem("authToken"); 
-    sessionStorage.clear(); 
+    localStorage.removeItem("authToken");
+    sessionStorage.clear();
     navigate("/login");
   };
   return (
@@ -82,9 +81,7 @@ export default function Sidenav() {
       <CssBaseline />
       <Drawer variant="permanent">
         <DrawerHeader>
-        
           {/* <img src={logo} style={{height:"150px", width:"250px", display:"flex", justifyContent:"space-around"}}/> */}
-       
         </DrawerHeader>
         <Divider />
         <List
@@ -108,7 +105,6 @@ export default function Sidenav() {
               <ListItemButton
                 onClick={() => handleNavigation(page.url)}
                 sx={{
-                 
                   justifyContent: open ? "initial" : "center",
                   px: 2.5,
                 }}
@@ -144,9 +140,8 @@ export default function Sidenav() {
           }}
         >
           <ListItemButton
-          onClick={handleLogout}
+            onClick={handleLogout}
             sx={{
-              
               justifyContent: open ? "initial" : "center",
               px: 2.5,
             }}

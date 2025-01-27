@@ -1,39 +1,61 @@
-import React, { useState } from "react";
-import {
-  Box,
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Select,
-  Typography,
-} from "@mui/material";
+import React, { useEffect, useState } from "react";
+import { Box, FormControl, MenuItem, Select } from "@mui/material";
 import TableList from "../components/TableList.js";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import Profilepic from "../components/Profilepic.js";
-import { newMembersData } from "../assets/Data.js";
-import { newMembersFields } from "../assets/Data.js";
-import api from "../api.js";
-import { editFormFields } from "../assets/Data.js";
+import {
+  newMembersData,
+  allMembersFilter,
+  newMembersFields,
+  editFormFields,
+} from "../assets/Data.js";
 import CustomButton from "../components/CustomButton.js";
 import Loader from "../components/Loader";
 import CustomAlert from "../components/CustomAlert";
 import Input from "../components/Input.js";
+import TopHeaderTitle from "../components/TopHeaderTitle.js";
+import { get, update } from "../util/fetchUtils.js";
+import {
+  ALL_MEMBERS_GET_URL,
+  NEW_MEMBER_GET_URL,
+  NEW_MEMBER_UPDATE_URL,
+} from "../util/constants.js";
 
 function AllMembers() {
   const [openEditModal, setOpenEditModal] = useState(false);
+  const [data, setData] = useState([]);
   const [currentRow, setCurrentRow] = useState(null);
   const [originalRow, setOriginalRow] = useState(null); // Original data to compare changes
   const [loading, setLoading] = useState(false); // Loading state
   const [successAlert, setSuccessAlert] = useState(false); // Success alert state
   const [errorAlert, setErrorAlert] = useState(false); // Error alert state
 
+  useEffect(() => {
+    fetchMembers();
+  }, []);
+
+  const fetchMembers = async () => {
+    try {
+      const res = await get(ALL_MEMBERS_GET_URL());
+      setData(res.data);
+      setLoading(true);
+    } catch (error) {
+      setLoading(false);
+      setErrorAlert(true);
+      setTimeout(() => setErrorAlert(false), 5000); // Auto-dismiss alert
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const openEdit = async (id) => {
     setLoading(true);
     try {
-      const res = await api.get(`/api/members/${id}/`);
+      const res = await get(NEW_MEMBER_GET_URL(id));
+
       setCurrentRow(res.data); // Set API data to currentRow state
       setOriginalRow(res.data); // Store the original data for comparison
     } catch (error) {
@@ -83,7 +105,10 @@ function AllMembers() {
 
     setLoading(true);
     try {
-      const res = await api.patch(`/api/members/${currentRow.id}/`, data);
+      const res = await update(
+        NEW_MEMBER_UPDATE_URL(currentRow.pulli_id),
+        data
+      );
       if (res.status === 200) {
         setSuccessAlert(true);
         setTimeout(() => setSuccessAlert(false), 5000); // Auto-dismiss alert
@@ -111,18 +136,7 @@ function AllMembers() {
         maxWidth: "100%",
       }}
     >
-      <Typography
-        sx={{
-          marginBottom: "10px",
-          backgroundColor: "rgb(255, 231, 218)",
-          color: "rgb(0, 0, 0)",
-          padding: "10px", // Add padding for spacing
-          fontWeight: "bold",
-          fontSize: "1.5rem",
-        }}
-      >
-        ALL MEMBERS
-      </Typography>
+      <TopHeaderTitle pagename={"ALL MEMBERS"} />
 
       {loading && <Loader />}
 
@@ -140,15 +154,14 @@ function AllMembers() {
         />
       )}
 
-      {/* TableList */}
       <TableList
         openEdit={openEdit}
-        data={newMembersData}
+        data={data}
         fields={newMembersFields}
-        showEdit={true} // Show Edit Icon in AllMembers
+        showEdit={true}
+        filterFields={allMembersFilter}
       />
 
-      {/* Edit Dialog */}
       <Dialog open={openEditModal} onClose={handleCloseModal}>
         <Box sx={{ width: "500px" }}>
           <DialogTitle>Edit Member</DialogTitle>
@@ -157,9 +170,35 @@ function AllMembers() {
             {editFormFields.map((field) => (
               <div key={field.name}>
                 {field.type === "dropdown" ? (
-                  <FormControl fullWidth margin="normal">
-                    <InputLabel>{field.label}</InputLabel>
+                  <FormControl
+                    fullWidth
+                    size="small"
+                    sx={{
+                      marginTop: "10px",
+                      display: "flex",
+                      flexDirection: "row",
+                    }}
+                  >
+                    <Box sx={{ width: "30%", fontSize: "17px" }}>
+                      {field.label}
+                    </Box>
                     <Select
+                      sx={{
+                        width: "65%",
+                        backgroundColor: "rgb(255, 250, 245)",
+                        "& .MuiOutlinedInput-notchedOutline": {
+                          borderColor: "#f08001",
+                        },
+                        "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                          borderColor: "#f08001",
+                        },
+                        "&:hover .MuiOutlinedInput-notchedOutline": {
+                          borderColor: "#f08001",
+                        },
+                        "& .MuiSvgIcon-root": {
+                          color: "#f08001",
+                        },
+                      }}
                       value={currentRow ? currentRow[field.name] || "" : ""}
                       onChange={handleDropdownChange(field.name)}
                       label={field.label}

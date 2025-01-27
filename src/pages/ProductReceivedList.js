@@ -12,13 +12,11 @@ import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
-import api from "../api.js";
+import api from "../util/api.js";
 import { ProductData } from "../assets/ProductReceivedData.js";
 import CustomButton from "../components/CustomButton.js";
 import Loader from "../components/Loader";
-import CustomAlert from "../components/CustomAlert";
-import Input from "../components/Input.js";
-import { number } from "prop-types";
+import TopHeaderTitle from "../components/TopHeaderTitle.js";
 
 const ProductFields = [
   // { label: "Edit", name: "edit" },
@@ -52,19 +50,7 @@ function ProductReceivedList() {
         maxWidth: "100%",
       }}
     >
-      <Typography
-        sx={{
-          marginBottom: "10px",
-          backgroundColor: "rgb(255, 231, 218)",
-          color: "rgb(0, 0, 0)",
-          padding: "10px", // Add padding for spacing
-          borderRadius: "4px", // Optional: Add rounded corners
-          fontWeight: "bold",
-          fontSize: "1.5rem",
-        }}
-      >
-        PRODUCT RECEIVED LIST
-      </Typography>
+      <TopHeaderTitle pagename={"PRODUCT RECEIVED LIST"} />
 
       {loading && <Loader />}
 

@@ -1,26 +1,7 @@
 import React, { useState } from "react";
-import {
-  Grid,
-  styled,
-  CardHeader,
-  Card,
-  CardContent,
-  Typography,
-  TextField,
-  IconButton,
-  Paper,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Box,
-  Autocomplete,
-} from "@mui/material";
-import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline"; // Correct icon import
-import TableList from "../components/TableList";
+import { Box } from "@mui/material";
 import Catalog from "../components/Catalog";
+import TopHeaderTitle from "../components/TopHeaderTitle";
 
 function YelamProductCatalog() {
   const [data, setData] = useState([
@@ -86,19 +67,8 @@ function YelamProductCatalog() {
         flexDirection: "column",
       }}
     >
-      <Typography
-        sx={{
-          marginBottom: "10px",
-          backgroundColor: "rgb(255, 231, 218)",
-          color: "rgb(0, 0, 0)",
-          padding: "10px", // Add padding for spacing
-          borderRadius: "4px", // Optional: Add rounded corners
-          fontWeight: "bold",
-          fontSize: "1.5rem",
-        }}
-      >
-        PRODUCT CATALOG
-      </Typography>
+      <TopHeaderTitle pagename={" PRODUCT CATALOG"} />
+
       <Catalog />
     </Box>
   );

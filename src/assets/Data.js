@@ -284,19 +284,19 @@ export const formFields = [
   { label: "மொபைல் எண் 1", name: "mobile_1", required: true, type: "tel" },
   {
     label: "மொபைல் எண் 2",
-    name: "mobile2(spouse)",
+    name: "mobile_2_spouse",
     required: true,
     type: "tel",
   },
   {
     label: "வாட்ஸ்அப் எண் 1",
-    name: "Whatsapp1",
+    name: "whatsapp_no_1",
     required: true,
     type: "tel",
   },
   {
     label: "வாட்ஸ்அப் எண் 2",
-    name: "Whatsapp2",
+    name: "whatsapp_no_2",
     required: true,
     type: "tel",
   },
@@ -328,9 +328,9 @@ export const formFields = [
 ];
 
 export const YelamEditFormFields = [
-  {label:"Total Amount",name:"totalAmount"},
-  {label:"Pending Payment ",name:"paymentPending"},
-  {label:"Payment Status",name:"paymentStatus"},
+  { label: "Total Amount", name: "totalAmount" },
+  { label: "Pending Payment ", name: "paymentPending" },
+  { label: "Payment Status", name: "paymentStatus" },
 ];
 
 export const editFormFields = [
@@ -393,31 +393,46 @@ export const editFormFields = [
 ];
 
 export const newMembersFields = [
-  { label: "Family Name", name: "familyName", required: true },
+  { label: "Pulli ID", name: "pulli_id", required: true },
+  { label: "Family Name", name: "family_name", required: true },
   { label: "Name", name: "name", required: true },
-  { label: "Spouse Name", name: "spouseName", required: false },
-  { label: "Photo1", name: "photo1", required: false },
-  { label: "Photo2", name: "photo2", required: false },
-  { label: "Address Line 1", name: "addressLine1", required: true },
-  { label: "Address Line 2", name: "addressLine2", required: false },
+  { label: "Spouse Name", name: "spouse_name", required: false },
+  {
+    label: "Husband Photo",
+    name: "husband_photo",
+    required: false,
+    type: "photo",
+  },
+  { label: "Wife Photo", name: "wife_photo", required: false, type: "photo" },
+  { label: "Address Line 1", name: "address_line_1", required: true },
+  { label: "Address Line 2", name: "address_line_2", required: false },
   { label: "City", name: "city", required: true },
   { label: "State", name: "state", required: true },
-  { label: "Pin Code", name: "pinCode", required: true },
-  { label: "Mobile 1", name: "mobile1", required: true, type: "tel" },
+  { label: "Pin Code", name: "pin_code", required: true },
+  { label: "Mobile 1", name: "mobile_1", required: true, type: "tel" },
   {
     label: "Mobile 2 (Spouse)",
-    name: "mobile2Spouse",
+    name: "mobile_2_spouse",
     required: false,
     type: "tel",
   },
-  { label: "WhatsApp No 1", name: "whatsapp1", required: false, type: "tel" },
-  { label: "WhatsApp No 2", name: "whatsapp2", required: false, type: "tel" },
-  { label: "Email ID 1", name: "email1", required: true, type: "email" },
-  { label: "Email ID 2", name: "email2", required: false, type: "email" },
-  { label: "Pulli ID (Primary Key)", name: "pulliID", required: true },
+  {
+    label: "WhatsApp No 1",
+    name: "whatsapp_no_1",
+    required: false,
+    type: "tel",
+  },
+  {
+    label: "WhatsApp No 2",
+    name: "whatsapp_no_2",
+    required: false,
+    type: "tel",
+  },
+  { label: "Email ID 1", name: "email_id_1", required: true, type: "email" },
+  { label: "Email ID 2", name: "email_id_2", required: false, type: "email" },
 ];
 
-export const YelamData=[
+export const YelamData = [
   {
     pulliId: "PA101",
     name: "Ananya",
@@ -427,6 +442,7 @@ export const YelamData=[
     remark: "First-time visitor",
     guestName: "",
     guestNative: "",
+    balance: "20",
   },
   {
     pulliId: "PA102",
@@ -437,6 +453,7 @@ export const YelamData=[
     remark: "Donor for temple renovation",
     guestName: "Sunita",
     guestNative: "Pune",
+    balance: "30",
   },
   {
     pulliId: "PA103",
@@ -517,5 +534,20 @@ export const YelamData=[
     remark: "Temple maintenance contributor",
     guestName: "Kavya",
     guestNative: "Bengaluru",
-  }
-]
+  },
+];
+
+export const allMembersFilter = [
+  {
+    key: "city",
+    label: "City",
+  },
+  {
+    key: "karai",
+    label: "Karai",
+  },
+  {
+    key: "native",
+    label: "Native",
+  },
+];

@@ -1,26 +1,28 @@
-import { useState } from "react";
-import Paper from "@mui/material/Paper";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import Button from "@mui/material/Button";
-import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
-import Box from "@mui/material/Box";
-import Stack from "@mui/material/Stack";
+import { useEffect, useState } from "react";
+import {
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Box,
+  Stack,
+  MenuItem,
+  FormControl,
+  InputLabel,
+  Menu,
+  Avatar,
+} from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
-import DeleteIcon from "@mui/icons-material/Delete";
-import TextField from "@mui/material/TextField";
-import Autocomplete from "@mui/material/Autocomplete";
-import api from "../api";
-
 import * as XLSX from "xlsx"; // For Excel export
 import jsPDF from "jspdf"; // For PDF export
 import autoTable from "jspdf-autotable"; // Import the plugin
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown"; // Import the arrow icon
+import CustomButton from "./CustomButton";
+import Input from "./Input";
+import CustomSelect from "./CustomSelect";
 
 export default function TableList({
   openEdit,
@@ -28,24 +30,45 @@ export default function TableList({
   fields,
   showEdit = false,
   showPaymentStatus = false, // Prop to toggle the "Payment Status" button
-  handlePaymentStatus, // New prop
+  handlePaymentStatus,
+  filterFields = [],
 }) {
-  const [rows, setRows] = useState(data);
-  const [filteredRows, setFilteredRows] = useState(data);
+  const [rows, setRows] = useState([]);
+  const [filteredRows, setFilteredRows] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
   const [anchorEl, setAnchorEl] = useState(null);
+  const [filters, setFilters] = useState({
+    city: "",
+    karai: "",
+    native: "",
+  });
+  useEffect(() => {
+    setRows(data);
+    setFilteredRows(data);
+  }, [data]);
 
-  //Menu for Export and click handles
+  const uniqueValues = (key) => [
+    { label: "All", value: "" },
+    ...new Set(
+      data.map((row) => {
+        return { label: row[key], value: row[key] };
+      })
+    ),
+  ];
+
+  const handleFilterChange = (key, value) => {
+    const updatedFilters = { ...filters, [key]: value };
+    setFilters(updatedFilters);
+    applyFilters(searchTerm, updatedFilters);
+  };
   const openMenu = Boolean(anchorEl);
-
   const handleMenuClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
-
   const handleMenuClose = () => {
     setAnchorEl(null);
   };
 
-  //defining export to pdf
   const exportToPDF = () => {
     const doc = new jsPDF();
 
@@ -62,8 +85,6 @@ export default function TableList({
       startY: 20, // Space from the top of the page
       styles: { fontSize: 10 }, // Adjust font size if needed
     });
-
-    // Save the PDF
     doc.save("table_data.pdf");
     handleMenuClose();
   };
@@ -87,25 +108,29 @@ export default function TableList({
     handleMenuClose();
   };
 
-  const deleteUser = async (id) => {
-    try {
-      const res = await api.delete(`/api/Products/${id}/`);
-      if (res.status === 204) {
-        alert("Member Deleted successfully");
-      }
-    } catch (error) {
-    } finally {
-    }
+  const handleSearch = (e) => {
+    const value = e.target.value.toLowerCase();
+    setSearchTerm(value);
+    applyFilters(value, filters);
   };
 
-  const filterData = (selected) => {
-    if (selected) {
-      setFilteredRows(rows.filter((row) => row.id === selected.id));
-    } else {
-      setFilteredRows(rows);
-    }
-  };
+  const applyFilters = (search, filters) => {
+    const { city, karai, native } = filters;
+    const filtered = rows.filter((row) => {
+      const matchesSearch =
+        !search ||
+        fields.some((field) =>
+          String(row[field.name]).toLowerCase().includes(search)
+        );
+      const matchesCity = !city || row.city === city;
+      const matchesKarai = !karai || row.karai === karai;
+      const matchesNative = !native || row.native === native;
 
+      return matchesSearch && matchesCity && matchesKarai && matchesNative;
+    });
+
+    setFilteredRows(filtered);
+  };
   return (
     <Paper
       sx={{
@@ -120,46 +145,44 @@ export default function TableList({
     >
       <Box
         sx={{
-          display: "flex", // Align items horizontally
-          alignItems: "center", // Align vertically in the center
-          width: "100%", // Full width of the container
-          marginBottom: "10px", // Space between rows
+          display: "flex",
+          gap: "16px",
+          marginBottom: "10px",
+          alignItems: "flex-end",
         }}
       >
-        <Autocomplete
-          disablePortal
-          id="combo-box-demo"
-          options={rows}
-          sx={{ width: 300, backgroundColor: "rgb(255, 231, 218)" }}
-          onChange={(e, selected) => filterData(selected)}
-          getOptionLabel={(option) => option.name || "Unnamed Member"}
-          renderInput={(params) => (
-            <TextField {...params} size="small" label="Search Member" />
-          )}
+        <Input
+          required={null}
+          label={null}
+          type={"text"}
+          value={searchTerm}
+          onChange={handleSearch}
+          placeholder="Search"
+          width={"100%"}
         />
+        {filterFields &&
+          filterFields.map((filter) => (
+            <FormControl
+              key={filter.key}
+              size="small"
+              sx={{ minWidth: "150px" }}
+            >
+              <InputLabel>{filter.label}</InputLabel>
+              <CustomSelect
+                value={filters.city}
+                fields={uniqueValues(filter.key)}
+                onChange={(value) => handleFilterChange(filter.key, value)}
+                width={"100%"}
+              />
+            </FormControl>
+          ))}
 
-        {/* Export dropdoown menu */}
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={handleMenuClick}
-          sx={{
-            height: "40px",
-            boxShadow: "none",
-            textTransform: "none",
-            backgroundColor: "rgb(240, 128, 1)",
-            color: "#fff",
-            marginLeft: "20px",
-            marginTop: "2px",
-            "&:hover": {
-              backgroundColor: "#d56e01", // Darker orange on hover
-            },
-            paddingRight: "10px", // Space for the icon on the right
-          }}
-          endIcon={<ArrowDropDownIcon />} // Add downward arrow icon
-        >
-          Export
-        </Button>
+        <CustomButton
+          inverted={true}
+          label="Export"
+          onclick={handleMenuClick}
+          endIcon={<ArrowDropDownIcon />}
+        />
       </Box>
 
       {/* Export Dropdown Menu */}
@@ -195,10 +218,10 @@ export default function TableList({
                 backgroundColor: "rgb(255, 231, 218)",
               }}
             >
-              {(showEdit || showPaymentStatus) && (
+              {showEdit && (
                 <TableCell
                   align="left"
-                  style={{
+                  sx={{
                     minWidth: "100px",
                     backgroundColor: "rgb(255, 231, 218)",
                     fontWeight: "bold",
@@ -210,7 +233,7 @@ export default function TableList({
               {fields.map((field) => (
                 <TableCell
                   align="left"
-                  style={{
+                  sx={{
                     minWidth: "100px",
                     backgroundColor: "rgb(255, 231, 218)",
                     fontWeight: "bold",
@@ -222,10 +245,10 @@ export default function TableList({
               ))}
             </TableRow>
           </TableHead>
-          <TableBody sx={{ maxHeight: "100px" }}>
+          <TableBody>
             {filteredRows.map((row) => (
               <TableRow hover role="checkbox" tabIndex={-1} key={row.id}>
-                {(showEdit || showPaymentStatus) && (
+                {showEdit && (
                   <TableCell align="left">
                     <Stack spacing={2} direction="row">
                       {showEdit && openEdit && (
@@ -235,39 +258,37 @@ export default function TableList({
                             color: "#f08001",
                             cursor: "pointer",
                           }}
-                          onClick={() => openEdit(row.id)}
+                          onClick={() => openEdit(row.pulli_id)}
                         />
                       )}
-                      {showPaymentStatus && (
-                        <button
-                          style={{
-                            fontSize: "14px",
-                            padding: "5px 10px",
-                            backgroundColor: "#f08001",
-                            color: "#fff",
-                            border: "none",
-                            borderRadius: "5px",
-                            cursor: "pointer",
-                          }}
-                          onClick={() => handlePaymentStatus(row)} // Pass the row data
-                        >
-                          Payment Status
-                        </button>
-                      )}
-                      <DeleteIcon
-                        style={{
-                          fontSize: "20px",
-                          color: "#f08001",
-                          cursor: "pointer",
-                        }}
-                        onClick={() => deleteUser(row.id)}
-                      />
                     </Stack>
                   </TableCell>
                 )}
                 {fields.map((field) => (
                   <TableCell key={field.name} align="left">
-                    {row[field.name]}
+                    {field.name === "balance_amount" ? (
+                      <Box
+                        sx={{ display: "flex", justifyContent: "space-around" }}
+                      >
+                        {row[field.name]}
+                        {field.name === "balance_amount" ? (
+                          <EditIcon
+                            style={{
+                              fontSize: "20px",
+                              color: "#f08001",
+                              cursor: "pointer",
+                            }}
+                            onClick={() => handlePaymentStatus(row)}
+                          />
+                        ) : (
+                          ""
+                        )}
+                      </Box>
+                    ) : field.type === "photo" ? (
+                      <Avatar alt="" src={row[field.name]} />
+                    ) : (
+                      row[field.name]
+                    )}
                   </TableCell>
                 ))}
               </TableRow>

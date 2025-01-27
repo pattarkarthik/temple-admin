@@ -96,27 +96,30 @@ export default function Catalog() {
 
   return (
     <Paper
-    sx={{
-      display: "flex",
-      flexDirection: "column",
-      padding: "10px",
-      width:"100%",
-      flexGrow: 2,
-      borderRadius:"0px",
-      backgroundColor:"rgb(255, 231, 218)",
-    }}
-  >
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        padding: "10px",
+        width: "100%",
+        flexGrow: 2,
+        borderRadius: "0px",
+        backgroundColor: "rgb(255, 231, 218)",
+      }}
+    >
       <Box height={10} />
-      <Box sx={{display:"flex", justifyContent:"space-between"}}>
-      <TextField
-        
-        label="Search Product"
-        onChange={(e) => handleSearchChange(e)}
-        size="small"
-      />
-        <CustomButton inverted={false} label="Add Product" onclick={handleModalOpen} />
+      <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+        <TextField
+          label="Search Product"
+          onChange={(e) => handleSearchChange(e)}
+          size="small"
+        />
+        <CustomButton
+          inverted={false}
+          label="Add Product"
+          onclick={handleModalOpen}
+        />
       </Box>
-   
+
       {suggestions.length > 0 && (
         <ul
           style={{
@@ -149,17 +152,26 @@ export default function Catalog() {
       <Box height={10} />
       {
         <TableContainer
-          sx={{ overflowY: "auto", maxHeight: "650px",  backgroundColor:"rgb(255, 231, 218)", }}
+          sx={{
+            overflowY: "auto",
+            maxHeight: "650px",
+            backgroundColor: "rgb(255, 231, 218)",
+          }}
         >
           <Table stickyHeader aria-label="sticky table">
             <TableHead>
-              <TableRow sx={{  backgroundColor:"rgb(255, 231, 218)",}}>
+              <TableRow sx={{ backgroundColor: "rgb(255, 231, 218)" }}>
                 {fields.map((field) => (
-                  <TableCell key={field.name} sx={{  backgroundColor:"rgb(255, 231, 218)",}}>{field.label}</TableCell>
+                  <TableCell
+                    key={field.name}
+                    sx={{ backgroundColor: "rgb(255, 231, 218)" }}
+                  >
+                    {field.label}
+                  </TableCell>
                 ))}
               </TableRow>
             </TableHead>
-            <TableBody sx={{  backgroundColor:"rgb(255, 231, 218)",}}>
+            <TableBody sx={{ backgroundColor: "rgb(255, 231, 218)" }}>
               {filteredRows.map((row) => (
                 <TableRow key={row.serialNumber}>
                   {fields.map((field) => (
@@ -213,8 +225,11 @@ export default function Catalog() {
             ))}
           </TextField>
           <Box mt={2} textAlign="right">
-          <CustomButton inverted={false} label="Add" onclick={handleAddProduct} />
-            
+            <CustomButton
+              inverted={false}
+              label="Add"
+              onclick={handleAddProduct}
+            />
           </Box>
         </Paper>
       </Modal>

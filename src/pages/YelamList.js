@@ -1,46 +1,63 @@
-import React, { useState } from "react";
-import {
-  Box,
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Select,
-  Typography,
-} from "@mui/material";
+import React, { useEffect, useState } from "react";
+import { Box } from "@mui/material";
 import TableList from "../components/TableList.js";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
-import api from "../api.js";
+import api from "../util/api.js";
 import CustomButton from "../components/CustomButton.js";
 import Loader from "../components/Loader";
 import CustomAlert from "../components/CustomAlert";
 import Input from "../components/Input.js";
-import { number } from "prop-types";
-import { YelamData,YelamEditFormFields } from "../assets/Data.js";
+import TopHeaderTitle from "../components/TopHeaderTitle.js";
+import { get } from "../util/fetchUtils.js";
+import { YELAM_GET_ALL_URL } from "../util/constants.js";
+import { YelamEditFormFields } from "../assets/Data.js";
 
 const YelamFields = [
-  // { label: "Edit", name: "edit" }, 
-  { label: "Pulli Id", name: "pulliId" },
-  { label: "Name", name: "name" },
-  { label: "Whatsup Number 1", name: "whatsupNumber1" },
-  { label: "Native", name: "native" },
-  {label:"Manual Book Sr No", name:"manualBooksrNo"},
-  {label:"Remark",name:"remark"},
-  {label:"Guest Name",name:"guestName"},
-  {label:"Guest Native",name:"guestNative"},
+  { label: "ID", name: "id" },
+  { label: "Pulli Id", name: "member" },
+  { label: "Name", name: "member_name" },
+  { label: "Family Name", name: "family_name" },
+  { label: "Phone Number", name: "phone_1" },
+  { label: "Bidder Type", name: "bidder_type" },
+  { label: "Guest Name", name: "guest_name" },
+  { label: "Guest Native", name: "guest_native" },
+  { label: "Guest Whatsapp", name: "guest_whatsapp" },
+  { label: "Product", name: "guestNative" },
+  { label: "Manual Book Sr No", name: "manual_book_srno" },
+  { label: "Bid Amount", name: "bid_amount" },
+  { label: "Balance Amount", name: "balance_amount" },
+  { label: "Remark", name: "remarks" },
 ];
 
-function YelamList(  ) {
+function YelamList() {
   const [openEditModal, setOpenEditModal] = useState(false);
-
+  const [data, setData] = useState([]);
   const [currentRow, setCurrentRow] = useState(null);
   const [originalRow, setOriginalRow] = useState(null); // Original data to compare changes
   const [loading, setLoading] = useState(false); // Loading state
   const [successAlert, setSuccessAlert] = useState(false); // Success alert state
   const [errorAlert, setErrorAlert] = useState(false); // Error alert state
 
+  useEffect(() => {
+    fetchYelam();
+  }, []);
+
+  const fetchYelam = async () => {
+    try {
+      const res = await get(YELAM_GET_ALL_URL());
+      setData(res.data);
+      setLoading(true);
+    } catch (error) {
+      setLoading(false);
+      setErrorAlert(true);
+      setTimeout(() => setErrorAlert(false), 5000); // Auto-dismiss alert
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const openEdit = async (id) => {
     setLoading(true);
@@ -71,19 +88,12 @@ function YelamList(  ) {
     }));
   };
 
-  const handleDropdownChange = (name) => (event) => {
-    setCurrentRow((prevState) => ({
-      ...prevState,
-      [name]: event.target.value,
-    }));
-  };
-
   const openPaymentStatusModal = (row) => {
-    setCurrentRow(row); // Store the selected row data
-    setOpenEditModal(true); // Open the modal
+    setCurrentRow(row);
+    setOpenEditModal(true);
   };
 
-  const handleSaveChanges = async () => {
+  const handleUpdatePayment = async () => {
     const changedFields = Object.keys(currentRow)
       .filter((key) => currentRow[key] !== originalRow[key])
       .reduce((acc, key) => {
@@ -103,19 +113,7 @@ function YelamList(  ) {
         maxWidth: "100%",
       }}
     >
-      <Typography
-       sx={{
-        marginBottom: "10px",
-        backgroundColor: "rgb(255, 231, 218)", 
-        color: "rgb(0, 0, 0)", 
-        padding: "10px", // Add padding for spacing
-        fontWeight: "bold",
-        fontSize: "1.5rem",
-      }}
-      >
-        YELAM LIST
-      </Typography>
-
+      <TopHeaderTitle pagename={"YELAM LIST"} />
       {loading && <Loader />}
 
       {/* Alerts */}
@@ -131,12 +129,10 @@ function YelamList(  ) {
           message="There was an error updating the payment."
         />
       )}
-
-      {/* TableList */}
       <TableList
         openEdit={openEdit}
         fields={YelamFields}
-        data={YelamData}
+        data={data}
         showPaymentStatus={true} // Show "Payment Status" button
         handlePaymentStatus={(row) => openPaymentStatusModal(row)} // Add handler
       />
@@ -144,39 +140,21 @@ function YelamList(  ) {
       {/* Edit Dialog */}
       <Dialog open={openEditModal} onClose={handleCloseModal}>
         <Box sx={{ width: "500px" }}>
-          <DialogTitle>Payment Status</DialogTitle>
+          <DialogTitle>Edit Payment Details</DialogTitle>
           <DialogContent>
-            {/* <Profilepic /> */}
             {YelamEditFormFields.map((field) => (
-              <div key={field.name}>
-                {field.type === "dropdown" ? (
-                  <FormControl fullWidth margin="normal">
-                    <InputLabel>{field.label}</InputLabel>
-                    <Select
-                      value={currentRow ? currentRow[field.name] || "" : ""}
-                      onChange={handleDropdownChange(field.name)}
-                      label={field.label}
-                    >
-                      {field.options.map((option) => (
-                        <MenuItem key={option.value} value={option.value}>
-                          {option.label}
-                        </MenuItem>
-                      ))}
-                    </Select>
-                  </FormControl>
-                ) : (
-                  <Input
-                    label={field.label}
-                    name={field.name}
-                    value={currentRow ? currentRow[field.name] || "" : ""}
-                    onChange={handleInputChange}
-                    fullWidth
-                    margin="normal"
-                    required={field.required}
-                    type={field.type || "text"}
-                  />
-                )}
-              </div>
+              <Box key={field.name}>
+                <Input
+                  label={field.label}
+                  name={field.name}
+                  value={currentRow ? currentRow[field.name] || "" : ""}
+                  onChange={handleInputChange}
+                  fullWidth
+                  margin="normal"
+                  required={field.required}
+                  type={field.type || "text"}
+                />
+              </Box>
             ))}
           </DialogContent>
           <DialogActions>
@@ -194,9 +172,9 @@ function YelamList(  ) {
               />
               <CustomButton
                 inverted={false}
-                label="Save Changes"
+                label="Update Payment"
                 type=""
-                onclick={handleSaveChanges}
+                onclick={handleUpdatePayment}
               />
             </Box>
           </DialogActions>

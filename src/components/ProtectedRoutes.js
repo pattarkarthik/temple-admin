@@ -1,7 +1,6 @@
-import { Navigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
-import api from "../api";
-import { REFRESH_TOKEN, ACCESS_TOKEN } from "../Constants";
+import api from "../util/api";
+import { REFRESH_TOKEN, ACCESS_TOKEN } from "../util/constants";
 import { useState, useEffect } from "react";
 
 function ProtectedRoute({ children }) {
@@ -50,7 +49,7 @@ function ProtectedRoute({ children }) {
   }
 
   // return isAuthorized ? children : <Navigate to="/login" />;
-   return children;
+  return children;
 }
 
 export default ProtectedRoute;
