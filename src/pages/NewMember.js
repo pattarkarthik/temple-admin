@@ -26,7 +26,6 @@ function NewMember() {
         return true;
       }
     } catch (error) {
-      console.log("er", error);
       setLoading(false);
       setErrorAlert(true);
       setTimeout(() => setErrorAlert(false), 5000);
@@ -45,6 +44,7 @@ function NewMember() {
     >
       <TopHeaderTitle pagename={"PULLI MEMBER REGISTRATION"} />
       <Form
+        btnLabel="Add Member"
         fields={formFields}
         onSubmit={(formData) => handleFormSubmit(formData)}
         profilePic={true}

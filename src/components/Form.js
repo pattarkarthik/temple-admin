@@ -5,7 +5,13 @@ import CustomButton from "./CustomButton";
 import Input from "./Input";
 import CustomSelect from "./CustomSelect";
 
-function Form({ fields = [], onSubmit, initialValues = {}, profilePic }) {
+function Form({
+  fields = [],
+  onSubmit,
+  initialValues = {},
+  profilePic,
+  btnLabel,
+}) {
   const [formValues, setFormValues] = useState(initialValues);
   const [uploadedHusbandProfilePic, setUploadedHusbandProfilePic] =
     useState(null);
@@ -149,7 +155,7 @@ function Form({ fields = [], onSubmit, initialValues = {}, profilePic }) {
             label="Cancel"
             onclick={handleCancel}
           />
-          <CustomButton inverted={false} label="Add Member" type="submit" />
+          <CustomButton inverted={false} label={btnLabel} type="submit" />
         </Box>
       </form>
     </Paper>
