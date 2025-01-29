@@ -135,6 +135,14 @@ function Form({
                       type={field.type || "text"}
                       value={formValues[field.name] || ""}
                       onChange={handleChange}
+                      onInvalid={(e) =>
+                        e.target.setCustomValidity(
+                          `Please Enter a Valid ${field.id}`
+                        )
+                      }
+                      onInput={(e) => {
+                        e.target.setCustomValidity("");
+                      }}
                     />
                   )}
                 </Grid>
@@ -146,7 +154,7 @@ function Form({
         <Box
           sx={{
             display: "flex",
-            justifyContent: "center",
+            justifyContent: "space-around",
             marginTop: "30px",
           }}
         >

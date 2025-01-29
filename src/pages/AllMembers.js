@@ -6,12 +6,7 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import Profilepic from "../components/Profilepic.js";
-import {
-  newMembersData,
-  allMembersFilter,
-  newMembersFields,
-  editFormFields,
-} from "../assets/Data.js";
+import { allMembersFilter, newMembersFields } from "../assets/Data.js";
 import CustomButton from "../components/CustomButton.js";
 import Loader from "../components/Loader";
 import CustomAlert from "../components/CustomAlert";
@@ -23,6 +18,7 @@ import {
   NEW_MEMBER_GET_URL,
   NEW_MEMBER_UPDATE_URL,
 } from "../util/constants.js";
+import { editMemberFormFields } from "../assets/Fields.js";
 
 function AllMembers() {
   const [openEditModal, setOpenEditModal] = useState(false);
@@ -167,7 +163,7 @@ function AllMembers() {
           <DialogTitle>Edit Member</DialogTitle>
           <DialogContent>
             <Profilepic />
-            {editFormFields.map((field) => (
+            {editMemberFormFields.map((field) => (
               <div key={field.name}>
                 {field.type === "dropdown" ? (
                   <FormControl

@@ -28,10 +28,11 @@ export default function TableList({
   openEdit,
   data,
   fields,
-  showEdit = false,
-  showPaymentStatus = false, // Prop to toggle the "Payment Status" button
+  showEdit = false, // Prop to toggle the "Payment Status" button
   handlePaymentStatus,
   filterFields = [],
+  catalog = false,
+  handleAddProductModal,
 }) {
   const [rows, setRows] = useState([]);
   const [filteredRows, setFilteredRows] = useState([]);
@@ -177,12 +178,21 @@ export default function TableList({
             </FormControl>
           ))}
 
-        <CustomButton
-          inverted={true}
-          label="Export"
-          onclick={handleMenuClick}
-          endIcon={<ArrowDropDownIcon />}
-        />
+        {catalog ? (
+          <CustomButton
+            inverted={false}
+            label="Add Product"
+            width={"40%"}
+            onclick={handleAddProductModal}
+          />
+        ) : (
+          <CustomButton
+            inverted={true}
+            label="Export"
+            onclick={handleMenuClick}
+            endIcon={<ArrowDropDownIcon />}
+          />
+        )}
       </Box>
 
       {/* Export Dropdown Menu */}
@@ -247,7 +257,7 @@ export default function TableList({
           </TableHead>
           <TableBody>
             {filteredRows.map((row) => (
-              <TableRow hover role="checkbox" tabIndex={-1} key={row.id}>
+              <TableRow hover role="checkbox" tabIndex={-1} key={row.name}>
                 {showEdit && (
                   <TableCell align="left">
                     <Stack spacing={2} direction="row">
@@ -266,12 +276,12 @@ export default function TableList({
                 )}
                 {fields.map((field) => (
                   <TableCell key={field.name} align="left">
-                    {field.name === "balance_amount" ? (
+                    {field.name === "update_payment" ? (
                       <Box
                         sx={{ display: "flex", justifyContent: "space-around" }}
                       >
                         {row[field.name]}
-                        {field.name === "balance_amount" ? (
+                        {field.name === "update_payment" ? (
                           <EditIcon
                             style={{
                               fontSize: "20px",

@@ -1,18 +1,23 @@
 import React, { useState } from "react";
 import Form from "../components/Form";
 import { Box } from "@mui/material";
-import { formFields } from "../assets/Data";
+import { newMemberFormFields } from "../assets/Fields.js";
 import Loader from "../components/Loader";
 import CustomAlert from "../components/CustomAlert";
 import { useNavigate } from "react-router-dom";
 import TopHeaderTitle from "../components/TopHeaderTitle.js";
 import { create } from "../util/fetchUtils.js";
 import { NEW_MEMBER_CREATE_URL } from "../util/constants.js";
+import {
+  MEMBER_ADDED_FAILURE_ALERT_MESSAGE,
+  MEMBER_ADDED_SUCCESSFULLY_ALERT_MESSAGE,
+} from "../util/alerts.js";
 
 function NewMember() {
   const [loading, setLoading] = useState(false);
   const [successAlert, setSuccessAlert] = useState(false);
   const [errorAlert, setErrorAlert] = useState(false);
+  const [alertMessage, setAlertMessage] = useState("");
   const navigate = useNavigate();
   const handleFormSubmit = async (formData) => {
     setLoading(true);
@@ -21,6 +26,7 @@ function NewMember() {
       if (res.status === 201) {
         setLoading(false);
         setSuccessAlert(true);
+        setAlertMessage(MEMBER_ADDED_SUCCESSFULLY_ALERT_MESSAGE);
         setTimeout(() => setSuccessAlert(false), 5000);
         navigate("/new-member");
         return true;
@@ -28,9 +34,9 @@ function NewMember() {
     } catch (error) {
       setLoading(false);
       setErrorAlert(true);
+      setAlertMessage(MEMBER_ADDED_FAILURE_ALERT_MESSAGE);
       setTimeout(() => setErrorAlert(false), 5000);
       return false;
-    } finally {
     }
   };
 
@@ -45,20 +51,14 @@ function NewMember() {
       <TopHeaderTitle pagename={"PULLI MEMBER REGISTRATION"} />
       <Form
         btnLabel="Add Member"
-        fields={formFields}
+        fields={newMemberFormFields}
         onSubmit={(formData) => handleFormSubmit(formData)}
         profilePic={true}
       />
 
       {loading && <Loader />}
-      <CustomAlert
-        openAlert={successAlert}
-        message="Member added successfully!"
-      />
-      <CustomAlert
-        openAlert={errorAlert}
-        message="There was an error adding the member. Please try again"
-      />
+      <CustomAlert openAlert={successAlert} message={alertMessage} />
+      <CustomAlert openAlert={errorAlert} message={alertMessage} />
     </Box>
   );
 }

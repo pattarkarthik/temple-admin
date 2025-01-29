@@ -1,44 +1,25 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import RadioButton from "../components/RadioButton";
-import { Box, Grid, Paper } from "@mui/material";
+import { Box, FormControl, Grid, Paper } from "@mui/material";
 import TopHeaderTitle from "../components/TopHeaderTitle";
 import Loader from "../components/Loader";
 import CustomAlert from "../components/CustomAlert";
 import { useNavigate } from "react-router-dom";
 import { create, get } from "../util/fetchUtils";
-import { NEW_MEMBER_GET_URL, YELAM_CREATE_URL } from "../util/constants";
+import {
+  CATEGORIES_GET_ALL_URL,
+  NEW_MEMBER_GET_URL,
+  YELAM_CREATE_URL,
+} from "../util/constants";
 import Input from "../components/Input";
 import CustomButton from "../components/CustomButton";
-
-const inhousePreFetchFields = [
-  { label: "Enter Pulli ID", name: "pulli_id", required: true },
-];
-const externalPreFetchFields = [
-  { label: "புல்லி ஐடி", name: "pulli_id", required: true },
-  { label: "விருந்தினர் பெயர்", name: "guest_name", required: true },
-  {
-    label: "விருந்தினர் வாட்ஸ்அப் எண்",
-    name: "guest_whatsapp",
-    required: true,
-  },
-  { label: "விருந்தினர் பூர்வீகம்", name: "guest_native", required: true },
-];
-
-const commandFields = [
-  { label: "பெயர்", name: "name", required: true },
-  { label: "தொலைபேசி", name: "mobile_1", required: true },
-  {
-    label: "குடும்பப் பெயர்",
-    name: "family_name",
-    required: true,
-    type: "tel",
-  },
-  { label: "கையேடு புத்தகம் Sr எண்", name: "manual_book_srno", required: true },
-  { label: "கருத்துக்கள்", name: "remarks", required: false },
-  { label: "பொருள்", name: "product", required: true },
-  { label: "ஏல தொகை", name: "bid_amount", required: true },
-  { label: "இருப்பு தொகை", name: "balance_amount", required: true },
-];
+import CustomSelect from "../components/CustomSelect";
+import {
+  commanYelamFormFields,
+  externalPreFetchYelamFields,
+  inhousePreFetchYelamFields,
+} from "../assets/Fields";
+import { YELAM_ADDED_SUCCESSFUL_ALERT_MESSAGE } from "../util/alerts";
 
 function YelamEntry() {
   const [selectedValue, setSelectedValue] = useState("inhouse");
@@ -54,18 +35,53 @@ function YelamEntry() {
     remarks: null,
     product: "",
     bid_amount: null,
-    balance_amount: null,
     bidder_type: selectedValue,
     guest_name: null,
     guest_whatsapp: null,
     guest_native: null,
   });
   const [fetchMemberSuccess, setFetchMemberSuccess] = useState(false);
+  const [categories, setCategories] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState("");
+  const [products, setProducts] = useState({});
   const [loading, setLoading] = useState(false);
   const [errorAlert, setErrorAlert] = useState(false);
   const [successAlert, setSuccessAlert] = useState(false);
   const navigate = useNavigate();
 
+  useEffect(() => {
+    fetchCategories();
+  }, []);
+
+  const fetchCategories = async () => {
+    setLoading(true);
+    try {
+      const res = await get(CATEGORIES_GET_ALL_URL());
+      if (res.status === 200) {
+        setCategories(
+          res.data.map((cat) => {
+            return { label: cat.name, value: cat.name };
+          })
+        );
+        setProducts(
+          res.data.reduce((acc, cat) => {
+            acc[cat.name] = cat.products.map((pro) => ({
+              label: pro.product_name,
+              value: pro.id,
+            }));
+            return acc;
+          }, {})
+        );
+        setLoading(false);
+        return true;
+      }
+    } catch (error) {
+      setLoading(false);
+      setErrorAlert(true);
+      setTimeout(() => setErrorAlert(false), 5000);
+      return false;
+    }
+  };
   const fetchMember = async () => {
     const pulliId = memberData.pulli_id;
     setLoading(true);
@@ -86,19 +102,18 @@ function YelamEntry() {
       setErrorAlert(true);
       setTimeout(() => setErrorAlert(false), 5000);
       return false;
-    } finally {
     }
   };
 
   const getFieldsArray = () => {
     if (!fetchMemberSuccess && selectedValue === "inhouse") {
-      return inhousePreFetchFields;
+      return inhousePreFetchYelamFields;
     } else if (!fetchMemberSuccess && selectedValue === "guest") {
-      return externalPreFetchFields;
+      return externalPreFetchYelamFields;
     } else if (fetchMemberSuccess && selectedValue === "inhouse") {
-      return inhousePreFetchFields.concat(commandFields);
+      return inhousePreFetchYelamFields.concat(commanYelamFormFields);
     } else if (fetchMemberSuccess && selectedValue === "guest") {
-      return externalPreFetchFields.concat(commandFields);
+      return externalPreFetchYelamFields.concat(commanYelamFormFields);
     } else {
       return [];
     }
@@ -108,8 +123,22 @@ function YelamEntry() {
     setSelectedValue(value);
     setFetchMemberSuccess(false);
   };
+  const handleDropdown = (value, field) => {
+    if (field.name === "category") {
+      setSelectedCategory(value);
+    } else if (field.name === "product") {
+      setYelamData((prev) => ({
+        ...prev,
+        product: value,
+      }));
+    }
+  };
   const handleInputChange = (e) => {
-    const { name, value } = e.target;
+    const { name, value, type } = e.target;
+    let updatedValue = value;
+    if (type === "number" && isNaN(Number(updatedValue))) {
+      return;
+    }
     if (memberData.hasOwnProperty(name)) {
       setMemberData((prev) => ({
         ...prev,
@@ -129,6 +158,7 @@ function YelamEntry() {
       member: memberData.pulli_id,
       bidder_type: selectedValue,
     };
+    console.log(combinedData);
     try {
       const res = await create(YELAM_CREATE_URL(), combinedData);
       if (res.status === 201) {
@@ -159,6 +189,7 @@ function YelamEntry() {
       member: null,
       manual_book_srno: "",
       remarks: null,
+      category: "",
       product: "",
       bid_amount: null,
       balance_amount: null,
@@ -170,7 +201,6 @@ function YelamEntry() {
 
     setFetchMemberSuccess(false); // Reset to default selection (optional)
   };
-
   return (
     <Box
       sx={{
@@ -201,23 +231,47 @@ function YelamEntry() {
         <Grid item xs={12}>
           <Grid container spacing={2}>
             {getFieldsArray().map((field) => (
-              <Grid key={field.name} item xs={12} sm={6}>
-                <Input
-                  required={field.required}
-                  label={field.label}
-                  name={field.name}
-                  type={"text"}
-                  value={
-                    memberData.hasOwnProperty(field.name)
-                      ? memberData[field.name]
+              <Grid key={field.label} item xs={12} sm={6}>
+                {field.type === "dropdown" ? (
+                  <FormControl
+                    fullWidth
+                    size="small"
+                    sx={{
+                      marginTop: "10px",
+                      display: "flex",
+                      flexDirection: "row",
+                    }}
+                  >
+                    <CustomSelect
+                      value={yelamData[field.name]}
+                      onChange={(value) => handleDropdown(value, field)}
+                      name={field.name}
+                      fields={
+                        field.name === "category"
+                          ? categories
+                          : products[selectedCategory] || []
+                      }
+                      label={field.label}
+                    />
+                  </FormControl>
+                ) : (
+                  <Input
+                    required={field.required}
+                    label={field.label}
+                    name={field.name}
+                    type={field.type || "text"}
+                    value={
+                      memberData.hasOwnProperty(field.name)
                         ? memberData[field.name]
+                          ? memberData[field.name]
+                          : ""
+                        : yelamData[field.name]
+                        ? yelamData[field.name]
                         : ""
-                      : yelamData[field.name]
-                      ? yelamData[field.name]
-                      : ""
-                  }
-                  onChange={handleInputChange} // Dynamic input change handling
-                />
+                    }
+                    onChange={handleInputChange} // Dynamic input change handling
+                  />
+                )}
               </Grid>
             ))}
           </Grid>
@@ -226,7 +280,7 @@ function YelamEntry() {
         <Box
           sx={{
             display: "flex",
-            justifyContent: "center",
+            justifyContent: "space-around",
             marginTop: "30px",
           }}
         >
@@ -246,7 +300,7 @@ function YelamEntry() {
       {loading && <Loader />}
       <CustomAlert
         openAlert={successAlert}
-        message="Yelam Added Successfully"
+        message={YELAM_ADDED_SUCCESSFUL_ALERT_MESSAGE}
       />
       <CustomAlert
         openAlert={errorAlert}

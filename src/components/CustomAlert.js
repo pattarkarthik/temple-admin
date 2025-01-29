@@ -18,6 +18,7 @@ export default function CustomAlert(props) {
   return (
     <React.Fragment>
       <Dialog
+        // sx={{ zIndex: 100 }}
         open={open}
         onClose={handleClose}
         aria-labelledby="alert-dialog-title"
