@@ -19,7 +19,8 @@ import EditIcon from "@mui/icons-material/Edit";
 import * as XLSX from "xlsx"; // For Excel export
 import jsPDF from "jspdf"; // For PDF export
 import autoTable from "jspdf-autotable"; // Import the plugin
-import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown"; // Import the arrow icon
+import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
+import PrintIcon from "@mui/icons-material/Print";
 import CustomButton from "./CustomButton";
 import Input from "./Input";
 import CustomSelect from "./CustomSelect";
@@ -48,14 +49,21 @@ export default function TableList({
     setFilteredRows(data);
   }, [data]);
 
-  const uniqueValues = (key) => [
-    { label: "All", value: "" },
-    ...new Set(
-      data.map((row) => {
-        return { label: row[key], value: row[key] };
-      })
-    ),
-  ];
+  const uniqueValues = (key) => {
+    const uniqueObjects = [];
+    data.forEach((row) => {
+      const obj = { label: row[key], value: row[key] };
+      if (
+        !uniqueObjects.some(
+          (item) => item.label === obj.label && item.value === obj.value
+        )
+      ) {
+        uniqueObjects.push(obj);
+      }
+    });
+
+    return [{ label: "All", value: "" }, ...uniqueObjects];
+  };
 
   const handleFilterChange = (key, value) => {
     const updatedFilters = { ...filters, [key]: value };
@@ -186,12 +194,20 @@ export default function TableList({
             onclick={handleAddProductModal}
           />
         ) : (
-          <CustomButton
-            inverted={true}
-            label="Export"
-            onclick={handleMenuClick}
-            endIcon={<ArrowDropDownIcon />}
-          />
+          <>
+            <CustomButton
+              inverted={true}
+              label="Export"
+              onclick={handleMenuClick}
+              endIcon={<ArrowDropDownIcon />}
+            />
+            <CustomButton
+              inverted={true}
+              label="Print"
+              // onclick={handleMenuClick}
+              endIcon={<PrintIcon />}
+            />
+          </>
         )}
       </Box>
 
@@ -257,7 +273,7 @@ export default function TableList({
           </TableHead>
           <TableBody>
             {filteredRows.map((row) => (
-              <TableRow hover role="checkbox" tabIndex={-1} key={row.name}>
+              <TableRow hover role="checkbox" tabIndex={-1} key={row.pulli_id}>
                 {showEdit && (
                   <TableCell align="left">
                     <Stack spacing={2} direction="row">

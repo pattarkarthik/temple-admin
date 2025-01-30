@@ -2,7 +2,7 @@ import React, { useState } from "react";
 // import { formProductData } from "../assets/ProductReceivedData";
 import RadioButton from "../components/RadioButton";
 import Form from "../components/Form";
-import { Box, Typography } from "@mui/material";
+import { Box } from "@mui/material";
 import TopHeaderTitle from "../components/TopHeaderTitle";
 
 const inhouseFields = [

@@ -19,7 +19,12 @@ export const newMemberFormFields = [
     required: true,
     type: "textarea",
   },
-  { label: "முகவரி வரி 2", name: "addressLine2", required: true, type: "text" },
+  {
+    label: "முகவரி வரி 2",
+    name: "address_line_2",
+    required: true,
+    type: "text",
+  },
   { label: "நகரம்", name: "city", required: true, type: "text" },
   { label: "மாநிலம்", name: "state", required: true, type: "text" },
   {
@@ -158,6 +163,7 @@ export const YelamListFields = [
   { label: "Product", name: "product_name" },
   { label: "Manual Book Sr No", name: "manual_book_srno" },
   { label: "Bid Amount", name: "bid_amount" },
+  { label: "Balance Amount", name: "pending_amount" },
   { label: "Update Payment", name: "update_payment" },
   { label: "Payment Status", name: "payment_status" },
   { label: "Guest Name", name: "guest_name" },
@@ -181,13 +187,20 @@ export const externalPreFetchYelamFields = [
 ];
 
 export const commanYelamFormFields = [
-  { label: "பெயர்", name: "name", required: true },
-  { label: "தொலைபேசி", name: "mobile_1", required: true, type: "mobile" },
+  { label: "பெயர்", name: "name", required: true, readonly: true },
+  {
+    label: "தொலைபேசி",
+    name: "mobile_1",
+    required: true,
+    type: "mobile",
+    readonly: true,
+  },
   {
     label: "குடும்பப் பெயர்",
     name: "family_name",
     required: true,
-    type: "tel",
+    type: "text",
+    readonly: true,
   },
   {
     label: "Product Category",

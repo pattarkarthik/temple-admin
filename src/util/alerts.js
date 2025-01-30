@@ -10,3 +10,9 @@ export const PRODUCT_ADDED_SUCCESSFUL_ALERT_MESSAGE =
   "Product Added Successfully";
 export const PRODUCT_ADDED_FAILURE_ALERT_MESSAGE =
   "Product Was not Added Please Try Again Later";
+export const MEMBER_UPDATED_SUCCESSFULLY_ALERT_MESSAGE =
+  "Member Updated Successfull";
+export const MEMBER_UPDATE_FAILURE_ALERT_MESSAGE =
+  "Member Was not Updated Please Try Again Later";
+export const MEMBER_FETCH_FAILURE_ALERT_MESSAGE =
+  "Failed to fetch member. Please enter a valid Pulli ID";

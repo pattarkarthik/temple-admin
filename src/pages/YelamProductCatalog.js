@@ -10,7 +10,6 @@ import {
 import TopHeaderTitle from "../components/TopHeaderTitle";
 import CustomAlert from "../components/CustomAlert";
 import Loader from "../components/Loader";
-import { create, get } from "../util/fetchUtils";
 import { CATEGORIES_GET_ALL_URL, PRODUCT_CREATE_URL } from "../util/constants";
 import { catalogListFields } from "../assets/Fields";
 import TableList from "../components/TableList";
@@ -21,48 +20,46 @@ import {
   PRODUCT_ADDED_FAILURE_ALERT_MESSAGE,
   PRODUCT_ADDED_SUCCESSFUL_ALERT_MESSAGE,
 } from "../util/alerts";
+import { useApiRequest } from "../util/customHooks/useApiRequest";
 
 function YelamProductCatalog() {
   const [categories, setCategories] = useState([]);
   const [categoryId, setCategoryId] = useState(null);
   const [products, setProducts] = useState([]);
-  const [loading, setLoading] = useState(false); // Loading state
-  const [successAlert, setSuccessAlert] = useState(false); // Success alert state
-  const [errorAlert, setErrorAlert] = useState(false); // Error alert state
   const [newProduct, setNewProduct] = useState("");
   const [category, setCategory] = useState("");
   const [isModalOpen, setModalOpen] = useState(false);
-  const [alertMessage, setAlertMessage] = useState("");
+
+  const {
+    loading,
+    errorAlert,
+    successAlert,
+    alertMessage,
+    fetchData,
+    postData,
+  } = useApiRequest();
 
   useEffect(() => {
     fetchProducts();
   }, [successAlert]);
 
   const fetchProducts = async () => {
-    try {
-      const res = await get(CATEGORIES_GET_ALL_URL());
+    const res = await fetchData(CATEGORIES_GET_ALL_URL());
+    if (res) {
       setCategories(
-        res.data.map((cat) => {
+        res.map((cat) => {
           return { label: cat.name, value: cat.name, id: cat.id };
         })
       );
 
       setProducts(
-        res.data.flatMap((category) =>
+        res.flatMap((category) =>
           category.products.map((product) => ({
             name: product.product_name,
             category: category.name.toLowerCase(), // Convert category name to lowercase as per example
           }))
         )
       );
-
-      setLoading(true);
-    } catch (error) {
-      setLoading(false);
-      setErrorAlert(true);
-      setTimeout(() => setErrorAlert(false), 5000);
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -81,25 +78,17 @@ function YelamProductCatalog() {
   };
   const handleAddProduct = async (e) => {
     e.preventDefault();
-    try {
-      const res = await create(PRODUCT_CREATE_URL(), {
+    const res = await postData(
+      PRODUCT_CREATE_URL(),
+      {
         product_name: newProduct,
         category: categoryId,
-      });
-      if (res.status === 201) {
-        setLoading(false);
-        handleModalClose();
-        setSuccessAlert(true);
-        setAlertMessage(PRODUCT_ADDED_SUCCESSFUL_ALERT_MESSAGE);
-        setTimeout(() => setSuccessAlert(false), 5000);
-        return true;
-      }
-    } catch (error) {
-      setLoading(false);
-      setErrorAlert(true);
-      setAlertMessage(PRODUCT_ADDED_FAILURE_ALERT_MESSAGE);
-      setTimeout(() => setErrorAlert(false), 5000);
-      return false;
+      },
+      PRODUCT_ADDED_SUCCESSFUL_ALERT_MESSAGE,
+      PRODUCT_ADDED_FAILURE_ALERT_MESSAGE
+    );
+    if (res) {
+      handleModalClose();
     }
   };
   return (

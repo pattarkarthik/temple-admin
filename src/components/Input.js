@@ -69,7 +69,9 @@ function Input({
             height: "40px", // Adjust height based on size
             padding: "8px",
             boxSizing: "border-box",
-            backgroundColor: "rgb(255, 250, 245)",
+            backgroundColor: readonly
+              ? "rgb(203, 203, 203)"
+              : "rgb(255,250,245)",
             width: width || "65%",
             borderRadius: "3px",
           }}

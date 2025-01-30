@@ -274,8 +274,13 @@ export const YelamEditFormFields = [
     type: "number",
     readonly: true,
   },
-  { label: "Paying Amount", name: "amount", type: "number" },
-  { label: "Reciept No.", name: "receipt_number", type: "text" },
+  { label: "Paying Amount", name: "amount", type: "number", required: true },
+  {
+    label: "Reciept No.",
+    name: "receipt_number",
+    type: "text",
+    required: true,
+  },
   {
     label: "Payment Mode",
     name: "payment_mode",
@@ -294,6 +299,7 @@ export const newMembersFields = [
   { label: "Family Name", name: "family_name", required: true },
   { label: "Name", name: "name", required: true },
   { label: "Spouse Name", name: "spouse_name", required: false },
+  { label: "Karai", name: "karai", required: true },
   {
     label: "Husband Photo",
     name: "husband_photo",

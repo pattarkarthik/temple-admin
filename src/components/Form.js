@@ -39,10 +39,8 @@ function Form({
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     const data = new FormData();
 
-    // Append form values to FormData
     Object.keys(formValues).forEach((key) => {
       if (formValues[key] !== undefined) {
         data.append(key, formValues[key]);

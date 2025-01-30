@@ -12,55 +12,59 @@ import Loader from "../components/Loader";
 import CustomAlert from "../components/CustomAlert";
 import Input from "../components/Input.js";
 import TopHeaderTitle from "../components/TopHeaderTitle.js";
-import { get, update } from "../util/fetchUtils.js";
 import {
   ALL_MEMBERS_GET_URL,
   NEW_MEMBER_GET_URL,
   NEW_MEMBER_UPDATE_URL,
 } from "../util/constants.js";
 import { editMemberFormFields } from "../assets/Fields.js";
+import { useApiRequest } from "../util/customHooks/useApiRequest.js";
+import {
+  MEMBER_UPDATE_FAILURE_ALERT_MESSAGE,
+  MEMBER_UPDATED_SUCCESSFULLY_ALERT_MESSAGE,
+} from "../util/alerts.js";
 
 function AllMembers() {
   const [openEditModal, setOpenEditModal] = useState(false);
   const [data, setData] = useState([]);
   const [currentRow, setCurrentRow] = useState(null);
-  const [originalRow, setOriginalRow] = useState(null); // Original data to compare changes
-  const [loading, setLoading] = useState(false); // Loading state
-  const [successAlert, setSuccessAlert] = useState(false); // Success alert state
-  const [errorAlert, setErrorAlert] = useState(false); // Error alert state
+  const [originalRow, setOriginalRow] = useState(null);
+  const [uploadedHusbandProfilePic, setUploadedHusbandProfilePic] =
+    useState(null);
+  const [uploadedWifeProfilePic, setUploadedWifeProfilePic] = useState(null);
+
+  const {
+    loading,
+    successAlert,
+    errorAlert,
+    alertMessage,
+    fetchData,
+    updateData,
+  } = useApiRequest();
 
   useEffect(() => {
+    const fetchMembers = async () => {
+      const membersData = await fetchData(ALL_MEMBERS_GET_URL());
+      if (membersData) setData(membersData);
+    };
     fetchMembers();
-  }, []);
+  }, [successAlert]);
 
-  const fetchMembers = async () => {
-    try {
-      const res = await get(ALL_MEMBERS_GET_URL());
-      setData(res.data);
-      setLoading(true);
-    } catch (error) {
-      setLoading(false);
-      setErrorAlert(true);
-      setTimeout(() => setErrorAlert(false), 5000); // Auto-dismiss alert
-    } finally {
-      setLoading(false);
+  const openEdit = async (id) => {
+    const memberData = await fetchData(NEW_MEMBER_GET_URL(id));
+    if (memberData) {
+      setCurrentRow(memberData);
+      setOriginalRow(memberData);
+      setOpenEditModal(true);
     }
   };
 
-  const openEdit = async (id) => {
-    setLoading(true);
-    try {
-      const res = await get(NEW_MEMBER_GET_URL(id));
-
-      setCurrentRow(res.data); // Set API data to currentRow state
-      setOriginalRow(res.data); // Store the original data for comparison
-    } catch (error) {
-      setErrorAlert(true);
-      setTimeout(() => setErrorAlert(false), 5000); // Auto-dismiss alert
-    } finally {
-      setLoading(false);
+  const handleFileChange = (file, type) => {
+    if (type === "husband") {
+      setUploadedHusbandProfilePic(file);
+    } else if (type === "wife") {
+      setUploadedWifeProfilePic(file);
     }
-    setOpenEditModal(true);
   };
 
   const handleCloseModal = () => {
@@ -91,35 +95,32 @@ function AllMembers() {
         acc[key] = currentRow[key];
         return acc;
       }, {});
-    const data = new FormData();
 
+    const data = new FormData();
+    if (uploadedHusbandProfilePic) {
+      data.append("husband_photo", uploadedHusbandProfilePic); // "photo" should match the field name in your Django model
+    }
+    if (uploadedWifeProfilePic) {
+      data.append("wife_photo", uploadedWifeProfilePic); // "photo" should match the field name in your Django model
+    }
     Object.keys(changedFields).forEach((key) => {
       if (changedFields[key] !== undefined) {
         data.append(key, changedFields[key]);
       }
     });
 
-    setLoading(true);
-    try {
-      const res = await update(
-        NEW_MEMBER_UPDATE_URL(currentRow.pulli_id),
-        data
-      );
-      if (res.status === 200) {
-        setSuccessAlert(true);
-        setTimeout(() => setSuccessAlert(false), 5000); // Auto-dismiss alert
-        alert("Member updated successfully");
-      }
-    } catch (error) {
-      setErrorAlert(true);
-      setTimeout(() => setErrorAlert(false), 5000); // Auto-dismiss alert
-    } finally {
-      setLoading(false);
-    }
+    const updated = await updateData(
+      NEW_MEMBER_UPDATE_URL(currentRow.pulli_id),
+      data,
+      MEMBER_UPDATED_SUCCESSFULLY_ALERT_MESSAGE,
+      MEMBER_UPDATE_FAILURE_ALERT_MESSAGE
+    );
 
-    setOpenEditModal(false);
-    setCurrentRow(null);
-    setOriginalRow(null);
+    if (updated) {
+      setOpenEditModal(false);
+      setCurrentRow(null);
+      setOriginalRow(null);
+    }
   };
 
   return (
@@ -133,23 +134,9 @@ function AllMembers() {
       }}
     >
       <TopHeaderTitle pagename={"ALL MEMBERS"} />
-
       {loading && <Loader />}
-
-      {/* Alerts */}
-      {successAlert && (
-        <CustomAlert
-          severity="success"
-          message="Member updated successfully!"
-        />
-      )}
-      {errorAlert && (
-        <CustomAlert
-          severity="error"
-          message="There was an error updating the member."
-        />
-      )}
-
+      <CustomAlert openAlert={successAlert} message={alertMessage} />
+      <CustomAlert openAlert={errorAlert} message={alertMessage} />
       <TableList
         openEdit={openEdit}
         data={data}
@@ -157,12 +144,31 @@ function AllMembers() {
         showEdit={true}
         filterFields={allMembersFilter}
       />
-
       <Dialog open={openEditModal} onClose={handleCloseModal}>
-        <Box sx={{ width: "500px" }}>
+        <Box sx={{ width: "600px" }}>
           <DialogTitle>Edit Member</DialogTitle>
           <DialogContent>
-            <Profilepic />
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "space-around",
+                marginBottom: "30px",
+              }}
+            >
+              <Profilepic
+                onFileChange={(file, type) => handleFileChange(file, type)}
+                title={"Update Husband Photo"}
+                type="husband"
+                picPreview={originalRow ? originalRow.husband_photo : ""}
+              />
+              <Profilepic
+                onFileChange={(file, type) => handleFileChange(file, type)}
+                title={"Update Wife Photo"}
+                type="wife"
+                picPreview={originalRow ? originalRow.wife_photo : ""}
+              />
+            </Box>
+
             {editMemberFormFields.map((field) => (
               <div key={field.name}>
                 {field.type === "dropdown" ? (
@@ -184,15 +190,6 @@ function AllMembers() {
                         backgroundColor: "rgb(255, 250, 245)",
                         "& .MuiOutlinedInput-notchedOutline": {
                           borderColor: "#f08001",
-                        },
-                        "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-                          borderColor: "#f08001",
-                        },
-                        "&:hover .MuiOutlinedInput-notchedOutline": {
-                          borderColor: "#f08001",
-                        },
-                        "& .MuiSvgIcon-root": {
-                          color: "#f08001",
                         },
                       }}
                       value={currentRow ? currentRow[field.name] || "" : ""}
@@ -237,7 +234,6 @@ function AllMembers() {
               <CustomButton
                 inverted={false}
                 label="Save Changes"
-                type=""
                 onclick={handleSaveChanges}
               />
             </Box>
