@@ -232,7 +232,7 @@ export default function TableList({
 
       <TableContainer
         sx={{
-          maxHeight: "650px",
+          maxHeight: "70vh",
           width: "100%",
           backgroundColor: "rgb(255, 231, 218)",
         }}

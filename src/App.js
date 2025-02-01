@@ -26,6 +26,7 @@ function ProtectedLayout() {
         backgroundPosition: "center", // Center the image
         backgroundRepeat: "no-repeat",
         backgroundAttachment: "fixed",
+        boxSizing: "border-box",
       }}
     >
       <Box sx={{ maxWidth: "20%", opacity: "0.9" }}>
