@@ -1,16 +1,20 @@
 import React, { useState } from "react";
 import { Button, Avatar, Box, Typography } from "@mui/material";
 
-export default function Profilepic({ onFileChange, title, type }) {
+export default function Profilepic({
+  onFileChange,
+  title,
+  type,
+  picPreview = null,
+}) {
   const [profilePicture, setProfilePicture] = useState(null);
-  const [preview, setPreview] = useState(null);
+  const [preview, setPreview] = useState(picPreview);
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
     if (file) {
       setProfilePicture(file);
 
-      // Generate a preview
       const reader = new FileReader();
       reader.onload = () => {
         setPreview(reader.result);

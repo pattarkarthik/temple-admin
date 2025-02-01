@@ -19,7 +19,8 @@ import EditIcon from "@mui/icons-material/Edit";
 import * as XLSX from "xlsx"; // For Excel export
 import jsPDF from "jspdf"; // For PDF export
 import autoTable from "jspdf-autotable"; // Import the plugin
-import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown"; // Import the arrow icon
+import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
+import PrintIcon from "@mui/icons-material/Print";
 import CustomButton from "./CustomButton";
 import Input from "./Input";
 import CustomSelect from "./CustomSelect";
@@ -28,10 +29,11 @@ export default function TableList({
   openEdit,
   data,
   fields,
-  showEdit = false,
-  showPaymentStatus = false, // Prop to toggle the "Payment Status" button
+  showEdit = false, // Prop to toggle the "Payment Status" button
   handlePaymentStatus,
   filterFields = [],
+  catalog = false,
+  handleAddProductModal,
 }) {
   const [rows, setRows] = useState([]);
   const [filteredRows, setFilteredRows] = useState([]);
@@ -47,14 +49,21 @@ export default function TableList({
     setFilteredRows(data);
   }, [data]);
 
-  const uniqueValues = (key) => [
-    { label: "All", value: "" },
-    ...new Set(
-      data.map((row) => {
-        return { label: row[key], value: row[key] };
-      })
-    ),
-  ];
+  const uniqueValues = (key) => {
+    const uniqueObjects = [];
+    data.forEach((row) => {
+      const obj = { label: row[key], value: row[key] };
+      if (
+        !uniqueObjects.some(
+          (item) => item.label === obj.label && item.value === obj.value
+        )
+      ) {
+        uniqueObjects.push(obj);
+      }
+    });
+
+    return [{ label: "All", value: "" }, ...uniqueObjects];
+  };
 
   const handleFilterChange = (key, value) => {
     const updatedFilters = { ...filters, [key]: value };
@@ -177,12 +186,29 @@ export default function TableList({
             </FormControl>
           ))}
 
-        <CustomButton
-          inverted={true}
-          label="Export"
-          onclick={handleMenuClick}
-          endIcon={<ArrowDropDownIcon />}
-        />
+        {catalog ? (
+          <CustomButton
+            inverted={false}
+            label="Add Product"
+            width={"40%"}
+            onclick={handleAddProductModal}
+          />
+        ) : (
+          <>
+            <CustomButton
+              inverted={true}
+              label="Export"
+              onclick={handleMenuClick}
+              endIcon={<ArrowDropDownIcon />}
+            />
+            <CustomButton
+              inverted={true}
+              label="Print"
+              // onclick={handleMenuClick}
+              endIcon={<PrintIcon />}
+            />
+          </>
+        )}
       </Box>
 
       {/* Export Dropdown Menu */}
@@ -206,7 +232,7 @@ export default function TableList({
 
       <TableContainer
         sx={{
-          maxHeight: "650px",
+          maxHeight: "70vh",
           width: "100%",
           backgroundColor: "rgb(255, 231, 218)",
         }}
@@ -247,7 +273,7 @@ export default function TableList({
           </TableHead>
           <TableBody>
             {filteredRows.map((row) => (
-              <TableRow hover role="checkbox" tabIndex={-1} key={row.id}>
+              <TableRow hover role="checkbox" tabIndex={-1} key={row.pulli_id}>
                 {showEdit && (
                   <TableCell align="left">
                     <Stack spacing={2} direction="row">
@@ -266,12 +292,12 @@ export default function TableList({
                 )}
                 {fields.map((field) => (
                   <TableCell key={field.name} align="left">
-                    {field.name === "balance_amount" ? (
+                    {field.name === "update_payment" ? (
                       <Box
                         sx={{ display: "flex", justifyContent: "space-around" }}
                       >
                         {row[field.name]}
-                        {field.name === "balance_amount" ? (
+                        {field.name === "update_payment" ? (
                           <EditIcon
                             style={{
                               fontSize: "20px",

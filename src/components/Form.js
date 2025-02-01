@@ -39,10 +39,8 @@ function Form({
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     const data = new FormData();
 
-    // Append form values to FormData
     Object.keys(formValues).forEach((key) => {
       if (formValues[key] !== undefined) {
         data.append(key, formValues[key]);
@@ -135,6 +133,14 @@ function Form({
                       type={field.type || "text"}
                       value={formValues[field.name] || ""}
                       onChange={handleChange}
+                      onInvalid={(e) =>
+                        e.target.setCustomValidity(
+                          `Please Enter a Valid ${field.id}`
+                        )
+                      }
+                      onInput={(e) => {
+                        e.target.setCustomValidity("");
+                      }}
                     />
                   )}
                 </Grid>
@@ -146,7 +152,7 @@ function Form({
         <Box
           sx={{
             display: "flex",
-            justifyContent: "center",
+            justifyContent: "space-around",
             marginTop: "30px",
           }}
         >

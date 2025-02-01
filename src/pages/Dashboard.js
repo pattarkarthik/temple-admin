@@ -14,7 +14,7 @@ import MonetizationOnIcon from "@mui/icons-material/MonetizationOn";
 import EmojiPeopleIcon from "@mui/icons-material/EmojiPeople";
 import Sidenav from "../components/Sidenav";
 
-const DashboardOverview = () => {
+const Dashboard = () => {
   // Replace these static values with dynamic data later
   const stats = [
     {
@@ -91,4 +91,4 @@ const DashboardOverview = () => {
   );
 };
 
-export default DashboardOverview;
+export default Dashboard;

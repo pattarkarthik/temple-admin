@@ -1,91 +1,76 @@
 import React, { useEffect, useState } from "react";
-import { Box } from "@mui/material";
-import TableList from "../components/TableList.js";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogTitle from "@mui/material/DialogTitle";
-import api from "../util/api.js";
-import CustomButton from "../components/CustomButton.js";
+import {
+  Box,
+  FormControl,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+} from "@mui/material";
+import TableList from "../components/TableList";
+import CustomButton from "../components/CustomButton";
 import Loader from "../components/Loader";
 import CustomAlert from "../components/CustomAlert";
-import Input from "../components/Input.js";
-import TopHeaderTitle from "../components/TopHeaderTitle.js";
-import { get } from "../util/fetchUtils.js";
-import { YELAM_GET_ALL_URL } from "../util/constants.js";
-import { YelamEditFormFields } from "../assets/Data.js";
-
-const YelamFields = [
-  { label: "ID", name: "id" },
-  { label: "Pulli Id", name: "member" },
-  { label: "Name", name: "member_name" },
-  { label: "Family Name", name: "family_name" },
-  { label: "Phone Number", name: "phone_1" },
-  { label: "Bidder Type", name: "bidder_type" },
-  { label: "Guest Name", name: "guest_name" },
-  { label: "Guest Native", name: "guest_native" },
-  { label: "Guest Whatsapp", name: "guest_whatsapp" },
-  { label: "Product", name: "guestNative" },
-  { label: "Manual Book Sr No", name: "manual_book_srno" },
-  { label: "Bid Amount", name: "bid_amount" },
-  { label: "Balance Amount", name: "balance_amount" },
-  { label: "Remark", name: "remarks" },
-];
+import Input from "../components/Input";
+import TopHeaderTitle from "../components/TopHeaderTitle";
+import { useNavigate } from "react-router-dom";
+import CustomSelect from "../components/CustomSelect";
+import { YelamEditFormFields } from "../assets/Data";
+import { YelamListFields } from "../assets/Fields";
+import { TRANSACTION_CREATE_URL, YELAM_GET_ALL_URL } from "../util/constants";
+import {
+  PAYMENT_FAILURE_ALERT_MESSAGE,
+  PAYMENT_SUCCESS_ALERT_MESSAGE,
+} from "../util/alerts";
+import { useApiRequest } from "../util/customHooks/useApiRequest";
 
 function YelamList() {
-  const [openEditModal, setOpenEditModal] = useState(false);
+  const navigate = useNavigate();
+  const initialValues = {
+    yelam: null,
+    amount: "",
+    receipt_number: "",
+    payment_mode: "",
+  };
+  const {
+    loading,
+    errorAlert,
+    successAlert,
+    alertMessage,
+    fetchData,
+    postData,
+  } = useApiRequest();
+
   const [data, setData] = useState([]);
+  const [openEditModal, setOpenEditModal] = useState(false);
   const [currentRow, setCurrentRow] = useState(null);
-  const [originalRow, setOriginalRow] = useState(null); // Original data to compare changes
-  const [loading, setLoading] = useState(false); // Loading state
-  const [successAlert, setSuccessAlert] = useState(false); // Success alert state
-  const [errorAlert, setErrorAlert] = useState(false); // Error alert state
+  const [paymentTransactionPayload, setPaymentTransactionPayload] =
+    useState(initialValues);
 
   useEffect(() => {
     fetchYelam();
   }, []);
 
   const fetchYelam = async () => {
-    try {
-      const res = await get(YELAM_GET_ALL_URL());
-      setData(res.data);
-      setLoading(true);
-    } catch (error) {
-      setLoading(false);
-      setErrorAlert(true);
-      setTimeout(() => setErrorAlert(false), 5000); // Auto-dismiss alert
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const openEdit = async (id) => {
-    setLoading(true);
-    try {
-      const res = await api.get(`/api/members/${id}/`);
-      setCurrentRow(res.data); // Set API data to currentRow state
-      setOriginalRow(res.data); // Store the original data for comparison
-    } catch (error) {
-      setErrorAlert(true);
-      setTimeout(() => setErrorAlert(false), 5000); // Auto-dismiss alert
-    } finally {
-      setLoading(false);
-    }
-    setOpenEditModal(true);
-  };
-
-  const handleCloseModal = () => {
-    setOpenEditModal(false);
-    setCurrentRow(null);
-    setOriginalRow(null);
+    const res = await fetchData(YELAM_GET_ALL_URL());
+    if (res) setData(res);
   };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setCurrentRow((prevState) => ({
-      ...prevState,
-      [name]: value,
-    }));
+    if (
+      name === "amount" &&
+      parseFloat(value) > parseFloat(currentRow.pending_amount || 0)
+    ) {
+      e.target.setCustomValidity("Paying Amount cannot exceed Pending Amount");
+    } else {
+      e.target.setCustomValidity("");
+    }
+    setPaymentTransactionPayload((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleDropdownChange = (name) => (value) => {
+    setPaymentTransactionPayload((prev) => ({ ...prev, [name]: value }));
   };
 
   const openPaymentStatusModal = (row) => {
@@ -93,14 +78,21 @@ function YelamList() {
     setOpenEditModal(true);
   };
 
-  const handleUpdatePayment = async () => {
-    const changedFields = Object.keys(currentRow)
-      .filter((key) => currentRow[key] !== originalRow[key])
-      .reduce((acc, key) => {
-        acc[key] = currentRow[key];
-        return acc;
-      }, {});
-    const data = new FormData();
+  const handleUpdatePayment = async (e) => {
+    e.preventDefault();
+    paymentTransactionPayload.yelam = currentRow.id;
+    const res = await postData(
+      TRANSACTION_CREATE_URL(),
+      paymentTransactionPayload,
+      PAYMENT_SUCCESS_ALERT_MESSAGE,
+      PAYMENT_FAILURE_ALERT_MESSAGE,
+      () => navigate("/yelam-list")
+    );
+    if (res) {
+      setOpenEditModal(false);
+      setPaymentTransactionPayload(initialValues);
+      fetchYelam();
+    }
   };
 
   return (
@@ -113,72 +105,97 @@ function YelamList() {
         maxWidth: "100%",
       }}
     >
-      <TopHeaderTitle pagename={"YELAM LIST"} />
+      <TopHeaderTitle pagename="YELAM LIST" />
       {loading && <Loader />}
+      <CustomAlert openAlert={successAlert} message={alertMessage} />
+      <CustomAlert openAlert={errorAlert} message={alertMessage} />
 
-      {/* Alerts */}
-      {successAlert && (
-        <CustomAlert
-          severity="success"
-          message="Payment updated successfully!"
-        />
-      )}
-      {errorAlert && (
-        <CustomAlert
-          severity="error"
-          message="There was an error updating the payment."
-        />
-      )}
       <TableList
-        openEdit={openEdit}
-        fields={YelamFields}
+        fields={YelamListFields}
         data={data}
-        showPaymentStatus={true} // Show "Payment Status" button
-        handlePaymentStatus={(row) => openPaymentStatusModal(row)} // Add handler
+        showPaymentStatus={true}
+        handlePaymentStatus={openPaymentStatusModal}
       />
 
-      {/* Edit Dialog */}
-      <Dialog open={openEditModal} onClose={handleCloseModal}>
-        <Box sx={{ width: "500px" }}>
-          <DialogTitle>Edit Payment Details</DialogTitle>
-          <DialogContent>
-            {YelamEditFormFields.map((field) => (
-              <Box key={field.name}>
-                <Input
-                  label={field.label}
-                  name={field.name}
-                  value={currentRow ? currentRow[field.name] || "" : ""}
-                  onChange={handleInputChange}
-                  fullWidth
-                  margin="normal"
-                  required={field.required}
-                  type={field.type || "text"}
+      <Dialog open={openEditModal} onClose={() => setOpenEditModal(false)}>
+        <form onSubmit={handleUpdatePayment}>
+          <Box sx={{ width: "500px" }}>
+            <DialogTitle fontWeight={600}>Edit Payment Details</DialogTitle>
+            <DialogContent>
+              {YelamEditFormFields.map((field) => (
+                <Box key={field.name}>
+                  {field.type === "dropdown" ? (
+                    <FormControl
+                      fullWidth
+                      size="small"
+                      sx={{
+                        marginTop: "10px",
+                        display: "flex",
+                        flexDirection: "row",
+                      }}
+                    >
+                      <CustomSelect
+                        value={paymentTransactionPayload[field.name]}
+                        onChange={handleDropdownChange(field.name)}
+                        name={field.name}
+                        fields={field.options}
+                        label={field.label}
+                      />
+                    </FormControl>
+                  ) : (
+                    <Input
+                      label={field.label}
+                      name={field.name}
+                      value={
+                        currentRow?.[field.name] ||
+                        paymentTransactionPayload[field.name]
+                      }
+                      onChange={handleInputChange}
+                      fullWidth
+                      margin="normal"
+                      required={field.required}
+                      type={field.type || "text"}
+                      readonly={field.readonly}
+                      onInvalid={(e) => {
+                        if (field.name === "amount") {
+                          const pendingAmount = parseFloat(
+                            currentRow?.pending_amount || 0
+                          );
+                          e.target.setCustomValidity(
+                            parseFloat(e.target.value) > pendingAmount
+                              ? "Paying Amount cannot exceed Pending Amount"
+                              : ""
+                          );
+                        }
+                      }}
+                      onInput={(e) => e.target.setCustomValidity("")}
+                    />
+                  )}
+                </Box>
+              ))}
+            </DialogContent>
+            <DialogActions>
+              <Box
+                sx={{
+                  display: "flex",
+                  width: "100%",
+                  justifyContent: "space-between",
+                }}
+              >
+                <CustomButton
+                  inverted
+                  label="Cancel"
+                  onclick={() => setOpenEditModal(false)}
+                />
+                <CustomButton
+                  inverted={false}
+                  label="Update Payment"
+                  type="submit"
                 />
               </Box>
-            ))}
-          </DialogContent>
-          <DialogActions>
-            <Box
-              sx={{
-                display: "flex",
-                width: "100%",
-                justifyContent: "space-between",
-              }}
-            >
-              <CustomButton
-                inverted={true}
-                label="Cancel"
-                onclick={handleCloseModal}
-              />
-              <CustomButton
-                inverted={false}
-                label="Update Payment"
-                type=""
-                onclick={handleUpdatePayment}
-              />
-            </Box>
-          </DialogActions>
-        </Box>
+            </DialogActions>
+          </Box>
+        </form>
       </Dialog>
     </Box>
   );

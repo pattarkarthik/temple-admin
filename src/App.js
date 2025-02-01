@@ -7,7 +7,7 @@ import YelamEntry from "./pages/YelamEntry";
 import YelamList from "./pages/YelamList";
 import ProductReceivedForm from "./pages/ProductReceivedForm";
 import ProductReceivedList from "./pages/ProductReceivedList";
-import DashboardOverview from "./pages/DashboardOverview";
+import Dashboard from "./pages/Dashboard";
 import YelamProductCatalog from "./pages/YelamProductCatalog";
 import { Box } from "@mui/material";
 import ProtectedRoutes from "./components/ProtectedRoutes";
@@ -26,6 +26,7 @@ function ProtectedLayout() {
         backgroundPosition: "center", // Center the image
         backgroundRepeat: "no-repeat",
         backgroundAttachment: "fixed",
+        boxSizing: "border-box",
       }}
     >
       <Box sx={{ maxWidth: "20%", opacity: "0.9" }}>
@@ -34,7 +35,7 @@ function ProtectedLayout() {
 
       <Box sx={{ flex: 1, padding: 2, maxWidth: "80%", opacity: "0.9" }}>
         <Routes>
-          <Route path="/" element={<DashboardOverview />} />
+          <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/new-member" element={<NewMember />} />
           <Route path="/all-members" element={<AllMembers />} />
           <Route path="/yelam-entry" element={<YelamEntry />} />
@@ -60,7 +61,6 @@ export default function App() {
       <Routes>
         <Route path="/login" element={<Login />} />
 
-        {/* Protected routes */}
         <Route
           element={
             <ProtectedRoutes>
@@ -69,6 +69,7 @@ export default function App() {
           }
         >
           {/* Nested routes for protected pages */}
+          <Route path="/dashboard" element={<NewMember />} />
           <Route path="/new-member" element={<NewMember />} />
           <Route path="/all-members" element={<AllMembers />} />
           <Route path="/yelam-entry" element={<YelamEntry />} />

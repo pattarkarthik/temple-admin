@@ -9,59 +9,86 @@ function Input({
   value = "",
   placeholder = "",
   width,
+  error,
+  errorMessage,
+  readonly,
+  onInvalid,
+  onInput,
   onChange = () => {},
 }) {
   return (
-    <Box
-      sx={{
-        display: "flex",
-        flexDirection: "row",
-        alignItems: "center;",
-        marginTop: "10px", // Adjust spacing based on size
-        position: "relative",
-      }}
-    >
-      {/* Label */}
-      {label && (
+    <>
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "row",
+          alignItems: "center;",
+          marginTop: "10px", // Adjust spacing based on size
+          position: "relative",
+        }}
+      >
+        {/* Label */}
+        {label && (
+          <Box
+            component="label"
+            htmlFor={name}
+            sx={{
+              fontWeight: "400",
+              color: "#262626",
+              fontSize: "15px",
+              lineHeight: "18px",
+              marginBottom: "5px",
+              width: "30%",
+            }}
+          >
+            {label}
+            {required && <span style={{ color: "red" }}> *</span>}
+          </Box>
+        )}
+
+        {/* Input Field */}
+
+        <input
+          id={name}
+          name={name}
+          type={type}
+          value={value}
+          onChange={onChange}
+          required={required}
+          placeholder={placeholder}
+          disabled={readonly ? "disabled" : ""}
+          {...(type === "tel" && {
+            pattern: "^(\\+?\\d{13}|0\\d{10}|\\d{10})$",
+          })}
+          onInvalid={onInvalid}
+          onInput={onInput}
+          style={{
+            all: "unset", // Reset all browser styling
+            border: "1px solid #f08001",
+            width: "100%",
+            height: "40px", // Adjust height based on size
+            padding: "8px",
+            boxSizing: "border-box",
+            backgroundColor: readonly
+              ? "rgb(203, 203, 203)"
+              : "rgb(255,250,245)",
+            width: width || "65%",
+            borderRadius: "3px",
+          }}
+        />
+      </Box>
+      {error && (
         <Box
-          component="label"
-          htmlFor={name}
           sx={{
-            fontWeight: "400",
-            color: "#262626",
-            fontSize: "17px",
-            lineHeight: "18px",
-            marginBottom: "5px",
-            width: "30%",
+            marginLeft: "30%",
+            fontSize: " x-small",
+            color: "red",
           }}
         >
-          {label}
-          {required && <span style={{ color: "red" }}> *</span>}
+          {errorMessage}
         </Box>
       )}
-
-      {/* Input Field */}
-      <input
-        id={name}
-        name={name}
-        type={type}
-        value={value}
-        onChange={onChange}
-        required={required}
-        placeholder={placeholder}
-        style={{
-          all: "unset", // Reset all browser styling
-          border: "1px solid #f08001",
-          width: "100%",
-          height: "40px", // Adjust height based on size
-          padding: "8px",
-          boxSizing: "border-box",
-          backgroundColor: "rgb(255, 250, 245)",
-          width: width || "65%",
-          borderRadius: "3px",
-        }}
-      />
-    </Box>
+    </>
   );
 }
 
