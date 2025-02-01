@@ -143,6 +143,7 @@ function AllMembers() {
         fields={newMembersFields}
         showEdit={true}
         filterFields={allMembersFilter}
+        page={"allmembers"}
       />
       <Dialog open={openEditModal} onClose={handleCloseModal}>
         <Box sx={{ width: "600px" }}>

@@ -17,14 +17,12 @@ import {
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import * as XLSX from "xlsx"; // For Excel export
-import jsPDF from "jspdf"; // For PDF export
-import autoTable from "jspdf-autotable"; // Import the plugin
-import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import PrintIcon from "@mui/icons-material/Print";
 import CustomButton from "./CustomButton";
 import Input from "./Input";
 import CustomSelect from "./CustomSelect";
-
+import FileDownloadIcon from "@mui/icons-material/FileDownload";
+import PrintLayout from "./PrintLayout";
 export default function TableList({
   openEdit,
   data,
@@ -32,13 +30,13 @@ export default function TableList({
   showEdit = false, // Prop to toggle the "Payment Status" button
   handlePaymentStatus,
   filterFields = [],
-  catalog = false,
+  page = "",
   handleAddProductModal,
 }) {
   const [rows, setRows] = useState([]);
+  const [openPrintModal, setOpenPrintModal] = useState(false);
   const [filteredRows, setFilteredRows] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
-  const [anchorEl, setAnchorEl] = useState(null);
   const [filters, setFilters] = useState({
     city: "",
     karai: "",
@@ -70,35 +68,6 @@ export default function TableList({
     setFilters(updatedFilters);
     applyFilters(searchTerm, updatedFilters);
   };
-  const openMenu = Boolean(anchorEl);
-  const handleMenuClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-  const handleMenuClose = () => {
-    setAnchorEl(null);
-  };
-
-  const exportToPDF = () => {
-    const doc = new jsPDF();
-
-    // Prepare headers and table data
-    const headers = [fields.map((field) => field.label)];
-    const tableData = filteredRows.map((row) =>
-      fields.map((field) => row[field.name] || "")
-    );
-
-    // Add Table using autoTable
-    autoTable(doc, {
-      head: headers,
-      body: tableData,
-      startY: 20, // Space from the top of the page
-      styles: { fontSize: 10 }, // Adjust font size if needed
-    });
-    doc.save("table_data.pdf");
-    handleMenuClose();
-  };
-
-  //defining export to excel
 
   const exportToExcel = () => {
     const worksheet = XLSX.utils.json_to_sheet(
@@ -114,7 +83,6 @@ export default function TableList({
     const workbook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workbook, worksheet, "TableData");
     XLSX.writeFile(workbook, "table_data.xlsx");
-    handleMenuClose();
   };
 
   const handleSearch = (e) => {
@@ -123,6 +91,38 @@ export default function TableList({
     applyFilters(value, filters);
   };
 
+  const getButtons = (page) => {
+    switch (page) {
+      case "catalog":
+        return (
+          <CustomButton
+            inverted={false}
+            label="Add Product"
+            width={"40%"}
+            onclick={handleAddProductModal}
+          />
+        );
+      case "allmembers":
+        return (
+          <>
+            <CustomButton
+              inverted={true}
+              label="Print"
+              onclick={() => setOpenPrintModal(true)}
+              endIcon={<PrintIcon />}
+            />
+            <CustomButton
+              inverted={true}
+              label="Exel"
+              onclick={exportToExcel}
+              endIcon={<FileDownloadIcon />}
+            />
+          </>
+        );
+      default:
+        return;
+    }
+  };
   const applyFilters = (search, filters) => {
     const { city, karai, native } = filters;
     const filtered = rows.filter((row) => {
@@ -141,187 +141,163 @@ export default function TableList({
     setFilteredRows(filtered);
   };
   return (
-    <Paper
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        padding: "10px",
-        width: "100%",
-        flexGrow: 2,
-        borderRadius: "0px",
-        backgroundColor: "rgb(255, 231, 218)",
-      }}
-    >
-      <Box
+    <>
+      <Paper
         sx={{
           display: "flex",
-          gap: "16px",
-          marginBottom: "10px",
-          alignItems: "flex-end",
-        }}
-      >
-        <Input
-          required={null}
-          label={null}
-          type={"text"}
-          value={searchTerm}
-          onChange={handleSearch}
-          placeholder="Search"
-          width={"100%"}
-        />
-        {filterFields &&
-          filterFields.map((filter) => (
-            <FormControl
-              key={filter.key}
-              size="small"
-              sx={{ minWidth: "150px" }}
-            >
-              <InputLabel>{filter.label}</InputLabel>
-              <CustomSelect
-                value={filters.city}
-                fields={uniqueValues(filter.key)}
-                onChange={(value) => handleFilterChange(filter.key, value)}
-                width={"100%"}
-              />
-            </FormControl>
-          ))}
-
-        {catalog ? (
-          <CustomButton
-            inverted={false}
-            label="Add Product"
-            width={"40%"}
-            onclick={handleAddProductModal}
-          />
-        ) : (
-          <>
-            <CustomButton
-              inverted={true}
-              label="Export"
-              onclick={handleMenuClick}
-              endIcon={<ArrowDropDownIcon />}
-            />
-            <CustomButton
-              inverted={true}
-              label="Print"
-              // onclick={handleMenuClick}
-              endIcon={<PrintIcon />}
-            />
-          </>
-        )}
-      </Box>
-
-      {/* Export Dropdown Menu */}
-      <Menu
-        anchorEl={anchorEl}
-        open={openMenu}
-        onClose={handleMenuClose}
-        sx={{
-          "& .MuiMenuItem-root": {
-            fontSize: "0.8rem", // Small font size for menu items
-          },
-          "& .MuiMenuItem-root:hover": {
-            backgroundColor: "rgb(240, 128, 1)", // Hover color
-            color: "white", // White font on hover
-          },
-        }}
-      >
-        <MenuItem onClick={exportToPDF}>Export to PDF</MenuItem>
-        <MenuItem onClick={exportToExcel}>Export to Excel</MenuItem>
-      </Menu>
-
-      <TableContainer
-        sx={{
-          maxHeight: "70vh",
+          flexDirection: "column",
+          padding: "10px",
           width: "100%",
+          flexGrow: 2,
+          borderRadius: "0px",
           backgroundColor: "rgb(255, 231, 218)",
         }}
       >
-        <Table stickyHeader aria-label="sticky table">
-          <TableHead sx={{ backgroundColor: "rgb(255, 231, 218)" }}>
-            <TableRow
-              sx={{
-                backgroundColor: "rgb(255, 231, 218)",
-              }}
-            >
-              {showEdit && (
-                <TableCell
-                  align="left"
-                  sx={{
-                    minWidth: "100px",
-                    backgroundColor: "rgb(255, 231, 218)",
-                    fontWeight: "bold",
-                  }}
-                >
-                  Action
-                </TableCell>
-              )}
-              {fields.map((field) => (
-                <TableCell
-                  align="left"
-                  sx={{
-                    minWidth: "100px",
-                    backgroundColor: "rgb(255, 231, 218)",
-                    fontWeight: "bold",
-                  }}
-                  key={field.name}
-                >
-                  {field.label}
-                </TableCell>
-              ))}
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {filteredRows.map((row) => (
-              <TableRow hover role="checkbox" tabIndex={-1} key={row.pulli_id}>
+        <Box
+          sx={{
+            display: "flex",
+            gap: "16px",
+            marginBottom: "10px",
+            alignItems: "flex-end",
+          }}
+        >
+          <Input
+            required={null}
+            label={null}
+            type={"text"}
+            value={searchTerm}
+            onChange={handleSearch}
+            placeholder="Search"
+            width={"100%"}
+          />
+          {filterFields &&
+            filterFields.map((filter) => (
+              <FormControl
+                key={filter.key}
+                size="small"
+                sx={{ minWidth: "150px" }}
+              >
+                <InputLabel>{filter.label}</InputLabel>
+                <CustomSelect
+                  value={filters.city}
+                  fields={uniqueValues(filter.key)}
+                  onChange={(value) => handleFilterChange(filter.key, value)}
+                  width={"100%"}
+                />
+              </FormControl>
+            ))}
+
+          {getButtons(page)}
+        </Box>
+
+        <TableContainer
+          sx={{
+            maxHeight: "70vh",
+            width: "100%",
+            backgroundColor: "rgb(255, 231, 218)",
+          }}
+        >
+          <Table stickyHeader aria-label="sticky table">
+            <TableHead sx={{ backgroundColor: "rgb(255, 231, 218)" }}>
+              <TableRow
+                sx={{
+                  backgroundColor: "rgb(255, 231, 218)",
+                }}
+              >
                 {showEdit && (
-                  <TableCell align="left">
-                    <Stack spacing={2} direction="row">
-                      {showEdit && openEdit && (
-                        <EditIcon
-                          style={{
-                            fontSize: "20px",
-                            color: "#f08001",
-                            cursor: "pointer",
-                          }}
-                          onClick={() => openEdit(row.pulli_id)}
-                        />
-                      )}
-                    </Stack>
+                  <TableCell
+                    align="left"
+                    sx={{
+                      minWidth: "100px",
+                      backgroundColor: "rgb(255, 231, 218)",
+                      fontWeight: "bold",
+                    }}
+                  >
+                    Action
                   </TableCell>
                 )}
                 {fields.map((field) => (
-                  <TableCell key={field.name} align="left">
-                    {field.name === "update_payment" ? (
-                      <Box
-                        sx={{ display: "flex", justifyContent: "space-around" }}
-                      >
-                        {row[field.name]}
-                        {field.name === "update_payment" ? (
+                  <TableCell
+                    align="left"
+                    sx={{
+                      minWidth: "100px",
+                      backgroundColor: "rgb(255, 231, 218)",
+                      fontWeight: "bold",
+                    }}
+                    key={field.name}
+                  >
+                    {field.label}
+                  </TableCell>
+                ))}
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {filteredRows.map((row) => (
+                <TableRow
+                  hover
+                  role="checkbox"
+                  tabIndex={-1}
+                  key={row.pulli_id}
+                >
+                  {showEdit && (
+                    <TableCell align="left">
+                      <Stack spacing={2} direction="row">
+                        {showEdit && openEdit && (
                           <EditIcon
                             style={{
                               fontSize: "20px",
                               color: "#f08001",
                               cursor: "pointer",
                             }}
-                            onClick={() => handlePaymentStatus(row)}
+                            onClick={() => openEdit(row.pulli_id)}
                           />
-                        ) : (
-                          ""
                         )}
-                      </Box>
-                    ) : field.type === "photo" ? (
-                      <Avatar alt="" src={row[field.name]} />
-                    ) : (
-                      row[field.name]
-                    )}
-                  </TableCell>
-                ))}
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
-    </Paper>
+                      </Stack>
+                    </TableCell>
+                  )}
+                  {fields.map((field) => (
+                    <TableCell key={field.name} align="left">
+                      {field.name === "update_payment" ? (
+                        <Box
+                          sx={{
+                            display: "flex",
+                            justifyContent: "space-around",
+                          }}
+                        >
+                          {row[field.name]}
+                          {field.name === "update_payment" ? (
+                            <EditIcon
+                              style={{
+                                fontSize: "20px",
+                                color: "#f08001",
+                                cursor: "pointer",
+                              }}
+                              onClick={() => handlePaymentStatus(row)}
+                            />
+                          ) : (
+                            ""
+                          )}
+                        </Box>
+                      ) : field.type === "photo" ? (
+                        <Avatar alt="" src={row[field.name]} />
+                      ) : (
+                        row[field.name]
+                      )}
+                    </TableCell>
+                  ))}
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </Paper>
+      {openPrintModal && (
+        <PrintLayout
+          closePrintModal={() => setOpenPrintModal(false)}
+          members={filteredRows}
+          fields={fields}
+        />
+      )}
+    </>
   );
 }
