@@ -7,12 +7,17 @@ import {
   Typography,
   IconButton,
   styled,
+  Grid2,
 } from "@mui/material";
 import GroupIcon from "@mui/icons-material/Group";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import MonetizationOnIcon from "@mui/icons-material/MonetizationOn";
 import EmojiPeopleIcon from "@mui/icons-material/EmojiPeople";
-import Sidenav from "../components/Sidenav";
+import StatCard from "../components/StatCard";
+import PeopleIcon from "@mui/icons-material/People";
+import CurrencyRupeeIcon from "@mui/icons-material/CurrencyRupee";
+import ListIcon from "@mui/icons-material/List";
+import PiChart from "../components/PiChart";
 
 const Dashboard = () => {
   // Replace these static values with dynamic data later
@@ -54,39 +59,51 @@ const Dashboard = () => {
   }));
 
   return (
-    <Box sx={{ display: "flex" }}>
-      <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
-        <DrawerHeader />
-        <Typography sx={{ marginBottom: 2 }}>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliqua. Rhoncus
-          dolor purus non enim praesent elementum facilisis leo vel. Risus at
-          ultrices mi tempus imperdiet. Semper risus in hendrerit gravida rutrum
-          quisque non tellus. Convallis convallis tellus id interdum velit
-          laoreet id donec ultrices. Odio morbi quis commodo odio aenean sed
-          adipiscing. Amet nisl suscipit adipiscing bibendum est ultricies
-          integer quis. Cursus euismod quis viverra nibh cras. Metus vulputate
-          eu scelerisque felis imperdiet proin fermentum leo. Mauris commodo
-          quis imperdiet massa tincidunt. Cras tincidunt lobortis feugiat
-          vivamus at augue. At augue eget arcu dictum varius duis at consectetur
-          lorem. Velit sed ullamcorper morbi tincidunt. Lorem donec massa sapien
-          faucibus et molestie ac.
-        </Typography>
-        <Typography sx={{ marginBottom: 2 }}>
-          Consequat mauris nunc congue nisi vitae suscipit. Fringilla est
-          ullamcorper eget nulla facilisi etiam dignissim diam. Pulvinar
-          elementum integer enim neque volutpat ac tincidunt. Ornare suspendisse
-          sed nisi lacus sed viverra tellus. Purus sit amet volutpat consequat
-          mauris. Elementum eu facilisis sed odio morbi. Euismod lacinia at quis
-          risus sed vulputate odio. Morbi tincidunt ornare massa eget egestas
-          purus viverra accumsan in. In hendrerit gravida rutrum quisque non
-          tellus orci ac. Pellentesque nec nam aliquam sem et tortor. Habitant
-          morbi tristique senectus et. Adipiscing elit duis tristique
-          sollicitudin nibh sit. Ornare aenean euismod elementum nisi quis
-          eleifend. Commodo viverra maecenas accumsan lacus vel facilisis. Nulla
-          posuere sollicitudin aliquam ultrices sagittis orci a.
-        </Typography>
-      </Box>
+    <Box>
+      <Grid2 container spacing={2}>
+        <Grid2 size={4}>
+          <StatCard
+            name="Members"
+            icon={<PeopleIcon />}
+            value="10000"
+            color="red"
+          />
+        </Grid2>
+        <Grid2 size={4}>
+          <StatCard
+            name="Total Bid Amount"
+            icon={<CurrencyRupeeIcon />}
+            value="3,49,00,000"
+            color="red"
+          />{" "}
+        </Grid2>
+        <Grid2 size={4}>
+          <StatCard
+            name="Total Yelams"
+            icon={<ListIcon />}
+            value="125"
+            color="red"
+          />{" "}
+        </Grid2>
+        <Grid2 size={6}>
+          {/* <PiChart
+            data={[
+              {
+                city: "Gulbarga",
+                count: 4,
+              },
+              {
+                city: "Bengaluru",
+                count: 1,
+              },
+              {
+                city: "Bangalore",
+                count: 1,
+              },
+            ]}
+          /> */}
+        </Grid2>
+      </Grid2>
     </Box>
   );
 };

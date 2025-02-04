@@ -35,6 +35,7 @@
     "react-to-print": "^3.0.5",
     "react-virtuoso": "^4.12.3",
     "reactstrap": "^9.2.3",
+    "recharts": "^2.15.1",
     "sass": "^1.63.2",
     "web-vitals": "3.3.2",
     "xlsx": "^0.18.5"

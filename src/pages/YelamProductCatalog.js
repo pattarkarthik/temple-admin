@@ -106,7 +106,7 @@ function YelamProductCatalog() {
       <TableList
         data={products}
         fields={catalogListFields}
-        catalog={true}
+        page={"catalog"}
         handleAddProductModal={() => setModalOpen(true)}
       />
       <Dialog open={isModalOpen} onClose={handleModalClose}>
