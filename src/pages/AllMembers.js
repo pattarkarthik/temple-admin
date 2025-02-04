@@ -23,6 +23,7 @@ import {
   MEMBER_UPDATE_FAILURE_ALERT_MESSAGE,
   MEMBER_UPDATED_SUCCESSFULLY_ALERT_MESSAGE,
 } from "../util/alerts.js";
+import Modal from "../components/Modal.js";
 
 function AllMembers() {
   const [openEditModal, setOpenEditModal] = useState(false);
@@ -145,102 +146,81 @@ function AllMembers() {
         filterFields={allMembersFilter}
         page={"allmembers"}
       />
-      <Dialog open={openEditModal} onClose={handleCloseModal}>
-        <Box sx={{ width: "600px" }}>
-          <DialogTitle>Edit Member</DialogTitle>
-          <DialogContent>
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "space-around",
-                marginBottom: "30px",
-              }}
-            >
-              <Profilepic
-                onFileChange={(file, type) => handleFileChange(file, type)}
-                title={"Update Husband Photo"}
-                type="husband"
-                picPreview={originalRow ? originalRow.husband_photo : ""}
-              />
-              <Profilepic
-                onFileChange={(file, type) => handleFileChange(file, type)}
-                title={"Update Wife Photo"}
-                type="wife"
-                picPreview={originalRow ? originalRow.wife_photo : ""}
-              />
-            </Box>
 
-            {editMemberFormFields.map((field) => (
-              <div key={field.name}>
-                {field.type === "dropdown" ? (
-                  <FormControl
-                    fullWidth
-                    size="small"
-                    sx={{
-                      marginTop: "10px",
-                      display: "flex",
-                      flexDirection: "row",
-                    }}
-                  >
-                    <Box sx={{ width: "30%", fontSize: "17px" }}>
-                      {field.label}
-                    </Box>
-                    <Select
-                      sx={{
-                        width: "65%",
-                        backgroundColor: "rgb(255, 250, 245)",
-                        "& .MuiOutlinedInput-notchedOutline": {
-                          borderColor: "#f08001",
-                        },
-                      }}
-                      value={currentRow ? currentRow[field.name] || "" : ""}
-                      onChange={handleDropdownChange(field.name)}
-                      label={field.label}
-                    >
-                      {field.options.map((option) => (
-                        <MenuItem key={option.value} value={option.value}>
-                          {option.label}
-                        </MenuItem>
-                      ))}
-                    </Select>
-                  </FormControl>
-                ) : (
-                  <Input
-                    label={field.label}
-                    name={field.name}
-                    value={currentRow ? currentRow[field.name] || "" : ""}
-                    onChange={handleInputChange}
-                    fullWidth
-                    margin="normal"
-                    required={field.required}
-                    type={field.type || "text"}
-                  />
-                )}
-              </div>
-            ))}
-          </DialogContent>
-          <DialogActions>
-            <Box
-              sx={{
-                display: "flex",
-                width: "100%",
-                justifyContent: "space-between",
-              }}
-            >
-              <CustomButton
-                inverted={true}
-                label="Cancel"
-                onclick={handleCloseModal}
-              />
-              <CustomButton
-                inverted={false}
-                label="Save Changes"
-                onclick={handleSaveChanges}
-              />
-            </Box>
-          </DialogActions>
+      <Modal
+        title="Edit Member"
+        saveClickHandler={handleSaveChanges}
+        saveBtnLabel={"Save Changes"}
+        openModal={openEditModal}
+        onClose={handleCloseModal}
+      >
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "space-around",
+            marginBottom: "30px",
+          }}
+        >
+          <Profilepic
+            onFileChange={(file, type) => handleFileChange(file, type)}
+            title={"Update Husband Photo"}
+            type="husband"
+            picPreview={originalRow ? originalRow.husband_photo : ""}
+          />
+          <Profilepic
+            onFileChange={(file, type) => handleFileChange(file, type)}
+            title={"Update Wife Photo"}
+            type="wife"
+            picPreview={originalRow ? originalRow.wife_photo : ""}
+          />
         </Box>
-      </Dialog>
+        {editMemberFormFields.map((field) => (
+          <div key={field.name}>
+            {field.type === "dropdown" ? (
+              <FormControl
+                fullWidth
+                size="small"
+                sx={{
+                  marginTop: "10px",
+                  display: "flex",
+                  flexDirection: "row",
+                }}
+              >
+                <Box sx={{ width: "30%", fontSize: "17px" }}>{field.label}</Box>
+                <Select
+                  sx={{
+                    width: "65%",
+                    backgroundColor: "rgb(255, 250, 245)",
+                    "& .MuiOutlinedInput-notchedOutline": {
+                      borderColor: "#f08001",
+                    },
+                  }}
+                  value={currentRow ? currentRow[field.name] || "" : ""}
+                  onChange={handleDropdownChange(field.name)}
+                  label={field.label}
+                >
+                  {field.options.map((option) => (
+                    <MenuItem key={option.value} value={option.value}>
+                      {option.label}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            ) : (
+              <Input
+                label={field.label}
+                name={field.name}
+                value={currentRow ? currentRow[field.name] || "" : ""}
+                onChange={handleInputChange}
+                fullWidth
+                margin="normal"
+                required={field.required}
+                type={field.type || "text"}
+              />
+            )}
+          </div>
+        ))}
+      </Modal>
     </Box>
   );
 }

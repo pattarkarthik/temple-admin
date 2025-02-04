@@ -1,13 +1,6 @@
 import { useRef, useState } from "react";
 import { useReactToPrint } from "react-to-print";
-import Button from "@mui/material/Button";
-import { styled } from "@mui/material/styles";
-import Dialog from "@mui/material/Dialog";
-import DialogTitle from "@mui/material/DialogTitle";
-import DialogContent from "@mui/material/DialogContent";
-import DialogActions from "@mui/material/DialogActions";
-import IconButton from "@mui/material/IconButton";
-import CloseIcon from "@mui/icons-material/Close";
+
 import {
   Box,
   Checkbox,
@@ -15,19 +8,15 @@ import {
   Grid,
   Typography,
 } from "@mui/material";
+import Modal from "./Modal";
 
-const BootstrapDialog = styled(Dialog)(({ theme }) => ({
-  "& .MuiDialogContent-root": {
-    padding: theme.spacing(2),
-  },
-  "& .MuiDialogActions-root": {
-    padding: theme.spacing(1),
-  },
-}));
-
-export default function PrintLayout({ closePrintModal, members, fields }) {
+export default function PrintLayout({
+  closePrintModal,
+  members,
+  fields,
+  openPrintModal,
+}) {
   const componentRef = useRef(null);
-  console.log(fields);
   const printFn = useReactToPrint({
     contentRef: componentRef,
   });
@@ -48,24 +37,12 @@ export default function PrintLayout({ closePrintModal, members, fields }) {
 
   const renderSelectedFields = (member) => {
     return Object.keys(checkedFields)
-      .filter((fieldName) => checkedFields[fieldName]) // Only include checked fields
+      .filter((fieldName) => checkedFields[fieldName])
       .map((fieldName) => {
         const field = fields.find((f) => f.name === fieldName);
 
-        // Check for address line 1 and 2
-        if (fieldName === "address_line_1" && member["address_line_2"]) {
-          return (
-            <Grid item xs={6} key={fieldName}>
-              <Typography variant="body2" sx={{ fontSize: "12px" }}>
-                <span>Address:</span> {member["address_line_1"]}{" "}
-                {member["address_line_2"]}
-              </Typography>
-            </Grid>
-          );
-        }
-
         return (
-          <Grid item xs={6} key={fieldName}>
+          <Grid item xs={12} sm={12} md={12} key={fieldName}>
             <Typography
               variant="body2"
               sx={{
@@ -81,21 +58,16 @@ export default function PrintLayout({ closePrintModal, members, fields }) {
         );
       });
   };
-
-  // Get only 6 members (3 rows, 2 columns)
-  const membersForPreview = members.slice(0, 6);
+  const membersForPreview = members.slice(0, members.length);
 
   return (
-    <BootstrapDialog
+    <Modal
+      title="Print Selected Fields"
+      saveClickHandler={printFn}
+      saveBtnLabel={"Print"}
+      openModal={openPrintModal}
       onClose={closePrintModal}
-      aria-labelledby="customized-dialog-title"
-      open={true}
-      // sx={{ maxWidth: "300px" }}
     >
-      <DialogTitle sx={{ m: 0, p: 1 }} id="customized-dialog-title">
-        Print Selected Fields
-      </DialogTitle>
-
       <Box sx={{ padding: 2 }}>
         <Grid container spacing={1}>
           {fields
@@ -104,7 +76,7 @@ export default function PrintLayout({ closePrintModal, members, fields }) {
                 field.name !== "husband_photo" && field.name !== "wife_photo"
             )
             .map((field) => (
-              <Grid item xs={3} key={field.name}>
+              <Grid item xs={3} sm={3} md={3} key={field.name}>
                 <FormControlLabel
                   control={
                     <Checkbox
@@ -127,25 +99,9 @@ export default function PrintLayout({ closePrintModal, members, fields }) {
             ))}
         </Grid>
       </Box>
-
-      <IconButton
-        aria-label="close"
-        onClick={closePrintModal}
-        sx={(theme) => ({
-          position: "absolute",
-          right: 8,
-          top: 8,
-          color: theme.palette.grey[500],
-        })}
-      >
-        <CloseIcon />
-      </IconButton>
-
-      <DialogContent
-        // dividers
+      <Box
         ref={componentRef}
         sx={{
-          height: "297mm", // A4 height
           margin: "20px auto",
           padding: "10mm",
           boxShadow: "0 0 10px rgba(0, 0, 0, 0.1)",
@@ -155,15 +111,23 @@ export default function PrintLayout({ closePrintModal, members, fields }) {
           overflow: "auto",
         }}
       >
-        {/* 3 rows, 2 columns layout for the members */}
-        <Grid container spacing={4}>
+        <Grid container spacing={2}>
           {membersForPreview.map((member, index) => (
-            <Grid item xs={6} key={index}>
+            <Grid
+              item
+              xs={6}
+              sm={6}
+              md={6}
+              key={index}
+              sx={{ pageBreakInside: "avoid", breakInside: "avoid-column" }}
+            >
               <Box
                 sx={{
                   padding: 2,
                   backgroundColor: "#f9f9f9",
                   borderRadius: "4px",
+                  pageBreakInside: "avoid", // Prevent breaking inside boxes
+                  breakInside: "avoid-page",
                 }}
               >
                 <Grid container spacing={1}>
@@ -173,13 +137,7 @@ export default function PrintLayout({ closePrintModal, members, fields }) {
             </Grid>
           ))}
         </Grid>
-      </DialogContent>
-
-      <DialogActions>
-        <Button autoFocus onClick={printFn}>
-          Print
-        </Button>
-      </DialogActions>
-    </BootstrapDialog>
+      </Box>
+    </Modal>
   );
 }

@@ -2,7 +2,7 @@ import { Button } from "@mui/material";
 import React from "react";
 
 function CustomButton(props) {
-  const { label, onclick, type, inverted, endIcon, width } = props;
+  const { label, onclick, type, inverted, endIcon, width, startIcon } = props;
   const style = inverted
     ? {
         backgroundColor: "rgb(255, 250, 245)",
@@ -22,6 +22,7 @@ function CustomButton(props) {
       onClick={onclick}
       type={type}
       endIcon={endIcon}
+      startIcon={startIcon}
     >
       {label}
     </Button>

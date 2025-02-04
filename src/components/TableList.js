@@ -23,6 +23,8 @@ import Input from "./Input";
 import CustomSelect from "./CustomSelect";
 import FileDownloadIcon from "@mui/icons-material/FileDownload";
 import PrintLayout from "./PrintLayout";
+import ReceiptLongIcon from "@mui/icons-material/ReceiptLong";
+
 export default function TableList({
   openEdit,
   data,
@@ -46,7 +48,6 @@ export default function TableList({
     setRows(data);
     setFilteredRows(data);
   }, [data]);
-
   const uniqueValues = (key) => {
     const uniqueObjects = [];
     data.forEach((row) => {
@@ -69,9 +70,9 @@ export default function TableList({
     applyFilters(searchTerm, updatedFilters);
   };
 
-  const exportToExcel = () => {
+  const exportToExcel = (data) => {
     const worksheet = XLSX.utils.json_to_sheet(
-      filteredRows.map((row) => {
+      data.map((row) => {
         const result = {};
         fields.forEach((field) => {
           result[field.label] = row[field.name] || "";
@@ -113,9 +114,15 @@ export default function TableList({
             />
             <CustomButton
               inverted={true}
-              label="Exel"
-              onclick={exportToExcel}
-              endIcon={<FileDownloadIcon />}
+              label="All"
+              onclick={() => exportToExcel(rows)}
+              startIcon={<FileDownloadIcon />}
+            />
+            <CustomButton
+              inverted={true}
+              label="Selected"
+              onclick={() => exportToExcel(filteredRows)}
+              startIcon={<FileDownloadIcon />}
             />
           </>
         );
@@ -280,6 +287,17 @@ export default function TableList({
                         </Box>
                       ) : field.type === "photo" ? (
                         <Avatar alt="" src={row[field.name]} />
+                      ) : field.name === "transactions" ? (
+                        <ReceiptLongIcon
+                          style={{
+                            fontSize: "20px",
+                            color: "#f08001",
+                            cursor: "pointer",
+                          }}
+                          onClick={() => {
+                            console.log(row);
+                          }}
+                        />
                       ) : (
                         row[field.name]
                       )}
@@ -291,13 +309,14 @@ export default function TableList({
           </Table>
         </TableContainer>
       </Paper>
-      {openPrintModal && (
-        <PrintLayout
-          closePrintModal={() => setOpenPrintModal(false)}
-          members={filteredRows}
-          fields={fields}
-        />
-      )}
+
+      <PrintLayout
+        // closePrintModal={() => setOpenPrintModal(false)}
+        members={filteredRows}
+        fields={fields}
+        openPrintModal={openPrintModal}
+        closePrintModal={() => setOpenPrintModal(false)}
+      />
     </>
   );
 }
