@@ -88,6 +88,7 @@ function Form({
                 textAlign: "center",
                 display: "flex",
                 justifyContent: "space-around",
+                marginLeft:"50px",
               }}
             >
               <Profilepic
@@ -147,7 +148,8 @@ function Form({
           sx={{
             display: "flex",
             justifyContent: "center",
-            marginTop: "30px",
+            marginTop: "25px",
+            marginLeft:"80px",
           }}
         >
           <CustomButton

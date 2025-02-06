@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Box, FormControl, MenuItem, Select } from "@mui/material";
+import { Box, FormControl, MenuItem, Select ,Button} from "@mui/material";
 import TableList from "../components/TableList.js";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
@@ -32,6 +32,7 @@ function AllMembers() {
   const [loading, setLoading] = useState(false); // Loading state
   const [successAlert, setSuccessAlert] = useState(false); // Success alert state
   const [errorAlert, setErrorAlert] = useState(false); // Error alert state
+
 
   useEffect(() => {
     fetchMembers();
@@ -137,9 +138,7 @@ function AllMembers() {
       }}
     >
       <TopHeaderTitle pagename={"ALL MEMBERS"} />
-
       {loading && <Loader />}
-
       {/* Alerts */}
       {successAlert && (
         <CustomAlert
@@ -153,14 +152,15 @@ function AllMembers() {
           message="There was an error updating the member."
         />
       )}
-
       <TableList
         openEdit={openEdit}
-        data={data}
-        fields={newMembersFields}
         showEdit={true}
         filterFields={allMembersFilter}
+        data={data}
+        fields={newMembersFields}
       />
+
+
 
       <Dialog open={openEditModal} onClose={handleCloseModal}>
         <Box sx={{ width: "500px" }}>

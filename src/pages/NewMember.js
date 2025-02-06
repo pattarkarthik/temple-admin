@@ -49,7 +49,6 @@ function NewMember() {
         onSubmit={(formData) => handleFormSubmit(formData)}
         profilePic={true}
       />
-
       {loading && <Loader />}
       <CustomAlert
         openAlert={successAlert}

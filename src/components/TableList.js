@@ -14,6 +14,7 @@ import {
   InputLabel,
   Menu,
   Avatar,
+  Button,
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import * as XLSX from "xlsx"; // For Excel export
@@ -23,6 +24,7 @@ import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown"; // Import the
 import CustomButton from "./CustomButton";
 import Input from "./Input";
 import CustomSelect from "./CustomSelect";
+import Message from "../components/Message";
 
 export default function TableList({
   openEdit,
@@ -42,6 +44,9 @@ export default function TableList({
     karai: "",
     native: "",
   });
+
+  const [messageDialogOpen, setMessageDialogOpen] = useState(false); 
+
   useEffect(() => {
     setRows(data);
     setFilteredRows(data);
@@ -133,16 +138,16 @@ export default function TableList({
   };
   return (
     <Paper
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        padding: "10px",
-        width: "100%",
-        flexGrow: 2,
-        borderRadius: "0px",
-        backgroundColor: "rgb(255, 231, 218)",
-      }}
-    >
+    sx={{
+      display: "flex",
+      flexDirection: "column",
+      padding: "10px",
+      width: "100%",
+      flexGrow: 2,
+      borderRadius: "0px",
+      backgroundColor: "rgb(255, 231, 218)",
+    }}
+  >
       <Box
         sx={{
           display: "flex",
@@ -203,6 +208,15 @@ export default function TableList({
         <MenuItem onClick={exportToPDF}>Export to PDF</MenuItem>
         <MenuItem onClick={exportToExcel}>Export to Excel</MenuItem>
       </Menu>
+
+      {/* Whatsapp Message Button */}
+      <CustomButton
+          inverted={true}
+          label="Send Message"
+          onclick={() => setMessageDialogOpen(true)}
+        />
+      {/* ------------------------- */}
+
 
       <TableContainer
         sx={{
@@ -296,6 +310,10 @@ export default function TableList({
           </TableBody>
         </Table>
       </TableContainer>
+      <Message
+        open={messageDialogOpen}
+        handleClose={() => setMessageDialogOpen(false)}
+      />
     </Paper>
   );
 }
