@@ -145,6 +145,8 @@ function AllMembers() {
         showEdit={true}
         filterFields={allMembersFilter}
         page={"allmembers"}
+        showActionButtons={true}
+
       />
 
       <Modal

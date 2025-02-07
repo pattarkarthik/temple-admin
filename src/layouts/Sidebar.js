@@ -3,7 +3,6 @@ import { Link, useLocation } from "react-router-dom";
 import user1 from "../assets/images/users/user4.jpg";
 import probg from "../assets/images/bg/download.jpg";
 
-
 const navigation = [
   {
     title: "Dashboard",
@@ -50,6 +49,11 @@ const navigation = [
     href: "/Product-Received-List",
     icon: "bi bi-clipboard-data",
   },
+  {
+    title: "Communication Module",
+    href: "/Whatsapp-Module",
+    icon: "bi bi-whatsapp",
+  },
 ];
 
 const Sidebar = () => {
@@ -60,15 +64,14 @@ const Sidebar = () => {
 
   return (
     <div
-    style={{
-      display: "flex",
-      flexDirection: "column",
-      height: "100vh", // Full height of the viewport
-      overflowY: "auto", // Enable vertical scrolling
-      backgroundColor: "#f8f9fa",
-    }}
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        height: "100vh", // Full height of the viewport
+        overflowY: "auto", // Enable vertical scrolling
+        backgroundColor: "#f8f9fa",
+      }}
     >
-      
       <div
         className="profilebg"
         style={{ background: `url(${probg}) no-repeat` }}
@@ -101,13 +104,11 @@ const Sidebar = () => {
             target="_blank"
             className="mt-3"
             href="https://wrappixel.com/templates/materialpro-react-admin/?ref=33"
-          
           >
             Logout
           </Button>
         </Nav>
       </div>
-     
     </div>
   );
 };

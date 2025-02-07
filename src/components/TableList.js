@@ -34,6 +34,10 @@ export default function TableList({
   filterFields = [],
   page = "",
   handleAddProductModal,
+  showActionButtons = true,
+  showWhatsAppButton = false, // ✅ Add this new prop
+  onWhatsAppClick, // ✅ Callback for WhatsApp button click
+
 }) {
   const [rows, setRows] = useState([]);
   const [openPrintModal, setOpenPrintModal] = useState(false);
@@ -92,8 +96,24 @@ export default function TableList({
     applyFilters(value, filters);
   };
 
-  const getButtons = (page) => {
+  const getButtons = (page,showActionButtons) => {
+
+    if (page === "Whatsapp") {
+      return showWhatsAppButton ? (
+        <CustomButton
+          inverted={true}
+          label="Send WhatsApp Message"
+          onclick={onWhatsAppClick}
+         
+        />
+      ) : null;
+    }
+
+    if (!showActionButtons) return null;
+
     switch (page) {
+      
+
       case "catalog":
         return (
           <CustomButton
@@ -194,7 +214,7 @@ export default function TableList({
               </FormControl>
             ))}
 
-          {getButtons(page)}
+          {getButtons(page,showActionButtons)}
         </Box>
 
         <TableContainer

@@ -12,6 +12,7 @@ import YelamProductCatalog from "./pages/YelamProductCatalog";
 import { Box } from "@mui/material";
 import ProtectedRoutes from "./components/ProtectedRoutes";
 import Login from "./pages/Login";
+import WhatsappModule from "./pages/WhatsappModule";
 
 function ProtectedLayout() {
   return (
@@ -29,6 +30,7 @@ function ProtectedLayout() {
         boxSizing: "border-box",
       }}
     >
+
       <Box sx={{ maxWidth: "20%", opacity: "0.9" }}>
         <Sidenav />
       </Box>
@@ -49,8 +51,13 @@ function ProtectedLayout() {
             path="/product-received-list"
             element={<ProductReceivedList />}
           />
+          <Route
+            path="/Whatsapp-Module"
+            element={<WhatsappModule />}
+          />
         </Routes>
       </Box>
+
     </Box>
   );
 }
@@ -82,6 +89,10 @@ export default function App() {
           <Route
             path="/product-received-list"
             element={<ProductReceivedList />}
+          />
+           <Route
+            path="/Whatsapp-Module"
+            element={<WhatsappModule />}
           />
         </Route>
       </Routes>

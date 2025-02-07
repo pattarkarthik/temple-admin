@@ -15,6 +15,7 @@ const YelamList = lazy(() => import("../pages/YelamList.js"));
 const YelamProductCatalog = lazy(() => import("../pages/YelamProductCatalog.js"));
 const ProductReceivedForm = lazy(() => import("../pages/ProductReceivedForm.js"));
 const ProductReceivedList = lazy(() => import("../pages/ProductReceivedList.js"));
+const WhatsappModule = lazy(() => import("../pages/WhatsappModule.js"));
 
 /*****Routes******/
 const ThemeRoutes = [
@@ -30,6 +31,7 @@ const ThemeRoutes = [
       { path: "/yelam-prod-Cat", exact: true, element: <YelamProductCatalog /> },
       { path: "/Product-Received-Form", exact: true, element: <ProductReceivedForm /> },
       { path: "/Product-Received-List", exact: true, element: <ProductReceivedList /> },
+      { path: "/Whatsapp-Module", exact: true, element: <WhatsappModule /> },
 
     ],
   },
