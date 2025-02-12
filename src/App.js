@@ -1,17 +1,20 @@
-import React from "react";
+import React, { lazy, Suspense } from "react";
 import Sidenav from "./components/Sidenav";
-import { Routes, Route, BrowserRouter } from "react-router-dom";
-import NewMember from "./pages/NewMember";
-import AllMembers from "./pages/AllMembers";
-import YelamEntry from "./pages/YelamEntry";
-import YelamList from "./pages/YelamList";
-import ProductReceivedForm from "./pages/ProductReceivedForm";
-import ProductReceivedList from "./pages/ProductReceivedList";
-import Dashboard from "./pages/Dashboard";
-import YelamProductCatalog from "./pages/YelamProductCatalog";
+import { Routes, Route, BrowserRouter, Outlet } from "react-router-dom";
 import { Box } from "@mui/material";
 import ProtectedRoutes from "./components/ProtectedRoutes";
 import Login from "./pages/Login";
+import ErrorBoundary from "./components/ErrorBoundary";
+
+const NewMember = lazy(() => import("./pages/NewMember"));
+const AllMembers = lazy(() => import("./pages/AllMembers"));
+const YelamEntry = lazy(() => import("./pages/YelamEntry"));
+const YelamList = lazy(() => import("./pages/YelamList"));
+const ProductReceivedForm = lazy(() => import("./pages/ProductReceivedForm"));
+const ProductReceivedList = lazy(() => import("./pages/ProductReceivedList"));
+const Dashboard = lazy(() => import("./pages/Dashboard"));
+const YelamProductCatalog = lazy(() => import("./pages/YelamProductCatalog"));
+const WhatsappModule = lazy(() => import("./pages/WhatsappModule"));
 
 function ProtectedLayout() {
   return (
@@ -30,26 +33,17 @@ function ProtectedLayout() {
       }}
     >
       <Box sx={{ maxWidth: "20%", opacity: "0.9" }}>
-        <Sidenav />
+        <ErrorBoundary>
+          <Sidenav />
+        </ErrorBoundary>
       </Box>
 
       <Box sx={{ flex: 1, padding: 2, maxWidth: "80%", opacity: "0.9" }}>
-        <Routes>
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/new-member" element={<NewMember />} />
-          <Route path="/all-members" element={<AllMembers />} />
-          <Route path="/yelam-entry" element={<YelamEntry />} />
-          <Route path="/yelam-list" element={<YelamList />} />
-          <Route path="/product-catalog" element={<YelamProductCatalog />} />
-          <Route
-            path="/product-received-form"
-            element={<ProductReceivedForm />}
-          />
-          <Route
-            path="/product-received-list"
-            element={<ProductReceivedList />}
-          />
-        </Routes>
+        <ErrorBoundary>
+          <Suspense fallback={<div>Loading...</div>}>
+            <Outlet />
+          </Suspense>
+        </ErrorBoundary>
       </Box>
     </Box>
   );
@@ -68,8 +62,7 @@ export default function App() {
             </ProtectedRoutes>
           }
         >
-          {/* Nested routes for protected pages */}
-          <Route path="/dashboard" element={<NewMember />} />
+          <Route path="/" element={<Dashboard />} />
           <Route path="/new-member" element={<NewMember />} />
           <Route path="/all-members" element={<AllMembers />} />
           <Route path="/yelam-entry" element={<YelamEntry />} />
@@ -83,6 +76,7 @@ export default function App() {
             path="/product-received-list"
             element={<ProductReceivedList />}
           />
+          <Route path="/communicate" element={<WhatsappModule />} />
         </Route>
       </Routes>
     </BrowserRouter>

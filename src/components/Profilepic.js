@@ -45,7 +45,7 @@ export default function Profilepic({
       <Typography variant="h6">{title}</Typography>
       <Avatar
         src={preview || ""}
-        sx={{ width: 100, height: 100, bgcolor: "grey.300" }}
+        sx={{ width: 100, height: 100, bgcolor: "orange.200" }}
       >
         {!preview && "P"}
       </Avatar>

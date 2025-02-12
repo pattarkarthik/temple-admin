@@ -26,7 +26,7 @@ function Login() {
       localStorage.setItem(REFRESH_TOKEN, res.data.refresh);
 
       // Navigate to the dashboard or home page
-      navigate("/dashboard");
+      navigate("/new-member");
     } catch (error) {
       alert("Invalid username or password. Please try again.");
     } finally {

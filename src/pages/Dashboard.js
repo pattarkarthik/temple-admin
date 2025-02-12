@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Box,
   Grid,
@@ -20,11 +20,13 @@ import ListIcon from "@mui/icons-material/List";
 import PiChart from "../components/PiChart";
 
 const Dashboard = () => {
-  // Replace these static values with dynamic data later
+  useEffect(() => {
+    throw new Error("Unable to load");
+  }, []);
   const stats = [
     {
       title: "Members",
-      value: 1234,
+      value: 123,
       icon: <GroupIcon fontSize="large" style={{ color: "#D0DDD0" }} />,
       bgColor: "#16C47F",
     },
