@@ -4,7 +4,6 @@ import Box from "@mui/material/Box";
 import MuiDrawer from "@mui/material/Drawer";
 import List from "@mui/material/List";
 import CssBaseline from "@mui/material/CssBaseline";
-import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
@@ -20,6 +19,7 @@ import AddCircleIcon from "@mui/icons-material/AddCircle";
 import BallotIcon from "@mui/icons-material/Ballot";
 import AnalyticsIcon from "@mui/icons-material/Analytics";
 import LogoutIcon from "@mui/icons-material/Logout";
+import SmsIcon from "@mui/icons-material/Sms";
 const drawerWidth = 280;
 
 const Drawer = styled(MuiDrawer)(({ theme }) => ({
@@ -60,6 +60,11 @@ const pages = [
     name: "Product Received List",
     url: "/product-received-list",
     icon: <BallotIcon />,
+  },
+  {
+    name: "Communication Module",
+    url: "/communicate",
+    icon: <SmsIcon />,
   },
 ];
 

@@ -30,7 +30,6 @@ function ProtectedLayout() {
         boxSizing: "border-box",
       }}
     >
-
       <Box sx={{ maxWidth: "20%", opacity: "0.9" }}>
         <Sidenav />
       </Box>
@@ -51,13 +50,9 @@ function ProtectedLayout() {
             path="/product-received-list"
             element={<ProductReceivedList />}
           />
-          <Route
-            path="/Whatsapp-Module"
-            element={<WhatsappModule />}
-          />
+          <Route path="/communicate" element={<WhatsappModule />} />
         </Routes>
       </Box>
-
     </Box>
   );
 }
@@ -90,10 +85,7 @@ export default function App() {
             path="/product-received-list"
             element={<ProductReceivedList />}
           />
-           <Route
-            path="/Whatsapp-Module"
-            element={<WhatsappModule />}
-          />
+          <Route path="/communicate" element={<WhatsappModule />} />
         </Route>
       </Routes>
     </BrowserRouter>
