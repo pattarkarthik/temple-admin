@@ -200,7 +200,6 @@ export const data = [
   },
 ];
 export const columns = [
-  // { label: "Edit", dataKey: "edit" }, // New column for the Edit button
   { label: "Yelam Id", dataKey: "YelamId" },
   { label: "Action", dataKey: "Action" },
   { label: "Payment Status", dataKey: "PaymentStatus" },

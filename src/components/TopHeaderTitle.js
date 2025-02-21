@@ -8,7 +8,7 @@ function TopHeaderTitle({ pagename }) {
         marginBottom: "10px",
         backgroundColor: "rgb(255, 231, 218)",
         color: "rgb(37, 37, 37)",
-        padding: "10px", // Add padding for spacing
+        padding: "10px", 
         fontWeight: "bold",
         fontSize: "1.5rem",
       }}

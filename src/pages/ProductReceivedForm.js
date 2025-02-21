@@ -1,12 +1,10 @@
 import React, { useState } from "react";
-// import { formProductData } from "../assets/ProductReceivedData";
 import RadioButton from "../components/RadioButton";
 import Form from "../components/Form";
 import { Box } from "@mui/material";
 import TopHeaderTitle from "../components/TopHeaderTitle";
 
 const inhouseFields = [
-  // Pulli Id and Names
   { label: "ஏலம் பொருள்", name: "yelamPorul", required: true },
   { label: "பெறுதல் மதிப்பு", name: "receivingValue", required: true },
   { label: "புல்லி ஐடி", name: "pulliID", required: true },

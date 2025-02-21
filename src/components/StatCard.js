@@ -6,7 +6,7 @@ function StatCard({ name, icon, value, color }) {
   return (
     <Card
       sx={{
-        backgroundColor: "rgba(255, 255, 255, 0.5)", // White with slight transparency (80% opacity)
+        backgroundColor: "rgba(255, 255, 255, 0.5)", 
         overflow: "hidden",
         borderRadius: "12px",
         border: "1px solid #f08001",

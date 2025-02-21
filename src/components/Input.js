@@ -27,7 +27,7 @@ function Input({
           position: "relative",
         }}
       >
-        {/* Label */}
+
         {label && (
           <Box
             component="label"
@@ -46,7 +46,6 @@ function Input({
           </Box>
         )}
 
-        {/* Input Field */}
 
         <input
           id={name}
