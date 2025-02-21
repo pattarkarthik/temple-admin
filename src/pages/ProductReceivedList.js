@@ -35,10 +35,10 @@ function ProductReceivedList() {
   const [openEditModal, setOpenEditModal] = useState(false);
 
   const [currentRow, setCurrentRow] = useState(null);
-  const [originalRow, setOriginalRow] = useState(null); // Original data to compare changes
-  const [loading, setLoading] = useState(false); // Loading state
-  const [successAlert, setSuccessAlert] = useState(false); // Success alert state
-  const [errorAlert, setErrorAlert] = useState(false); // Error alert state
+  const [originalRow, setOriginalRow] = useState(null); 
+  const [loading, setLoading] = useState(false); 
+  const [successAlert, setSuccessAlert] = useState(false); 
+  const [errorAlert, setErrorAlert] = useState(false); 
 
   return (
     <Box
@@ -54,10 +54,9 @@ function ProductReceivedList() {
 
       {loading && <Loader />}
 
-      {/* TableList */}
       <TableList
         openEdit={null}
-        showEdit={false} // No Edit Icon in ProductReceivedList
+        showEdit={false} 
         fields={ProductFields}
         data={ProductData}
       />

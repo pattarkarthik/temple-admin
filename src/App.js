@@ -26,7 +26,7 @@ function ProtectedLayout() {
         backgroundImage:
           "url('https://www.sarkarishikshak.com/wp-content/uploads/2023/06/Meenakshi-Amman-Temple-Wiki.jpg')",
         backgroundSize: "cover",
-        backgroundPosition: "center", // Center the image
+        backgroundPosition: "center", 
         backgroundRepeat: "no-repeat",
         backgroundAttachment: "fixed",
         boxSizing: "border-box",

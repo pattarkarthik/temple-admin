@@ -16,9 +16,9 @@ function RadioButton({ selectedValue = "inhouse", onSelectionChange }) {
         control={
           <Radio
             sx={{
-              color: "#f08001", // Unselected color
+              color: "#f08001", 
               "&.Mui-checked": {
-                color: "#f08001", // Selected color
+                color: "#f08001", 
               },
             }}
           />
@@ -31,9 +31,9 @@ function RadioButton({ selectedValue = "inhouse", onSelectionChange }) {
         control={
           <Radio
             sx={{
-              color: "#f08001", // Unselected color
+              color: "#f08001", 
               "&.Mui-checked": {
-                color: "#f08001", // Selected color
+                color: "#f08001", 
               },
             }}
           />

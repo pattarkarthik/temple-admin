@@ -15,18 +15,7 @@ const FullLayout = () => {
         </Container>
       </Grid2>
     </Grid2>
-    // <main>
-    //   <div className="pageWrapper d-lg-flex ">
-    //     <aside className="sidebarArea shadow overflow-hidden " id="sidebarArea">
-    //       <Sidebar />
-    //     </aside>
-    //     {/* <div className="contentArea "> */}
-    //     <Container className="p-4" fluid>
-    //       <Outlet />
-    //     </Container>
-    //     {/* </div> */}
-    //   </div>
-    // </main>
+   
   );
 };
 

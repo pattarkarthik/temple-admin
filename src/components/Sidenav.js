@@ -72,7 +72,7 @@ const pages = [
 export default function Sidenav() {
   const [open, setOpen] = React.useState(true);
   const navigate = useNavigate();
-  const location = useLocation(); // Get current route
+  const location = useLocation(); 
 
   const handleNavigation = (url) => {
     navigate(url);
@@ -87,7 +87,6 @@ export default function Sidenav() {
       <CssBaseline />
       <Drawer variant="permanent">
         <DrawerHeader>
-          {/* <img src={logo} style={{height:"150px", width:"250px", display:"flex", justifyContent:"space-around"}}/> */}
         </DrawerHeader>
         <Divider />
         <List

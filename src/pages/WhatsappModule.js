@@ -101,10 +101,10 @@ function WhatsappModule() {
 
     const data = new FormData();
     if (uploadedHusbandProfilePic) {
-      data.append("husband_photo", uploadedHusbandProfilePic); // "photo" should match the field name in your Django model
+      data.append("husband_photo", uploadedHusbandProfilePic); 
     }
     if (uploadedWifeProfilePic) {
-      data.append("wife_photo", uploadedWifeProfilePic); // "photo" should match the field name in your Django model
+      data.append("wife_photo", uploadedWifeProfilePic); 
     }
     Object.keys(changedFields).forEach((key) => {
       if (changedFields[key] !== undefined) {
@@ -149,8 +149,8 @@ function WhatsappModule() {
         filterFields={allMembersFilter}
         page={"Whatsapp"}
         showActionButtons={false}
-        showWhatsAppButton={true} // ✅ Show WhatsApp button only here
-        onWhatsAppClick={() => setOpenWhatsAppModal(true)} // ✅ Handle button click
+        showWhatsAppButton={true} 
+        onWhatsAppClick={() => setOpenWhatsAppModal(true)} 
       />
 
       {/* WhatsApp Modal */}

@@ -46,18 +46,16 @@ function WhatsappModal({ open, onClose }) {
   }, [selectedMessageType]);
 
   const handleCancel = () => {
-    // Optionally, reset form fields if needed.
     console.log("Cancel button clicked");
     onClose();
   };
 
   const handleWhatsAppClick = () => {
-    // Use the message state regardless of type.
     if (phoneNumber && message) {
       window.open(
         `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`
       );
-      onClose(); // Close the modal after sending
+      onClose(); 
     } else {
       alert("Please provide both a phone number and a message.");
     }
@@ -99,7 +97,7 @@ function WhatsappModal({ open, onClose }) {
           </Select>
         </FormControl>
 
-        {/* Phone number input */}
+       
         <TextField
           fullWidth
           label="Phone Number"
@@ -108,7 +106,7 @@ function WhatsappModal({ open, onClose }) {
           sx={{ marginBottom: "20px" }}
         />
 
-        {/* Message input field (always visible) */}
+        
         <TextField
           fullWidth
           label="Message"

@@ -47,10 +47,10 @@ function Form({
       }
     });
     if (uploadedHusbandProfilePic) {
-      data.append("husband_photo", uploadedHusbandProfilePic); // "photo" should match the field name in your Django model
+      data.append("husband_photo", uploadedHusbandProfilePic); 
     }
     if (uploadedWifeProfilePic) {
-      data.append("wife_photo", uploadedWifeProfilePic); // "photo" should match the field name in your Django model
+      data.append("wife_photo", uploadedWifeProfilePic); 
     }
     const isSuccessful = await onSubmit(data);
 
@@ -77,7 +77,7 @@ function Form({
     >
       <form onSubmit={handleSubmit}>
         <Grid container spacing={2} direction="row">
-          {/* Profile Picture at the Top */}
+          
           {profilePic && (
             <Grid
               item

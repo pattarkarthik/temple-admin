@@ -10,23 +10,23 @@ const root = createRoot(rootElement);
 
 const theme = createTheme({
   typography: {
-    fontFamily: '"Roboto", "Arial", sans-serif', // Global font family
-    fontSize: 14, // Base font size for the entire application
+    fontFamily: '"Roboto", "Arial", sans-serif', 
+    fontSize: 14, 
     h1: {
-      fontSize: "2.5rem", // Font size for h1 headings
+      fontSize: "2.5rem", 
     },
     h2: {
-      fontSize: "2rem", // Font size for h2 headings
+      fontSize: "2rem", 
     },
     body1: {
-      fontSize: "1rem", // Default font size for body text
+      fontSize: "1rem", 
     },
     body2: {
-      fontSize: "0.875rem", // Smaller font size for secondary text
+      fontSize: "0.875rem", 
     },
     button: {
-      fontSize: "0.875rem", // Font size for buttons
-      textTransform: "none", // Disable uppercase transformation
+      fontSize: "0.875rem", 
+      textTransform: "none", 
     },
   },
 });

@@ -45,7 +45,7 @@ function Login() {
         backgroundImage:
           "url('https://static.wixstatic.com/media/35364f_5b5ce4ffb5684f46922e67664a63fe93~mv2.jpg/v1/fill/w_980,h_653,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/35364f_5b5ce4ffb5684f46922e67664a63fe93~mv2.jpg')",
         backgroundSize: "cover",
-        backgroundPosition: "center", // Center the image
+        backgroundPosition: "center", 
         backgroundRepeat: "no-repeat",
         backgroundAttachment: "fixed",
       }}
@@ -54,8 +54,8 @@ function Login() {
         onSubmit={handleSubmit}
         className="form-container"
         style={{
-          border: "1px solid #ADD8E6 ", // Thin border
-          borderRadius: "5px", // Optional rounded corners
+          border: "1px solid #ADD8E6 ", 
+          borderRadius: "5px", 
         }}
       >
         <Typography sx={{ color: "white" }} variant="h4">

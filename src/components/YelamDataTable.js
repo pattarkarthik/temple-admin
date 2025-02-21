@@ -34,12 +34,11 @@ const fields = [
   { label: "State", name: "state", required: true },
   { label: "Remark", name: "Remark", required: true },
 
-  // Native and Karai
   {
     label: "Native",
     name: "Native",
     required: true,
-    type: "dropdown", // Specify that this is a dropdown field
+    type: "dropdown", 
     options: [
       { value: "valayapatti", label: "valayapatti" },
       { value: "Kallal", label: "Kallal" },
@@ -86,10 +85,7 @@ function DataTable({ title, columns, data }) {
     );
   });
 
-  // const handleEditClick = (row) => {
-  //   setSelectedRow(row);
-  //   setOpen(true);
-  // };
+ 
 
   const fixedHeaderContent = () => (
     <TableRow>
@@ -144,7 +140,7 @@ function DataTable({ title, columns, data }) {
   return (
     <Paper
       style={{
-        height: "1000px", // Full height of the container
+        height: "1000px", 
         width: "100%",
         display: "Inline-Block",
         flexDirection: "column",
@@ -226,7 +222,7 @@ function DataTable({ title, columns, data }) {
         handleClose={handleClose}
         rowData={selectedRow}
         fields={updatedFields}
-        purpose="YelamDataTable" // to not render upload avatar component
+        purpose="YelamDataTable" 
       />
     </Paper>
   );

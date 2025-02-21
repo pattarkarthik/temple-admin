@@ -56,7 +56,7 @@ function YelamProductCatalog() {
         res.flatMap((category) =>
           category.products.map((product) => ({
             name: product.product_name,
-            category: category.name.toLowerCase(), // Convert category name to lowercase as per example
+            category: category.name.toLowerCase(), 
           }))
         )
       );

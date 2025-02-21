@@ -34,11 +34,7 @@ const navigation = [
     href: "/yelam-prod-Cat",
     icon: "bi bi-box2-fill",
   },
-  // {
-  //   title: "Yelam Product List",
-  //   href: "/yelam-prod-list",
-  //   icon: "bi bi-journal-check",
-  // },
+ 
   {
     title: "Product Received Form",
     href: "/Product-Received-Form",

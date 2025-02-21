@@ -35,8 +35,8 @@ export default function TableList({
   page = "",
   handleAddProductModal,
   showActionButtons = true,
-  showWhatsAppButton = false, // ✅ Add this new prop
-  onWhatsAppClick, // ✅ Callback for WhatsApp button click
+  showWhatsAppButton = false, //  Add this new prop
+  onWhatsAppClick, //  Callback for WhatsApp button click
 
 }) {
   const [rows, setRows] = useState([]);
