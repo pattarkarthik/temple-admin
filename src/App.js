@@ -1,6 +1,12 @@
 import React, { lazy, Suspense } from "react";
 import Sidenav from "./components/Sidenav";
-import { Routes, Route, BrowserRouter, Outlet } from "react-router-dom";
+import {
+  Routes,
+  Route,
+  BrowserRouter,
+  Outlet,
+  useLocation,
+} from "react-router-dom";
 import { Box } from "@mui/material";
 import ProtectedRoutes from "./components/ProtectedRoutes";
 import Login from "./pages/Login";
@@ -12,11 +18,12 @@ const YelamEntry = lazy(() => import("./pages/YelamEntry"));
 const YelamList = lazy(() => import("./pages/YelamList"));
 const ProductReceivedForm = lazy(() => import("./pages/ProductReceivedForm"));
 const ProductReceivedList = lazy(() => import("./pages/ProductReceivedList"));
-const Dashboard = lazy(() => import("./pages/Dashboard"));
+// const Dashboard = lazy(() => import("./pages/Dashboard"));
 const YelamProductCatalog = lazy(() => import("./pages/YelamProductCatalog"));
 const WhatsappModule = lazy(() => import("./pages/WhatsappModule"));
 
 function ProtectedLayout() {
+  const location = useLocation();
   return (
     <Box
       sx={{
@@ -39,7 +46,7 @@ function ProtectedLayout() {
       </Box>
 
       <Box sx={{ flex: 1, padding: 2, maxWidth: "80%", opacity: "0.9" }}>
-        <ErrorBoundary>
+        <ErrorBoundary key={location.pathname}>
           <Suspense fallback={<div>Loading...</div>}>
             <Outlet />
           </Suspense>
@@ -62,7 +69,7 @@ export default function App() {
             </ProtectedRoutes>
           }
         >
-          <Route path="/" element={<Dashboard />} />
+          {/* <Route path="/" element={<Dashboard />} /> */}
           <Route path="/new-member" element={<NewMember />} />
           <Route path="/all-members" element={<AllMembers />} />
           <Route path="/yelam-entry" element={<YelamEntry />} />
