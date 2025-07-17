@@ -171,14 +171,14 @@ export const inhousePreFetchYelamFields = [
   { label: "Enter Pulli ID", name: "pulli_id", required: true },
 ];
 export const externalPreFetchYelamFields = [
-  { label: "புல்லி ஐடி", name: "pulli_id", required: true },
-  { label: "விருந்தினர் பெயர்", name: "guest_name", required: true },
+  { label: "Pulli ID", name: "pulli_id", required: true },
+  { label: "Guest Name", name: "guest_name", required: true },
   {
-    label: "விருந்தினர் வாட்ஸ்அப் எண்",
+    label: "Guest Whatsapp",
     name: "guest_whatsapp",
     required: true,
   },
-  { label: "விருந்தினர் பூர்வீகம்", name: "guest_native", required: true },
+  { label: "Guest Native", name: "guest_native", required: true },
 ];
 
 export const commanYelamFormFields = [
@@ -212,4 +212,11 @@ export const commanYelamFormFields = [
 export const catalogListFields = [
   { label: "Product", name: "name" },
   { label: "Category", name: "category" },
+];
+
+export const transactionTableFields = [
+  { label: "Amount", name: "amount", type: "number" },
+  { label: "Date", name: "date", type: "date" },
+  { label: "Payment Mode", name: "payment_mode", type: "text" },
+  { label: "Receipt Number", name: "receipt_number", type: "text" },
 ];

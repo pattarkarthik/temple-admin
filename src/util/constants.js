@@ -8,6 +8,7 @@ export const YELAM_GET_ALL_URL = () => "/api/yelams/";
 export const PRODUCTS_GET_ALL_URL = () => "/api/products/";
 export const CATEGORIES_GET_ALL_URL = () => "/api/categories/";
 export const TRANSACTION_CREATE_URL = () => "/api/transactions/";
+export const GET_ALL_TRANSACTIONS = () => "/api/transactions/";
 export const PRODUCT_CREATE_URL = () => "/api/products/";
 
 export const ACCESS_TOKEN = "access";

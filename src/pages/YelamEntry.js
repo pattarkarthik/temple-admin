@@ -116,7 +116,6 @@ function YelamEntry() {
   };
 
   const handleDropdown = (value, field) => {
-    console.log("Dropdown value changed:", value, field.name);
     if (field.name === "category") {
       setSelectedCategory(value);
     } else if (field.name === "product") {

@@ -19,7 +19,6 @@ const style = {
 
 export default function FormModal({ open, handleClose, rowData, fields }) {
   const handleFormSubmit = (values) => {
-    console.log("Updated values:", values); // Handle updated values
     handleClose(); // Close the modal
   };
 

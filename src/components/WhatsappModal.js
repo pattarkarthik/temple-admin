@@ -46,8 +46,6 @@ function WhatsappModal({ open, onClose }) {
   }, [selectedMessageType]);
 
   const handleCancel = () => {
-    // Optionally, reset form fields if needed.
-    console.log("Cancel button clicked");
     onClose();
   };
 
@@ -64,7 +62,11 @@ function WhatsappModal({ open, onClose }) {
   };
 
   return (
-    <BootstrapDialog onClose={onClose} aria-labelledby="whatsapp-dialog-title" open={open}>
+    <BootstrapDialog
+      onClose={onClose}
+      aria-labelledby="whatsapp-dialog-title"
+      open={open}
+    >
       <DialogTitle sx={{ m: 0, p: 1 }} id="whatsapp-dialog-title">
         Send WhatsApp Message
       </DialogTitle>
@@ -88,7 +90,9 @@ function WhatsappModal({ open, onClose }) {
             value={selectedMessageType}
             onChange={(e) => setSelectedMessageType(e.target.value)}
             displayEmpty
-            renderValue={(value) => (value === "" ? "Select message type" : value)}
+            renderValue={(value) =>
+              value === "" ? "Select message type" : value
+            }
           >
             <MenuItem value="">
               <em>Select message type</em>
@@ -122,7 +126,11 @@ function WhatsappModal({ open, onClose }) {
 
       <DialogActions>
         <CustomButton inverted={true} label="Cancel" onclick={handleCancel} />
-        <CustomButton inverted={true} label="Send Message" onclick={handleWhatsAppClick} />
+        <CustomButton
+          inverted={true}
+          label="Send Message"
+          onclick={handleWhatsAppClick}
+        />
       </DialogActions>
     </BootstrapDialog>
   );

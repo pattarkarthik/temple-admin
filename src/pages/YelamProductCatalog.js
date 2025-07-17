@@ -45,7 +45,7 @@ function YelamProductCatalog() {
 
   const fetchProducts = async () => {
     const res = await fetchData(CATEGORIES_GET_ALL_URL());
-    console.log("Fetched categories:", res);
+
     if (res) {
       setCategories(
         res.map((cat) => {

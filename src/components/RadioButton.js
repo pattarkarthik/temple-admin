@@ -23,7 +23,7 @@ function RadioButton({ selectedValue = "inhouse", onSelectionChange }) {
             }}
           />
         }
-        label="புல்லி உறுப்பினர்"
+        label="Inhouse"
         componentsProps={{ typography: { fontSize: "small" } }}
       />
       <FormControlLabel
@@ -38,7 +38,7 @@ function RadioButton({ selectedValue = "inhouse", onSelectionChange }) {
             }}
           />
         }
-        label="வெளிப்புற"
+        label="Guest"
         componentsProps={{ typography: { fontSize: "small" } }}
       />
     </RadioGroup>

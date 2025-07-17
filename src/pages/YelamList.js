@@ -17,13 +17,18 @@ import { useNavigate } from "react-router-dom";
 import CustomSelect from "../components/CustomSelect";
 import { YelamEditFormFields } from "../assets/Data";
 import { YelamListFields } from "../assets/Fields";
-import { TRANSACTION_CREATE_URL, YELAM_GET_ALL_URL } from "../util/constants";
+import {
+  GET_ALL_TRANSACTIONS,
+  TRANSACTION_CREATE_URL,
+  YELAM_GET_ALL_URL,
+} from "../util/constants";
 import {
   PAYMENT_FAILURE_ALERT_MESSAGE,
   PAYMENT_SUCCESS_ALERT_MESSAGE,
 } from "../util/alerts";
 import { useApiRequest } from "../util/customHooks/useApiRequest";
 import Modal from "../components/Modal";
+import TransactionTable from "../components/TransactionTable";
 
 function YelamList() {
   const navigate = useNavigate();
@@ -46,6 +51,7 @@ function YelamList() {
   const [openEditModal, setOpenEditModal] = useState(false);
   const [openTransactionModal, setOpenTransactionModal] = useState(false);
   const [currentRow, setCurrentRow] = useState(null);
+  const [paymentTransactions, setPaymentTransactions] = useState([]);
   const [paymentTransactionPayload, setPaymentTransactionPayload] =
     useState(initialValues);
 
@@ -55,10 +61,15 @@ function YelamList() {
 
   const fetchYelam = async () => {
     const res = await fetchData(YELAM_GET_ALL_URL());
-    console.log("Fetched Yelam Data:", res);
     if (res) setData(res);
   };
 
+  const fetchTransactionData = async (yelamId) => {
+    const res = await fetchData(GET_ALL_TRANSACTIONS(), {
+      params: { yelam: yelamId },
+    });
+    setPaymentTransactions(res || []);
+  };
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     if (
@@ -82,11 +93,12 @@ function YelamList() {
   };
 
   const handleTransactionOpen = (row) => {
-    console.log("Transaction row", row);
     setOpenTransactionModal(true);
+    fetchTransactionData(row.yelam);
   };
   const handleUpdatePayment = async (e) => {
     e.preventDefault();
+
     paymentTransactionPayload.yelam = currentRow.id;
     const res = await postData(
       TRANSACTION_CREATE_URL(),
@@ -128,9 +140,16 @@ function YelamList() {
         <Modal
           title="Transactions"
           saveBtnLabel={"Close"}
+          saveClickHandler={() => setOpenTransactionModal(false)}
           openModal={true}
           onClose={() => setOpenTransactionModal(false)}
-        ></Modal>
+        >
+          {paymentTransactions.length > 0 ? (
+            <TransactionTable transactions={paymentTransactions} />
+          ) : (
+            <Box>No Transactions Found</Box>
+          )}
+        </Modal>
       )}
 
       <Dialog open={openEditModal} onClose={() => setOpenEditModal(false)}>

@@ -41,14 +41,14 @@ const inhouseFields = [
 ];
 const guestFields = [
   ...inhouseFields,
-  { label: "விருந்தினர் பெயர்", name: "guestname", required: true },
+  { label: "Guest Name", name: "guestname", required: true },
   {
-    label: "விருந்தினர் வாட்ஸ்அப் எண்",
+    label: "Guest Whatsapp",
     name: "guestWhatsappNo",
     required: true,
   },
-  { label: "விருந்தினர் பூர்வீகம்", name: "guestNative", required: true },
-  { label: "உறவு", name: "relationship", required: true },
+  { label: "Guest Native", name: "guestNative", required: true },
+  { label: "Relationship", name: "relationship", required: true },
 ];
 
 function ProductReceivedForm() {
@@ -58,7 +58,6 @@ function ProductReceivedForm() {
     console.log("Form submitted with values:", values);
   };
   const handleSelectionChange = (value) => {
-    console.log(value);
     setSelectedValue(value);
   };
 
@@ -78,10 +77,11 @@ function ProductReceivedForm() {
         />
       </Box>
       <Form
-        purpose="NewMember.js"
+        // purpose="NewMember.js"
         fields={selectedValue === "inhouse" ? inhouseFields : guestFields}
         onSubmit={handleFormSubmit}
-        title="Add New Member"
+        btnLabel="Submit"
+        // title="Add New Member"
       />
     </Box>
   );

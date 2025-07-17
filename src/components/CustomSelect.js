@@ -3,7 +3,6 @@ import React, { useEffect, useState } from "react";
 
 function CustomSelect({ value, onChange, name, fields, label, width }) {
   const [selectedValue, setSelectedValue] = useState("");
-  console.log(`${label} selected value:`, value, fields); // Debugging log
 
   useEffect(() => {
     setSelectedValue(value);
@@ -11,7 +10,6 @@ function CustomSelect({ value, onChange, name, fields, label, width }) {
 
   const handleChange = (event) => {
     const newValue = event.target.value;
-    console.log("Selected value:", newValue); // Debugging log
     setSelectedValue(newValue); // Update local state
     if (onChange) {
       onChange(newValue); // Call the parent-provided onChange

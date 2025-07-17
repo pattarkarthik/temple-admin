@@ -52,6 +52,7 @@ export default function TableList({
     setRows(data);
     setFilteredRows(data);
   }, [data]);
+
   const uniqueValues = (key) => {
     const uniqueObjects = [];
     data.forEach((row) => {

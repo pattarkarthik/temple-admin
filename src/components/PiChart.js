@@ -2,7 +2,6 @@ import React from "react";
 import { Cell, Legend, Pie, PieChart, Tooltip } from "recharts";
 
 function PiChart({ data }) {
-  console.log(data);
   //   const formatData = (data) => {
   //     return data.map((entry) => {
   //       console.log(Object.keys(key)[0]);
