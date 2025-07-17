@@ -7,37 +7,37 @@ import TopHeaderTitle from "../components/TopHeaderTitle";
 
 const inhouseFields = [
   // Pulli Id and Names
-  { label: "ஏலம் பொருள்", name: "yelamPorul", required: true },
-  { label: "பெறுதல் மதிப்பு", name: "receivingValue", required: true },
-  { label: "புல்லி ஐடி", name: "pulliID", required: true },
-  { label: "பெயர்", name: "name", required: true },
+  { label: "Auction Item", name: "yelamPorul", required: true },
+  { label: "Receiving Value", name: "receivingValue", required: true },
+  { label: "Pulli ID", name: "pulliID", required: true },
+  { label: "Name", name: "name", required: true },
   {
-    label: "வாட்ஸ்அப் எண் 1",
+    label: "WhatsApp Number 1",
     name: "Whatsapp1",
     required: true,
     type: "tel",
   },
   {
-    label: "பூர்வீகம்",
+    label: "Native",
     name: "Native",
     required: true,
     type: "dropdown",
     options: [
-      { label: "வலையபட்டி", value: "Valayapatti" },
-      { label: "கல்லல்", value: "Kallal" },
-      { label: "கண்டனூர்", value: "Kandanur" },
-      { label: "காரைக்குடி", value: "Karaikudi" },
-      { label: "மேலைசிவபுரி", value: "Melaisivapuri" },
+      { label: "Valayapatti", value: "Valayapatti" },
+      { label: "Kallal", value: "Kallal" },
+      { label: "Kandanur", value: "Kandanur" },
+      { label: "Karaikudi", value: "Karaikudi" },
+      { label: "Melaisivapuri", value: "Melaisivapuri" },
     ],
   },
 
   {
-    label: "தயாரிப்பு பெறுதல் எண்",
+    label: "Product Receiving Number",
     name: "productReceivingNumber",
     required: true,
   },
 
-  { label: "கருத்துக்கள்", name: "remark", required: false },
+  { label: "Remarks", name: "remark", required: false },
 ];
 const guestFields = [
   ...inhouseFields,

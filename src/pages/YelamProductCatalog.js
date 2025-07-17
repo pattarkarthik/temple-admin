@@ -45,10 +45,11 @@ function YelamProductCatalog() {
 
   const fetchProducts = async () => {
     const res = await fetchData(CATEGORIES_GET_ALL_URL());
+    console.log("Fetched categories:", res);
     if (res) {
       setCategories(
         res.map((cat) => {
-          return { label: cat.name, value: cat.name, id: cat.id };
+          return { label: cat.name, value: cat.name, id: cat._id };
         })
       );
 
@@ -78,7 +79,7 @@ function YelamProductCatalog() {
   };
   const handleAddProduct = async (e) => {
     e.preventDefault();
-    const res = await postData(
+    await postData(
       PRODUCT_CREATE_URL(),
       {
         product_name: newProduct,
@@ -87,9 +88,11 @@ function YelamProductCatalog() {
       PRODUCT_ADDED_SUCCESSFUL_ALERT_MESSAGE,
       PRODUCT_ADDED_FAILURE_ALERT_MESSAGE
     );
-    if (res) {
-      handleModalClose();
-    }
+    // console.log("Response from adding product:", res);
+    // if (res) {
+    handleModalClose();
+    fetchProducts();
+    // }
   };
   return (
     <Box

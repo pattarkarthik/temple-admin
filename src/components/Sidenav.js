@@ -42,7 +42,7 @@ const DrawerHeader = styled("div")(({ theme }) => ({
 }));
 
 const pages = [
-  { name: "Dashboard", url: "/dashboard", icon: <AnalyticsIcon /> },
+  // { name: "Dashboard", url: "/dashboard", icon: <AnalyticsIcon /> },
   { name: "New Member", url: "/new-member", icon: <PersonAddIcon /> },
   { name: "All Members", url: "/all-members", icon: <ListIcon /> },
   { name: "Yelam Entry", url: "/yelam-entry", icon: <AddIcon /> },

@@ -2,7 +2,7 @@ import axios from "axios";
 import { ACCESS_TOKEN, REFRESH_TOKEN } from "./constants";
 
 const api = axios.create({
-  baseURL: process.env.REACT_APP_API_URL,
+  baseURL: process.env.REACT_APP_BACKEND_API_URL,
 });
 
 let isRefreshing = false;
@@ -61,10 +61,8 @@ api.interceptors.response.use(
         api.defaults.headers.common[
           "Authorization"
         ] = `Bearer ${newAccessToken}`;
-
         onTokenRefreshed(newAccessToken);
         isRefreshing = false;
-
         originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
         return api(originalRequest);
       } catch (refreshError) {
@@ -75,7 +73,6 @@ api.interceptors.response.use(
         return Promise.reject(refreshError);
       }
     }
-
     return Promise.reject(error);
   }
 );

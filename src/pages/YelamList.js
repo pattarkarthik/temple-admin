@@ -23,6 +23,7 @@ import {
   PAYMENT_SUCCESS_ALERT_MESSAGE,
 } from "../util/alerts";
 import { useApiRequest } from "../util/customHooks/useApiRequest";
+import Modal from "../components/Modal";
 
 function YelamList() {
   const navigate = useNavigate();
@@ -43,6 +44,7 @@ function YelamList() {
 
   const [data, setData] = useState([]);
   const [openEditModal, setOpenEditModal] = useState(false);
+  const [openTransactionModal, setOpenTransactionModal] = useState(false);
   const [currentRow, setCurrentRow] = useState(null);
   const [paymentTransactionPayload, setPaymentTransactionPayload] =
     useState(initialValues);
@@ -53,6 +55,7 @@ function YelamList() {
 
   const fetchYelam = async () => {
     const res = await fetchData(YELAM_GET_ALL_URL());
+    console.log("Fetched Yelam Data:", res);
     if (res) setData(res);
   };
 
@@ -78,6 +81,10 @@ function YelamList() {
     setOpenEditModal(true);
   };
 
+  const handleTransactionOpen = (row) => {
+    console.log("Transaction row", row);
+    setOpenTransactionModal(true);
+  };
   const handleUpdatePayment = async (e) => {
     e.preventDefault();
     paymentTransactionPayload.yelam = currentRow.id;
@@ -115,7 +122,16 @@ function YelamList() {
         data={data}
         showPaymentStatus={true}
         handlePaymentStatus={openPaymentStatusModal}
+        handleTransactionOpen={handleTransactionOpen}
       />
+      {openTransactionModal && (
+        <Modal
+          title="Transactions"
+          saveBtnLabel={"Close"}
+          openModal={true}
+          onClose={() => setOpenTransactionModal(false)}
+        ></Modal>
+      )}
 
       <Dialog open={openEditModal} onClose={() => setOpenEditModal(false)}>
         <form onSubmit={handleUpdatePayment}>

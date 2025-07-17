@@ -31,13 +31,13 @@ export default function TableList({
   fields,
   showEdit = false, // Prop to toggle the "Payment Status" button
   handlePaymentStatus,
+  handleTransactionOpen,
   filterFields = [],
   page = "",
   handleAddProductModal,
   showActionButtons = true,
   showWhatsAppButton = false, // ✅ Add this new prop
   onWhatsAppClick, // ✅ Callback for WhatsApp button click
-
 }) {
   const [rows, setRows] = useState([]);
   const [openPrintModal, setOpenPrintModal] = useState(false);
@@ -96,15 +96,13 @@ export default function TableList({
     applyFilters(value, filters);
   };
 
-  const getButtons = (page,showActionButtons) => {
-
+  const getButtons = (page, showActionButtons) => {
     if (page === "Whatsapp") {
       return showWhatsAppButton ? (
         <CustomButton
           inverted={true}
           label="Send WhatsApp Message"
           onclick={onWhatsAppClick}
-         
         />
       ) : null;
     }
@@ -112,8 +110,6 @@ export default function TableList({
     if (!showActionButtons) return null;
 
     switch (page) {
-      
-
       case "catalog":
         return (
           <CustomButton
@@ -214,7 +210,7 @@ export default function TableList({
               </FormControl>
             ))}
 
-          {getButtons(page,showActionButtons)}
+          {getButtons(page, showActionButtons)}
         </Box>
 
         <TableContainer
@@ -315,7 +311,7 @@ export default function TableList({
                             cursor: "pointer",
                           }}
                           onClick={() => {
-                            console.log(row);
+                            handleTransactionOpen(row);
                           }}
                         />
                       ) : (

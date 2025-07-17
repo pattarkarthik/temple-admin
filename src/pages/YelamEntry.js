@@ -71,7 +71,7 @@ function YelamEntry() {
         res.reduce((acc, cat) => {
           acc[cat.name] = cat.products.map((pro) => ({
             label: pro.product_name,
-            value: pro.id,
+            value: pro._id,
           }));
           return acc;
         }, {})
@@ -116,6 +116,7 @@ function YelamEntry() {
   };
 
   const handleDropdown = (value, field) => {
+    console.log("Dropdown value changed:", value, field.name);
     if (field.name === "category") {
       setSelectedCategory(value);
     } else if (field.name === "product") {
@@ -145,12 +146,12 @@ function YelamEntry() {
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
+
     const combinedData = {
       ...yelamData,
       member: memberData.pulli_id,
       bidder_type: selectedValue,
     };
-
     const res = await postData(
       YELAM_CREATE_URL(),
       combinedData,
@@ -272,7 +273,7 @@ function YelamEntry() {
               inverted={false}
               label={fetchMemberSuccess ? "Add Yelam" : "Fetch Member"}
               type={fetchMemberSuccess ? "submit" : ""}
-              // onclick={fetchMemberSuccess ? handleFormSubmit : fetchMember}
+              onclick={fetchMemberSuccess ? handleFormSubmit : fetchMember}
             />
           </Box>
         </Paper>

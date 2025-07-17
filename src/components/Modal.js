@@ -6,7 +6,7 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogActions from "@mui/material/DialogActions";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import CustomButton from "./CustomButton";
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
