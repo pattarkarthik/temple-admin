@@ -88,11 +88,8 @@ function YelamProductCatalog() {
       PRODUCT_ADDED_SUCCESSFUL_ALERT_MESSAGE,
       PRODUCT_ADDED_FAILURE_ALERT_MESSAGE
     );
-    // console.log("Response from adding product:", res);
-    // if (res) {
     handleModalClose();
     fetchProducts();
-    // }
   };
   return (
     <Box

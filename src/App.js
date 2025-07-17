@@ -6,6 +6,7 @@ import {
   BrowserRouter,
   Outlet,
   useLocation,
+  Navigate,
 } from "react-router-dom";
 import { Box } from "@mui/material";
 import ProtectedRoutes from "./components/ProtectedRoutes";
@@ -70,6 +71,7 @@ export default function App() {
           }
         >
           {/* <Route path="/" element={<Dashboard />} /> */}
+          <Route path="/" element={<Navigate to="/new-member" replace />} />
           <Route path="/new-member" element={<NewMember />} />
           <Route path="/all-members" element={<AllMembers />} />
           <Route path="/yelam-entry" element={<YelamEntry />} />
